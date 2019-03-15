@@ -35,3 +35,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Krita
+*.*~
+
+# ST
+*.sublime-workspace

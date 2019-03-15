@@ -1,0 +1,10 @@
+
+=== Wed Mar 13 19:11:04 2019
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were updated:
+  com.unity.collab-proxy from version 1.2.9 to 1.2.15
+  com.unity.package-manager-ui from version 0.0.0-builtin to 2.1.1
+  com.unity.timeline from version 0.0.0-builtin to 1.0.0
