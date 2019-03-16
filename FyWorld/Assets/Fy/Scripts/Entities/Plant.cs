@@ -6,13 +6,17 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-namespace Fy.Definitions {
-	// Grahpic Layer / Altitude for our tilables.
-	[System.Serializable]
-	public enum Layer : ushort {
-		Undefined, // This is used if we don't want a grahpic representation.
-		Ground, // Ground layer.
-		Grass,
-		Count // Count is just a nice trick to get the enum length.
+using UnityEngine;
+using Fy.Definitions;
+using Fy.Visuals;
+
+namespace Fy.Entity {
+	// Plant
+	public class Plant : Tilable {
+		public Plant(Vector2Int position, TilableDef def) {
+			this.position = position;
+			this.def = def;
+			this.graphics = GraphicInstance.GetNew(def.graphics, Color.green);
+		}
 	}
 }

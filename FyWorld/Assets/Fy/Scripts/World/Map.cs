@@ -89,6 +89,10 @@ namespace Fy.World {
 						new Ground(tile.position, Defs.grounds["dirt"])
 					);
 				}
+
+				if (Random.value > .8f) {
+					tile.AddTilable(new Plant(tile.position, Defs.plants["grass"]));
+				}
 			}
 		}
 

@@ -31,6 +31,7 @@ namespace Fy {
 			this._ready = false;
 			Res.Load(); // Load all our resources;
 			Defs.LoadGroundsFromCode(); // Loading our ground definitions;
+			Defs.LoadPlantsFromCode();; // Loading our plants definitions;
 		}
 
 		/// Generating the map, spawning things.

@@ -12,12 +12,36 @@ namespace Fy.Definitions {
 	// A static class to load our definitions
 	// Everything will be loaded from code or JSON files. 
 	public static class Defs {
-		/// List of ground definitions
+		/* List of ground definitions */
 		public static Dictionary<string, TilableDef> grounds;
+
+		/* List of plant definitions */
+		public static Dictionary<string, TilableDef> plants;
+
+
 
 		/// Add a ground to our ground dictionary
 		public static void AddGround(TilableDef def) {
 			Defs.grounds.Add(def.uid, def);
+		}
+
+		/// Add a plant to our plant dictionary
+		public static void AddPlant(TilableDef def) {
+			Defs.plants.Add(def.uid, def);
+		}
+
+
+		/// Load all plant definitions
+		public static void LoadPlantsFromCode() {
+			Defs.plants = new Dictionary<string, TilableDef>();
+
+			Defs.AddPlant(new PlantDef{
+				uid = "grass",
+				layer = Layer.Grass,
+				graphics = new GraphicDef{
+					textureName = "grass"
+				}
+			});
 		}
 
 		/// Load all ground definitions
@@ -31,7 +55,8 @@ namespace Fy.Definitions {
 					layer = Layer.Ground,
 					graphics = new GraphicDef{
 						textureName = "dirt",
-						materialName = "grounds"
+						materialName = "grounds",
+						isInstanced = false
 					}
 				}
 			);
@@ -44,7 +69,8 @@ namespace Fy.Definitions {
 					layer = Layer.Ground,
 					graphics = new GraphicDef{
 						textureName = "water",
-						materialName = "grounds"
+						materialName = "grounds",
+						isInstanced = false
 					}
 				}
 			);

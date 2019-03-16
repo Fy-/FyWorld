@@ -32,6 +32,13 @@ namespace Fy.World {
 			this.position = position;
 			this.map = map;
 			this._tilables = new Dictionary<Layer, Tilable>();
+		}	
+
+		/// All our tilables is this tile.
+		public IEnumerable<Tilable> GetAllTilables() {
+			foreach (Tilable tilable in this._tilables.Values) {
+				yield return tilable;
+			}
 		}
 
 		/// Add a tilable to a layer.

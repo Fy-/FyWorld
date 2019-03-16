@@ -24,20 +24,29 @@ namespace Fy.Visuals {
 		public Color color { get; protected set; }
 		public GraphicDef def { get; protected set; }
 
-		public GraphicInstance(int uid, GraphicDef def) {
+		public GraphicInstance(int uid, GraphicDef def, Color color = default(Color), Texture2D texture = null) {
 			this.def = def;
 			this.uid = uid;
 			this.material = new Material(Res.materials[def.materialName]);
-			this.material.mainTexture = Res.textures[def.textureName];
+			this.material.mainTexture = (texture == null) ? Res.textures[def.textureName] : texture;
+
+			if (color != default(Color)) {
+				this.SetColor(color);
+			}
+		}
+
+		private void SetColor(Color color) {
+			this.color = color;
+			this.material.SetColor("_Color", this.color);
 		}
 
 		/// Get a new graphic instance (or an existing one)
-		public static GraphicInstance GetNew(GraphicDef def) {
-			int id = GraphicInstance.GetUID(def);
+		public static GraphicInstance GetNew(GraphicDef def, Color color = default(Color), Texture2D texture = null) {
+			int id = GraphicInstance.GetUID(def, color, texture);
 			if (GraphicInstance.instances.ContainsKey(id)) {
 				return GraphicInstance.instances[id];
 			}
-			GraphicInstance.instances.Add(id, new GraphicInstance(id, def));
+			GraphicInstance.instances.Add(id, new GraphicInstance(id, def, color, texture));
 			return GraphicInstance.instances[id];
 		}
 
@@ -46,8 +55,11 @@ namespace Fy.Visuals {
 		}
 
 		// Unique id generator for GraphicInstance
-		public static int GetUID(GraphicDef def) {
-			return def.materialName.GetHashCode() + def.textureName.GetHashCode() + def.color.GetHashCode();
+		public static int GetUID(GraphicDef def, Color color, Texture2D texture) {
+			int textureHash = (texture == null) ? def.textureName.GetHashCode() : texture.GetHashCode();
+			int colorHash = (color == default(Color)) ? def.color.GetHashCode() : color.GetHashCode();
+
+			return def.materialName.GetHashCode() + textureHash + colorHash;
 		}
 	}
 }

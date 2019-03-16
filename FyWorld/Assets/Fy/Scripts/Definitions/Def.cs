@@ -32,7 +32,11 @@ namespace Fy.Definitions {
 		/* Graphic size */
 		public Vector2 size = Vector2.one;
 
+		/* Graphic color */
 		public Color color = Color.white;
+
+		/* Is Instanced ? */
+		public bool isInstanced = true;
 	}
 
 	/// Definition for a tilable
@@ -48,4 +52,8 @@ namespace Fy.Definitions {
 	/// Definition for a terrain/ground
 	[System.Serializable]
 	public class GroundDef : TilableDef {}
+
+	/// Definition for a plant
+	[System.Serializable]
+	public class PlantDef : TilableDef {}
 }
