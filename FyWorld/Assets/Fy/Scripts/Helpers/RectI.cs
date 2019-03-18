@@ -11,6 +11,7 @@ using UnityEngine;
 
 namespace Fy.Helpers {
 	// Represents a rectangle
+	[System.Serializable]
 	public struct RectI {
 		/*      ___________max
 		*      |           *
@@ -38,7 +39,7 @@ namespace Fy.Helpers {
 		/// Enumerator: foreach (Vector2Int p in rect)
 		public IEnumerator<Vector2Int> GetEnumerator() {
 			for (int x = this.min.x; x < this.max.x; x++) {
-				for (int y = this.min.y; y < this.max.y; y++) {
+				for (int y = this.max.y-1; y >= this.min.y; y--) {
 					yield return new Vector2Int(x, y);
 				}
 			}

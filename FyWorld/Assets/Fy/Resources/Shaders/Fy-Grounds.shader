@@ -42,7 +42,7 @@ Shader "Fy/Grounds"
 			}
 
 			half4 frag (v2f i) : COLOR {
-				half4 texcol = tex2D(_MainTex, i.uv.xy);
+				half4 texcol = tex2D(_MainTex, i.uv.xy) * i.color.a;
 				return  texcol;
 			}
 

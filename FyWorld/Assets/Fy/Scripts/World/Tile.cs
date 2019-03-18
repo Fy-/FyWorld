@@ -20,6 +20,20 @@ namespace Fy.World {
 		/* Our map */
 		public Map map { get; protected set; }
 
+		/* Fertility of our tile */
+		public float fertility {
+			get {
+				float _fertility = 1f;
+				foreach (Tilable tilable in this.GetAllTilables()) {
+					if (tilable.def.fertility == 0f) {
+						return 0f;
+					}
+					_fertility *= tilable.def.fertility;
+				}
+				return _fertility;
+			}
+		}
+
 		/*
 			(Need to change this, maybe)
 			In a tile we have a container for each Layer in Layer.

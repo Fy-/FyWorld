@@ -35,6 +35,9 @@ namespace Fy.World {
 		/* Region for each position in our map */
 		private Dictionary<int, int> _regionByPosition;
 
+		/* Ground noise map */
+		public float[] groundNoiseMap { get; protected set; }
+
 		/// Let's create a world, that's not ostentatious at all.
 		public Map(int width, int height) {
 			this.size = new Vector2Int(width, height);
@@ -76,22 +79,26 @@ namespace Fy.World {
 
 		/// Temporary method to add a Ground of definition "dirt" to all our tiles.
 		public void TempMapGen() {
+			this.groundNoiseMap = NoiseMap.GenerateNoiseMap(this.size, 11, NoiseMap.GroundWave(42));
 			foreach (Tile tile in this) {
-				if (
-					tile.position.x == 0 || tile.position.y == 0 || 
-					tile.position.x == this.size.x-1 || tile.position.y == this.size.y-1
-				) {
-					tile.AddTilable(
-						new Ground(tile.position, Defs.grounds["water"])
-					);
-				} else {
-					tile.AddTilable(
-						new Ground(tile.position, Defs.grounds["dirt"])
-					);
-				}
+				tile.AddTilable(
+					new Ground(
+						tile.position,
+						Ground.GroundByHeight(this.groundNoiseMap[tile.position.x + tile.position.y * this.size.x])
+					)
+				);
 
-				if (Random.value > .8f) {
-					tile.AddTilable(new Plant(tile.position, Defs.plants["grass"]));
+				float _tileFertility = tile.fertility;
+				if (_tileFertility > 0f) {
+					foreach (TilableDef tilableDef in Defs.plants.Values) {
+						if (
+							_tileFertility >= tilableDef.plantDef.minFertility &&
+							Random.value <= tilableDef.plantDef.probability
+						) {
+							tile.AddTilable(new Plant(tile.position, tilableDef));
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -123,6 +130,22 @@ namespace Fy.World {
 		/// Map string description
 		public override string ToString() {
 			return "Map(size="+this.size+")";
+		}
+
+		/// Build all meshes in our regions
+		public void BuildAllRegionMeshes() {
+			foreach (MapRegion region in this.regions) {
+				region.BuildMeshes();
+			}
+		}
+
+		/// Draw all regions
+		public void DrawRegions() {
+			foreach (MapRegion region in this.regions) {
+				if (region.IsVisible()) {
+					region.Draw();
+				}
+			}
 		}
 	}
 }

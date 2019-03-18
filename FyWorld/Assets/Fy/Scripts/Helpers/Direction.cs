@@ -1,0 +1,30 @@
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| FyWorld - A top down simulation game in a fantasy medieval world.    |
+|                                                                      |
+|    :copyright: © 2019 Florian Gasquez.                               |
+|    :license: GPLv3, see LICENSE for more details.                    |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+using UnityEngine;
+
+namespace Fy.Helpers {
+	public enum Direction {
+		S, SW, W, NW, N, NE, E, SE
+	}
+
+	public static class DirectionUtils {
+		public static Vector2Int[] neighbours = new Vector2Int[8];
+
+		public static void SetNeighbours() {
+			DirectionUtils.neighbours[0] = new Vector2Int(0,-1);
+			DirectionUtils.neighbours[1] = new Vector2Int(-1, -1);
+			DirectionUtils.neighbours[2] = new Vector2Int(-1, 0);
+			DirectionUtils.neighbours[3] = new Vector2Int(-1, 1);
+			DirectionUtils.neighbours[4] = new Vector2Int(0, 1);
+			DirectionUtils.neighbours[5] = new Vector2Int(1, 1);
+			DirectionUtils.neighbours[6] = new Vector2Int(1, 0);
+			DirectionUtils.neighbours[7] = new Vector2Int(1, -1);
+		}
+	}
+}

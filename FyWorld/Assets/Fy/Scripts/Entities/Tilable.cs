@@ -6,6 +6,7 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+using System.Collections.Generic;
 using UnityEngine;
 using Fy.Definitions;
 using Fy.Visuals;
@@ -20,26 +21,33 @@ namespace Fy.Entity {
 		public TilableDef def { get; protected set; }
 
 		/*  Graphic Instance */
-		public GraphicInstance graphics { get; protected set; }
+		public GraphicInstance mainGraphic { get; protected set; }
+
+		/* Additional graphics */
+		public Dictionary<string, GraphicInstance> addGraphics { get; protected set; }
 
 		/*  Matrix */
-		private Matrix4x4 _matrice;
+		private Dictionary<int, Matrix4x4> _matrices;
 
 		/// Get the matrice of our tilable
-		public Matrix4x4 GetMatrice() {
-			if (this._matrice == default(Matrix4x4)) {
-				this._matrice = Matrix4x4.identity;
-				this._matrice.SetTRS(
+		public Matrix4x4 GetMatrice(int graphicUID) {
+			if (this._matrices == null) {
+				this._matrices = new Dictionary<int, Matrix4x4>();
+			}
+			if (!this._matrices.ContainsKey(graphicUID)) {
+				Matrix4x4 mat = Matrix4x4.identity;
+				mat.SetTRS(
 					new Vector3(
-						this.position.x,
-						this.position.y,
-						0
+						this.position.x-this.def.graphics.pivot.x,
+						this.position.y-this.def.graphics.pivot.y,
+						LayerUtils.Height(this.def.layer) + GraphicInstance.instances[graphicUID].priority
 					), 
 					Quaternion.identity, 
-					Vector3.one
+					Vector3.one/2f
 				);
+				this._matrices.Add(graphicUID, mat);
 			}
-			return this._matrice;
+			return this._matrices[graphicUID];
 		}
 	}
 }

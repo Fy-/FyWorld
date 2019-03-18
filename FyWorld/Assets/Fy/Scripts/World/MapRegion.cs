@@ -43,14 +43,24 @@ namespace Fy.World {
 		/// Rebuild matrices
 		public void BuildMatrices() {
 			Dictionary<int, List<Matrix4x4>> tmpMatrices = new Dictionary<int, List<Matrix4x4>>();
-			foreach (Vector2Int v  in this.regionRect) {
-				foreach (Tilable t in this.map[v].GetAllTilables()) {
-					if (t.def.graphics.isInstanced) {
-						if (!tmpMatrices.ContainsKey(t.graphics.uid)) {
-							tmpMatrices.Add(t.graphics.uid, new List<Matrix4x4>());
+			foreach (Vector2Int position in this.regionRect) {
+				foreach (Tilable tilable in this.map[position].GetAllTilables()) {
+					if (tilable.def.graphics.isInstanced) {
+						if (!tmpMatrices.ContainsKey(tilable.mainGraphic.uid)) {
+							tmpMatrices.Add(tilable.mainGraphic.uid, new List<Matrix4x4>());
 						}
-						tmpMatrices[t.graphics.uid].Add(t.GetMatrice());
-						// TODO: if we add childs to our tilable, don't forget them!
+						tmpMatrices[tilable.mainGraphic.uid].Add(tilable.GetMatrice(tilable.mainGraphic.uid));
+							
+						if (tilable.addGraphics != null) {
+							
+							foreach (GraphicInstance graphicInstance in tilable.addGraphics.Values) {
+
+								if (!tmpMatrices.ContainsKey(graphicInstance.uid)) {
+									tmpMatrices.Add(graphicInstance.uid, new List<Matrix4x4>());
+								}
+								tmpMatrices[graphicInstance.uid].Add(tilable.GetMatrice(graphicInstance.uid));
+							}
+						}
 					}
 				}
 			}
@@ -61,12 +71,26 @@ namespace Fy.World {
 			}
 		}
 
+		public bool IsVisible() {
+			return (
+				this.regionRect.min.x >= Loki.cameraController.viewRect.min.x - Map.REGION_SIZE &&
+				this.regionRect.max.x <= Loki.cameraController.viewRect.max.x + Map.REGION_SIZE &&
+				this.regionRect.min.y >= Loki.cameraController.viewRect.min.y - Map.REGION_SIZE &&
+				this.regionRect.max.y <= Loki.cameraController.viewRect.max.y + Map.REGION_SIZE 
+			);
+		}
+
 		/// Draw all the meshes from our renderers.
 		public void Draw() {
 			foreach (RegionRenderer renderer in this.renderers.Values) {
 				renderer.Draw();
 			}
 
+			this.DrawTilables();
+		}
+
+		/// Draw Tilables
+		public void DrawTilables() {
 			if (this._needToRefreshMatrices) {
 				this.BuildMatrices();
 				this._needToRefreshMatrices = false;
@@ -91,7 +115,7 @@ namespace Fy.World {
 
 		/// Add renderes for some layers.
 		private void AddRenderers() {
-			this.renderers.Add(Layer.Ground, new RegionRenderer(this, Layer.Ground));
+			this.renderers.Add(Layer.Ground, new RegionGroundRenderer(this, Layer.Ground));
 		}
 	}
 }

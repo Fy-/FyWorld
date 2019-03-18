@@ -28,22 +28,26 @@ namespace Fy.Visuals {
 		/* Do we need to redraw this region? */
 		private bool _redraw = true;
 
+		/* Region position */
+		private Vector3 _position;
+
 		public RegionRenderer(MapRegion region, Layer layer) {
 			this.region = region;
 			this.layer = layer;
 			this.meshes = new Dictionary<int, MeshData>();
+			this._position = new Vector3(0, 0, 0);
 		}
 
 		// Get the current mesh for the graphic instance (or create a new one)
-		public MeshData GetMesh(int graphicInstance, bool useSize = true) {
+		public MeshData GetMesh(int graphicInstance, bool useSize = true, MeshFlags flags = MeshFlags.Base) {
 			if (this.meshes.ContainsKey(graphicInstance)) {
 				return this.meshes[graphicInstance];
 			}
 
 			if (useSize)
-				this.meshes.Add(graphicInstance, new MeshData(this.region.regionRect.area));
+				this.meshes.Add(graphicInstance, new MeshData(this.region.regionRect.area, flags));
 			else
-				this.meshes.Add(graphicInstance, new MeshData());
+				this.meshes.Add(graphicInstance, new MeshData(flags));
 
 			return this.meshes[graphicInstance];
 		}
@@ -59,7 +63,7 @@ namespace Fy.Visuals {
 			foreach (KeyValuePair<int, MeshData> kv in this.meshes) {
 				Graphics.DrawMesh(
 					kv.Value.mesh,
-					Vector3.zero,
+					this._position,
 					Quaternion.identity,
 					GraphicInstance.instances[kv.Key].material,
 					0
@@ -75,11 +79,11 @@ namespace Fy.Visuals {
 		}
 
 		/// Build all meshes for this region
-		public void BuildMeshes() {
+		public virtual void BuildMeshes() {
 			foreach (Vector2Int v in this.region.regionRect) {
 				Tilable tilable = this.region.map[v].GetTilable(this.layer);
 				if (tilable != null) {
-					MeshData currentMesh = this.GetMesh(tilable.graphics.uid);
+					MeshData currentMesh = this.GetMesh(tilable.mainGraphic.uid);
 					int vIndex = currentMesh.vertices.Count;
 
 					currentMesh.vertices.Add(new Vector3(v.x, v.y));
