@@ -81,7 +81,7 @@ namespace Fy.Visuals {
 		/// Build all meshes for this region
 		public virtual void BuildMeshes() {
 			foreach (Tilable tilable in this.bucket.tilables) {
-				if (tilable != null) {
+				if (tilable != null && !tilable.hidden) {
 					MeshData currentMesh = this.GetMesh(tilable.mainGraphic.uid);
 					int vIndex = currentMesh.vertices.Count;
 

@@ -8,11 +8,22 @@
 */
 using System.Collections.Generic;
 using UnityEngine;
+using Fy.Helpers;
 
 namespace Fy.Visuals {
 	public static class MeshPool {
 		/* Dictionary of planes where the identifier is representative of the size of the plane. */
 		public static Dictionary<float, MeshData> planes = new Dictionary<float, MeshData>();
+		public static Dictionary<int, MeshData> cornerPlanes = new Dictionary<int, MeshData>();
+
+		public static Mesh GetCornersPlane(bool[] corners) {
+			int id = HashUtils.HashBoolArray(corners);
+			if (MeshPool.cornerPlanes.ContainsKey(id))  {
+				return MeshPool.cornerPlanes[id].mesh;
+			}
+			MeshPool.cornerPlanes.Add(id, MeshPool.GenCornersPlane(corners));
+			return MeshPool.cornerPlanes[id].mesh;
+		}
 
 		/// Get a plane mesh of the size "size"
 		public static Mesh GetPlaneMesh(Vector2 size) {
@@ -22,6 +33,42 @@ namespace Fy.Visuals {
 			}
 			MeshPool.planes.Add(id, MeshPool.GenPlaneMesh(size));
 			return MeshPool.planes[id].mesh;
+		}
+
+		public static MeshData GenCornersPlane(bool[] corners) {
+			MeshData meshData = new MeshData(4, (MeshFlags.Base | MeshFlags.UV));
+			for (int i = 0; i < 4; i++) {
+				if (corners[i] == true) {
+					Vector2 loc = Vector2.zero;
+					float sx = .42f;
+					float sy = .55f;
+
+					if (i == 1) {
+						sy = .42f;
+						loc.y = (1-sy);
+					} else if (i == 2) {
+						sy = .42f;
+						loc.x = (1-sx);
+						loc.y = (1-sy);
+					} else if (i == 3) {
+						loc.x = (1-sx);
+					}
+
+					int vIndex = meshData.vertices.Count;
+					meshData.vertices.Add(new Vector3(loc.x, loc.y));
+					meshData.vertices.Add(new Vector3(loc.x, loc.y+sy));
+					meshData.vertices.Add(new Vector3(loc.x+sx, loc.y+sy));
+					meshData.vertices.Add(new Vector3(loc.x+sx, loc.y));
+					meshData.UVs.Add(new Vector2(0f, 0f));
+					meshData.UVs.Add(new Vector2(0f, 1f));
+					meshData.UVs.Add(new Vector2(1f, 1f));
+					meshData.UVs.Add(new Vector2(1f, 0f));
+					meshData.AddTriangle(vIndex, 0, 1, 2);
+					meshData.AddTriangle(vIndex, 0, 2, 3);
+				}
+			}
+			meshData.Build();
+			return meshData;
 		}
 
 		/// Generate a plane mesh of the size "size"

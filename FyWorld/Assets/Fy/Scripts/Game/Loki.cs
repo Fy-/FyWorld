@@ -24,6 +24,7 @@ namespace Fy {
 			DirectionUtils.SetNeighbours(); // Set neighbours;
 			Defs.LoadGroundsFromCode(); // Loading our ground definitions;
 			Defs.LoadPlantsFromCode();; // Loading our plants definitions;
+			Defs.LoadMountainsFromCode(); // Loading our mountains definitions;
 			Defs.LoadColorPalletsFromCode(); // Loading our pallets;
 		}
 		public static void NewGame(GameManager manager) {

@@ -6,16 +6,15 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-using UnityEngine;
-using Fy.Visuals;
-using Fy.Entity;
-using Fy.Definitions;
 
-namespace Fy.World {
-	public  class PlantGrid : LayerGrid {
-		public PlantGrid (Vector2Int size) : base(size, Layer.Plant) {
-			this.renderer = null;
-			this.GenerateBuckets();
+namespace Fy.Helpers {
+	public static class HashUtils {
+		public static int HashBoolArray(bool[] arr) {
+			int hash = arr.Length;
+			foreach (bool v in arr) {
+				hash = unchecked(hash*314159 + ((!v) ? 1 : 2));
+			}
+			return hash;
 		}
 	}
 }

@@ -2,13 +2,16 @@
 	"folders":
 	[
 		{
-			"path": "./Assets/",
+			"path": "./Assets/Fy",
 			"follow_symlinks": true,
 			"file_exclude_patterns":
 			[
 				"*.dll",
 				"*.meta"
 			]
+		},
+		{
+			"path": "../PythonUtils"
 		}
 	],
 	"solution_file": "./FyWorld.sln",

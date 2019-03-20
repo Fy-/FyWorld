@@ -42,10 +42,9 @@ namespace Fy {
 		/// Generating the map, spawning things.
 		void Start() {
 			this.tick = new Tick();
-			this.map = new Map(275, 275);
+			this.map = new Map(500, 500);
 			this.map.TempMapGen();
-			this.map.groundGrid.BuildStaticMeshes();
-			//this.map.BuildAllRegionMeshes();
+			this.map.BuildAllMeshes();
 			Debug.Log(this.map);
 
 			this.StartCoroutine(this.TickLoop());
@@ -55,9 +54,13 @@ namespace Fy {
 		// Draw the regions
 		void Update() {
 			if (this._ready) {
-			//	this.map.DrawRegions();
-				this.map.groundGrid.DrawBuckets();
-				this.map.plantGrid.DrawBuckets();
+				this.map.DrawTilables();
+			}
+		}
+
+		void LateUpdate() {
+			if (this._ready) {
+				this.map.CheckAllMatrices();
 			}
 		}
 
@@ -71,16 +74,33 @@ namespace Fy {
 		/// Helpers (used for debug).
 		void OnDrawGizmos() {
 			if (this._ready) {
-				if (this.DrawBuckets) {
-					foreach (Vector2Int v in this.map.mapRect) {
-						LayerGridBucket bucket = this.map.groundGrid.GetBucketAt(v);
-						Gizmos.color = new Color(bucket.uid/(float)this.map.groundGrid.buckets.Length, 0, 0, .7f);
+				/*
+
+					foreach (MapRegion region in this.map.regions) {
+						Gizmos.color = new Color(0, 0, 1, .5f);
 						Gizmos.DrawCube(
-							new Vector3(v.x+.5f, v.y+.5f), 
-							Vector3.one
+							new Vector3(
+								region.regionRect.max.x-(region.regionRect.width/2f),
+								region.regionRect.max.y-(region.regionRect.height/2f)
+							), 
+							new Vector3(region.regionRect.width-.5f, region.regionRect.height-.5f, 1f)
+						);
+					}
+				*/
+
+				if (this.DrawBuckets) {
+					Gizmos.color = new Color(0, 0, 1, .5f);
+					foreach (LayerGridBucket bucket in this.map.grids[Layer.Ground].buckets) {
+						Gizmos.DrawCube(
+							new Vector3(
+								bucket.rect.max.x-(bucket.rect.width/2f),
+								bucket.rect.max.y-(bucket.rect.height/2f)
+							), 
+							new Vector3(bucket.rect.width-.5f, bucket.rect.height-.5f, 1f)
 						);
 					}
 				}
+				/*
 				if (this.DrawNoiseMap) {
 					foreach (Vector2Int v in this.cameraController.viewRect) {
 						float h = this.map.groundNoiseMap[v.x + v.y * this.map.size.x];
@@ -90,7 +110,7 @@ namespace Fy {
 							Vector3.one
 						);
 					}
-				}
+				}*/
 
 				if (this.DrawPlants) {
 					/*

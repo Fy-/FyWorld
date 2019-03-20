@@ -25,10 +25,10 @@ namespace Fy.Entity {
 		public TilableDef def { get; protected set; }
 
 		/*  Graphic Instance */
-		public GraphicInstance mainGraphic { get; protected set; }
+		public GraphicInstance mainGraphic { get; set; }
 
 		/* Additional graphics */
-		public Dictionary<string, GraphicInstance> addGraphics { get; protected set; }
+		public Dictionary<string, GraphicInstance> addGraphics { get; set; }
 
 		/* Tilable tick counts */
 		protected int ticks = 0;
@@ -38,6 +38,8 @@ namespace Fy.Entity {
 
 		/* Do we need to reset matrices */
 		public bool resetMatrices = false;
+
+		public bool hidden = false;
 
 		public LayerGridBucket bucket { get; protected set; }
 
@@ -51,6 +53,8 @@ namespace Fy.Entity {
 				this.bucket.DelTilable(this);
 			}
 		}
+
+		public virtual void UpdateGraphics() {}
 
 		/// Get the matrice of our tilable
 		public Matrix4x4 GetMatrice(int graphicUID) {

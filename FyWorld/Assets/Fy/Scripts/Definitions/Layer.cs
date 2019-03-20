@@ -12,8 +12,8 @@ namespace Fy.Definitions {
 	public enum Layer : ushort {
 		Undefined, // This is used if we don't want a grahpic representation.
 		Ground, // Ground layer.
+		Mountain,
 		Plant,
-		Tree,
 		Count // Count is just a nice trick to get the enum length.
 	}
 

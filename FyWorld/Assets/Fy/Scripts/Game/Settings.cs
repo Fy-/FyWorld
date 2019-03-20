@@ -8,8 +8,7 @@
 */
 namespace Fy {
 	public static class Settings {
-		public const int REGION_SIZE = 25;
-		public const int BUCKET_SIZE = 25;
+		public const int BUCKET_SIZE = 32;
 		public const int TICKS_PER_DAY = 3000;
 		public const int DAYS_PER_SEASON = 14;
 		public const int SEASONS_PER_YEAR = 4;

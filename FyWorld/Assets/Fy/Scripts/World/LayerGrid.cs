@@ -32,14 +32,17 @@ namespace Fy.World {
 		public Layer layer { get; protected set; }
 
 		private int _bucketSizeX;
+		private int _bucketSizeY;
+
 		private int _bucketCount;
 
 		public LayerGrid (Vector2Int size, Layer layer) {
 			this.layer = layer;
 			this.rect = new RectI(new Vector2Int(0, 0), size);
 			this.renderer = typeof(BucketRenderer);
-			this._bucketSizeX = Mathf.CeilToInt(this.size.x/Settings.BUCKET_SIZE);
-			this._bucketCount = Mathf.CeilToInt(this.size.x/Settings.BUCKET_SIZE) * this._bucketSizeX;
+			this._bucketSizeX = Mathf.CeilToInt(this.size.x/(float)Settings.BUCKET_SIZE);
+			this._bucketSizeY = Mathf.CeilToInt(this.size.y/(float)Settings.BUCKET_SIZE);
+			this._bucketCount = this._bucketSizeY * this._bucketSizeX;
 		}
 
 		public void AddTilable(Tilable tilable) {
@@ -76,24 +79,29 @@ namespace Fy.World {
 			}
 		}
 
+		public void CheckMatriceUpdates() {
+			foreach (LayerGridBucket bucket in this.buckets) {
+				if (bucket.IsVisible()) {
+					bucket.CheckMatriceUpdates();
+				}
+			}
+		}
+
 		public void DrawBuckets() {
 			if (this.renderer == null) {
 				foreach (LayerGridBucket bucket in this.buckets) {
-					if (!bucket.IsVisible()) {
-						continue;
+					if (bucket.IsVisible()) {
+						bucket.DrawInstanced();
 					}
-					bucket.DrawInstanced();
 				}
 				return;
 			}
 
 			foreach (LayerGridBucket bucket in this.buckets) {
-				if (!bucket.IsVisible()) {
-					continue;
+				if (bucket.IsVisible()) {
+					bucket.DrawStatics();
+					bucket.DrawInstanced();
 				}
-				
-				bucket.DrawStatics();
-				bucket.DrawInstanced();
 			}
 		}
 

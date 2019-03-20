@@ -24,25 +24,34 @@ namespace Fy.Visuals {
 		public Color color { get; protected set; }
 		public GraphicDef def { get; protected set; }
 		public float priority { get; protected set; }
+		public Mesh mesh { get; protected set; }
 
 		public GraphicInstance(
 			int uid, 
 			GraphicDef def, 
+			Mesh mesh,
 			Color color = default(Color), 
 			Texture2D texture = null,
 			float drawPriority = -42f
 		) {
-
+			this.mesh = mesh;
+			if (this.mesh == null) {
+				Debug.Log("WARNING NULL MESH3"+uid + ", " +this.mesh);
+			}
 			this.def = def;
 			this.uid = uid;
-			this.priority = ((drawPriority == -42f) ? this.def.drawPriority : drawPriority) / -100f;
-
+			this.priority = drawPriority / -100f;
 			this.material = new Material(Res.materials[def.materialName]);
-			this.material.mainTexture = (texture == null) ? Res.textures[def.textureName] : texture;
+			this.material.mainTexture = texture;
+			this.texture = texture;
 
 			if (color != default(Color)) {
 				this.SetColor(color);
 			}
+		}
+
+		public override string ToString() {
+			return "GraphicInstance(gdef="+this.def.ToString()+", uid="+this.uid+", priority="+this.priority+", mat="+this.material.ToString()+", texture="+this.texture.ToString()+", mesh="+this.mesh.ToString()+")";
 		}
 
 		private void SetColor(Color color) {
@@ -55,13 +64,19 @@ namespace Fy.Visuals {
 			GraphicDef def, 
 			Color color = default(Color), 
 			Texture2D texture = null,
-			float drawPriority = -42f
+			float drawPriority = -42f,
+			Mesh mesh = null
 		) {
-			int id = GraphicInstance.GetUID(def, color, texture, drawPriority);
+			Mesh _mesh = (mesh == null) ? MeshPool.GetPlaneMesh(def.size) : mesh;
+			Color _color = (color == default(Color)) ? def.color : color;
+			Texture2D _texture = (texture == null) ? Res.textures[def.textureName] : texture;
+			float _priority = (drawPriority == -42f) ? def.drawPriority : drawPriority;
+
+			int id = GraphicInstance.GetUID(def, _color, _texture, _priority, _mesh);
 			if (GraphicInstance.instances.ContainsKey(id)) {
 				return GraphicInstance.instances[id];
 			}
-			GraphicInstance.instances.Add(id, new GraphicInstance(id, def, color, texture, drawPriority));
+			GraphicInstance.instances.Add(id, new GraphicInstance(id, def, _mesh, _color, _texture, _priority));
 			return GraphicInstance.instances[id];
 		}
 
@@ -74,13 +89,10 @@ namespace Fy.Visuals {
 			GraphicDef def, 
 			Color color, 
 			Texture2D texture,
-			float drawPriority
+			float drawPriority,
+			Mesh mesh
 		) {
-			int textureHash = (texture == null) ? def.textureName.GetHashCode() : texture.GetHashCode();
-			int colorHash = (color == default(Color)) ? def.color.GetHashCode() : color.GetHashCode();
-			int priorityHash = (drawPriority == -42f) ? def.drawPriority.GetHashCode() : drawPriority.GetHashCode();
-			
-			return def.materialName.GetHashCode() + textureHash + colorHash + priorityHash;
+			return def.materialName.GetHashCode() + texture.GetHashCode() + color.GetHashCode() + drawPriority.GetHashCode() + mesh.GetHashCode();
 		}
 	}
 }

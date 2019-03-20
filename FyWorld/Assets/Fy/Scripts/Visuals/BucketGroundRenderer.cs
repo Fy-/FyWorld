@@ -26,6 +26,10 @@ namespace Fy.Visuals {
             Color[] colors = new Color[9];
 
             foreach (Tilable ground in this.bucket.tilables) {
+                if (ground.hidden) {
+                    continue;
+                }
+
                 neighboursGraphicsList.Clear();
 
                 MeshData currentMesh = this.GetMesh(ground.mainGraphic.uid, false, (MeshFlags.Base | MeshFlags.Color));
@@ -44,7 +48,8 @@ namespace Fy.Visuals {
                 currentMesh.AddTriangle(vIndex, 0, 2, 3);
 
                 for (int i = 0; i < DirectionUtils.neighbours.Length; i++) {
-                    Tilable neighbourGround = Loki.map.groundGrid.GetTilableAt(ground.position + DirectionUtils.neighbours[i]);
+                    // Do this better!
+                    Tilable neighbourGround = Loki.map.GetTilableAt(ground.position + DirectionUtils.neighbours[i], Layer.Ground);
 
                     if (neighbourGround != null) {
                         neighboursGraphics[i] = neighbourGround.mainGraphic.uid;

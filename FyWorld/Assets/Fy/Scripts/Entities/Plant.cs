@@ -40,7 +40,7 @@ namespace Fy.Entity {
 			Loki.tick.toAdd.Enqueue(this.Update);
 		}
 
-		private void UpdateGraphics() {
+		public override void UpdateGraphics() {
 			if (this.def.type == TilableType.Grass) {
 				this._leafColor = Defs.colorPallets["cols_leafsGreen"].GetRandom();
 				this.mainGraphic = GraphicInstance.GetNew(def.graphics, this._leafColor	);

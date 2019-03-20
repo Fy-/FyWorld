@@ -30,6 +30,7 @@ namespace Fy.World {
 
 		/* Dictionary of tilables matrices indexed by GraphicInstance.uid */
 		public Dictionary<int, List<Matrix4x4>> tilablesMatrices { get; protected set; }
+		public Dictionary<int, Matrix4x4[]> tilablesMatricesArr { get; protected set; }
 
 		public Layer layer { get; protected set; }
 
@@ -42,9 +43,10 @@ namespace Fy.World {
 			this.uid = uid;
 			this.rect = rect;
 			this.layer = layer;
-			this.tilables = new Tilable[rect.size.x * rect.size.y];
+			this.tilables = new Tilable[this.rect.width * this.rect.height];
 			this.titlablesByType = new Dictionary<TilableType, HashSet<Tilable>>();
 			this.tilablesMatrices = new Dictionary<int, List<Matrix4x4>>();
+			this.tilablesMatricesArr = new Dictionary<int, Matrix4x4[]>();
 			if (renderer != null) {
 				this._staticRenderer = (BucketRenderer)Activator.CreateInstance(renderer, this, this.layer);
 			}
@@ -52,10 +54,10 @@ namespace Fy.World {
 
 		public bool IsVisible() {
 			return (
-				this.rect.min.x >= Loki.cameraController.viewRect.min.x - Settings.REGION_SIZE &&
-				this.rect.max.x <= Loki.cameraController.viewRect.max.x + Settings.REGION_SIZE &&
-				this.rect.min.y >= Loki.cameraController.viewRect.min.y - Settings.REGION_SIZE &&
-				this.rect.max.y <= Loki.cameraController.viewRect.max.y + Settings.REGION_SIZE 
+				this.rect.min.x >= Loki.cameraController.viewRect.min.x - Settings.BUCKET_SIZE &&
+				this.rect.max.x <= Loki.cameraController.viewRect.max.x + Settings.BUCKET_SIZE &&
+				this.rect.min.y >= Loki.cameraController.viewRect.min.y - Settings.BUCKET_SIZE &&
+				this.rect.max.y <= Loki.cameraController.viewRect.max.y + Settings.BUCKET_SIZE 
 			);
 		}
 
@@ -63,18 +65,20 @@ namespace Fy.World {
 			this._staticRenderer.Draw();
 		}
 
-		public void DrawInstanced() {
+		public void CheckMatriceUpdates() {
 			if (this.rebuildMatrices && this.IsVisible()) {
 				this.UpdateMatrices();
 				this.rebuildMatrices = false;
 			}
+		}
 
-			foreach (KeyValuePair<int, List<Matrix4x4>> kv in this.tilablesMatrices) {
+		public void DrawInstanced() {
+			foreach (KeyValuePair<int, Matrix4x4[]> kv in this.tilablesMatricesArr) {
 				Graphics.DrawMeshInstanced(
-					MeshPool.GetPlaneMesh(GraphicInstance.instances[kv.Key].def.size),
+					GraphicInstance.instances[kv.Key].mesh,
 					0,
 					GraphicInstance.instances[kv.Key].material,
-					kv.Value.ToArray()
+					kv.Value
 				);
 			}
 		}
@@ -91,9 +95,9 @@ namespace Fy.World {
 			Vector2Int localPosition = this.GetLocalPosition(position);
 			if (
 				localPosition.x >= 0 && localPosition.y >= 0 && 
-				localPosition.x < this.rect.size.x && localPosition.y < this.rect.size.y
+				localPosition.x < this.rect.width && localPosition.y < this.rect.height
 			) {
-				return this.tilables[localPosition.x + localPosition.y * this.rect.size.y];
+				return this.tilables[localPosition.x + localPosition.y * this.rect.width];
 			}
 
 			return null;
@@ -111,11 +115,16 @@ namespace Fy.World {
 					}
 				}
 			}
+
+			this.tilablesMatricesArr = new Dictionary<int, Matrix4x4[]>();
+			foreach (KeyValuePair<int, List<Matrix4x4>> kv in this.tilablesMatrices) {
+				this.tilablesMatricesArr.Add(kv.Key, kv.Value.ToArray());
+			}
 		}
 
 		public void DelTilable(Tilable tilable) {
 			Vector2Int localPosition = this.GetLocalPosition(tilable.position);
-			this.tilables[localPosition.x + localPosition.y * this.rect.size.y] = null;
+			this.tilables[localPosition.x + localPosition.y * this.rect.width] = null;
 
 			if (tilable.def.type != TilableType.Undefined) {
 				this.titlablesByType[tilable.def.type].Remove(tilable);
@@ -130,7 +139,7 @@ namespace Fy.World {
 		public void AddTilable(Tilable tilable) {
 			// Maybe we set the local position for the tilable
 			Vector2Int localPosition = this.GetLocalPosition(tilable.position);
-			this.tilables[localPosition.x + localPosition.y * this.rect.size.y] = tilable;
+			this.tilables[localPosition.x + localPosition.y * this.rect.width] = tilable;
 			tilable.SetBucket(this);
 			
 			// Add to tilableByType dictionary
@@ -150,6 +159,8 @@ namespace Fy.World {
 					}
 				}
 			}
+
+			this.rebuildMatrices = true;
 		}
 
 

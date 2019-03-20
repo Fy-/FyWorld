@@ -24,6 +24,15 @@ namespace Fy.Definitions {
 		/* List of plant definitions */
 		public static Dictionary<string, TilableDef> plants;
 
+		/* List of mountains definitions */
+		public static Dictionary<string, TilableDef> mountains;
+
+
+		/// Add a mountain definition to our mountain directionnary
+		public static void AddMountain(TilableDef def) {
+			Defs.mountains.Add(def.uid, def);
+		}
+
 		/// Add a ground definition to our ground dictionary
 		public static void AddGround(TilableDef def) {
 			Defs.grounds.Add(def.uid, def);
@@ -37,6 +46,21 @@ namespace Fy.Definitions {
 		/// Add a color palette definition to our dictionary
 		public static void AddColorPalette(ColorPaletteDef def) {
 			Defs.colorPallets.Add(def.uid, def);
+		}
+
+		// Load all mountains definitions
+		public static void LoadMountainsFromCode() {
+			Defs.mountains = new Dictionary<string, TilableDef>();
+			Defs.AddMountain(
+				new TilableDef {
+					uid = "mountain",
+					layer = Layer.Mountain,
+					graphics = new GraphicDef{
+						textureName = "mountain",
+						color = new Color(72/255f, 72/255f, 72/255f, 1f)
+					}
+				}
+			);
 		}
 
 		/// Load all plant definitions
