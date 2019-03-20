@@ -6,21 +6,16 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-namespace Fy.Definitions {
-	// Grahpic Layer / Altitude for our tilables.
-	[System.Serializable]
-	public enum Layer : ushort {
-		Undefined, // This is used if we don't want a grahpic representation.
-		Ground, // Ground layer.
-		Plant,
-		Tree,
-		Count // Count is just a nice trick to get the enum length.
-	}
+using UnityEngine;
+using Fy.Visuals;
+using Fy.Entity;
+using Fy.Definitions;
 
-	// Layer utilities
-	public static class LayerUtils {
-		public static float Height (Layer layer) {
-			return (int)layer * - 1f;
+namespace Fy.World {
+	public  class PlantGrid : LayerGrid {
+		public PlantGrid (Vector2Int size) : base(size, Layer.Plant) {
+			this.renderer = null;
+			this.GenerateBuckets();
 		}
 	}
 }

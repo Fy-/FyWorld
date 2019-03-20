@@ -45,10 +45,10 @@ namespace Fy.Definitions {
 
 			Defs.AddPlant(new TilableDef{
 				uid = "grass",
-				layer = Layer.Grass,
+				layer = Layer.Plant,
 				type = TilableType.Grass,
 				graphics = new GraphicDef{
-					textureName = "grass_2"
+					textureName = "grass"
 				},
 				plantDef = new PlantDef{
 					probability = .5f,
@@ -57,11 +57,11 @@ namespace Fy.Definitions {
 			});
 			Defs.AddPlant(new TilableDef{
 				uid = "tree",
-				layer = Layer.Tree,
+				layer = Layer.Plant,
 				type = TilableType.Tree,
 				graphics = new GraphicDef{
 					textureName = "tree",
-					size = new Vector2(2, 3),
+					size = new Vector2(2, 3f),
 					pivot = new Vector2(.5f, 0)
 				},
 				plantDef = new PlantDef{

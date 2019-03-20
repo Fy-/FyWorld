@@ -15,9 +15,9 @@ using Fy.Entity;
 namespace Fy.Visuals {
 
 	// Renderer a region
-	public class RegionRenderer {
+	public class BucketRenderer {
 		/* Region */
-		public MapRegion region { get; protected set; }
+		public LayerGridBucket bucket { get; protected set; }
 
 		/* Layer */
 		public Layer layer { get; protected set; }
@@ -31,8 +31,8 @@ namespace Fy.Visuals {
 		/* Region position */
 		private Vector3 _position;
 
-		public RegionRenderer(MapRegion region, Layer layer) {
-			this.region = region;
+		public BucketRenderer(LayerGridBucket bucket, Layer layer) {
+			this.bucket = bucket;
 			this.layer = layer;
 			this.meshes = new Dictionary<int, MeshData>();
 			this._position = new Vector3(0, 0, 0);
@@ -45,7 +45,7 @@ namespace Fy.Visuals {
 			}
 
 			if (useSize)
-				this.meshes.Add(graphicInstance, new MeshData(this.region.regionRect.area, flags));
+				this.meshes.Add(graphicInstance, new MeshData(this.bucket.rect.area, flags));
 			else
 				this.meshes.Add(graphicInstance, new MeshData(flags));
 
@@ -80,16 +80,15 @@ namespace Fy.Visuals {
 
 		/// Build all meshes for this region
 		public virtual void BuildMeshes() {
-			foreach (Vector2Int v in this.region.regionRect) {
-				Tilable tilable = this.region.map[v].GetTilable(this.layer);
+			foreach (Tilable tilable in this.bucket.tilables) {
 				if (tilable != null) {
 					MeshData currentMesh = this.GetMesh(tilable.mainGraphic.uid);
 					int vIndex = currentMesh.vertices.Count;
 
-					currentMesh.vertices.Add(new Vector3(v.x, v.y));
-					currentMesh.vertices.Add(new Vector3(v.x, v.y+1));
-					currentMesh.vertices.Add(new Vector3(v.x+1, v.y+1));
-					currentMesh.vertices.Add(new Vector3(v.x+1, v.y));
+					currentMesh.vertices.Add(new Vector3(tilable.position.x, tilable.position.y));
+					currentMesh.vertices.Add(new Vector3(tilable.position.x, tilable.position.y+1));
+					currentMesh.vertices.Add(new Vector3(tilable.position.x+1, tilable.position.y+1));
+					currentMesh.vertices.Add(new Vector3(tilable.position.x+1, tilable.position.y));
 
 					currentMesh.AddTriangle(vIndex, 0, 1, 2);
 					currentMesh.AddTriangle(vIndex, 0, 2, 3);

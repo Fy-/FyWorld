@@ -6,21 +6,14 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-namespace Fy.Definitions {
-	// Grahpic Layer / Altitude for our tilables.
-	[System.Serializable]
-	public enum Layer : ushort {
-		Undefined, // This is used if we don't want a grahpic representation.
-		Ground, // Ground layer.
-		Plant,
-		Tree,
-		Count // Count is just a nice trick to get the enum length.
-	}
-
-	// Layer utilities
-	public static class LayerUtils {
-		public static float Height (Layer layer) {
-			return (int)layer * - 1f;
-		}
+namespace Fy {
+	public static class Settings {
+		public const int REGION_SIZE = 25;
+		public const int BUCKET_SIZE = 25;
+		public const int TICKS_PER_DAY = 3000;
+		public const int DAYS_PER_SEASON = 14;
+		public const int SEASONS_PER_YEAR = 4;
+		public const int TICKS_PER_SEASON = Settings.TICKS_PER_DAY * Settings.DAYS_PER_SEASON;
+		public const int TICKS_PER_YEAR = Settings.SEASONS_PER_YEAR * Settings.TICKS_PER_SEASON;
 	}
 }

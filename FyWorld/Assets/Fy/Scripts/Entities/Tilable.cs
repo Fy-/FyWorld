@@ -10,12 +10,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fy.Definitions;
 using Fy.Visuals;
+using Fy.World;
 
 namespace Fy.Entity {
 	// A tilable is just an entity contain in a tile/layer.
 	public class Tilable {
 		/*  Position */
 		public Vector2Int position { get; protected set; }
+
+		/* Scale */
+		public Vector3 scale = Vector3.one;
 
 		/*  Definition */
 		public TilableDef def { get; protected set; }
@@ -26,24 +30,48 @@ namespace Fy.Entity {
 		/* Additional graphics */
 		public Dictionary<string, GraphicInstance> addGraphics { get; protected set; }
 
-		/*  Matrix */
+		/* Tilable tick counts */
+		protected int ticks = 0;
+
+		/* Matrix */
 		private Dictionary<int, Matrix4x4> _matrices;
+
+		/* Do we need to reset matrices */
+		public bool resetMatrices = false;
+
+		public LayerGridBucket bucket { get; protected set; }
+
+
+		public void SetBucket(LayerGridBucket bucket) {
+			this.bucket = bucket;
+		}
+
+		public virtual void Destroy() {
+			if (this.bucket != null) {
+				this.bucket.DelTilable(this);
+			}
+		}
 
 		/// Get the matrice of our tilable
 		public Matrix4x4 GetMatrice(int graphicUID) {
-			if (this._matrices == null) {
+			if (this._matrices == null || this.resetMatrices) {
 				this._matrices = new Dictionary<int, Matrix4x4>();
+				this.resetMatrices = true;
 			}
 			if (!this._matrices.ContainsKey(graphicUID)) {
 				Matrix4x4 mat = Matrix4x4.identity;
 				mat.SetTRS(
 					new Vector3(
-						this.position.x-this.def.graphics.pivot.x,
-						this.position.y-this.def.graphics.pivot.y,
-						LayerUtils.Height(this.def.layer) + GraphicInstance.instances[graphicUID].priority
+						this.position.x
+						-this.def.graphics.pivot.x*this.scale.x
+						+(1f-this.scale.x)/2f
+						,this.position.y
+						-this.def.graphics.pivot.y*this.scale.y
+						+(1f-this.scale.y)/2f
+						,LayerUtils.Height(this.def.layer) + GraphicInstance.instances[graphicUID].priority
 					), 
 					Quaternion.identity, 
-					Vector3.one/2f
+					this.scale
 				);
 				this._matrices.Add(graphicUID, mat);
 			}

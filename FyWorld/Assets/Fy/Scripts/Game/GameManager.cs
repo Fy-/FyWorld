@@ -21,10 +21,12 @@ namespace Fy {
 	{
 		/* Map */
 		public CameraController cameraController;
+		public Tick tick;
 		public Map map;
 		public bool DrawGizmosTiles = false;
-		public bool DrawGizmosRegions = false;
 		public bool DrawNoiseMap = false;
+		public bool DrawPlants = false;
+		public bool DrawBuckets = false;
 
 		/* Are we ready ? */
 		private bool _ready;
@@ -39,25 +41,48 @@ namespace Fy {
 
 		/// Generating the map, spawning things.
 		void Start() {
+			this.tick = new Tick();
 			this.map = new Map(275, 275);
 			this.map.TempMapGen();
-			this.map.BuildAllRegionMeshes();
+			this.map.groundGrid.BuildStaticMeshes();
+			//this.map.BuildAllRegionMeshes();
 			Debug.Log(this.map);
+
+			this.StartCoroutine(this.TickLoop());
 			this._ready = true;
 		}
 
 		// Draw the regions
 		void Update() {
 			if (this._ready) {
-				this.map.DrawRegions();
+			//	this.map.DrawRegions();
+				this.map.groundGrid.DrawBuckets();
+				this.map.plantGrid.DrawBuckets();
+			}
+		}
+
+		IEnumerator TickLoop() {
+			for(;;) {
+				yield return new WaitForSeconds(.1f/this.tick.speed);
+				this.tick.DoTick();
 			}
 		}
 
 		/// Helpers (used for debug).
 		void OnDrawGizmos() {
 			if (this._ready) {
-				if (this.DrawNoiseMap) {
+				if (this.DrawBuckets) {
 					foreach (Vector2Int v in this.map.mapRect) {
+						LayerGridBucket bucket = this.map.groundGrid.GetBucketAt(v);
+						Gizmos.color = new Color(bucket.uid/(float)this.map.groundGrid.buckets.Length, 0, 0, .7f);
+						Gizmos.DrawCube(
+							new Vector3(v.x+.5f, v.y+.5f), 
+							Vector3.one
+						);
+					}
+				}
+				if (this.DrawNoiseMap) {
+					foreach (Vector2Int v in this.cameraController.viewRect) {
 						float h = this.map.groundNoiseMap[v.x + v.y * this.map.size.x];
 						Gizmos.color = new Color(h, h, h, .9f);
 						Gizmos.DrawCube(
@@ -67,26 +92,25 @@ namespace Fy {
 					}
 				}
 
-				if (this.DrawGizmosTiles) {
-					foreach (Tile t in this.map) {
-						Ground g = (Ground)t.GetTilable(Layer.Ground);
-						if (g != null) {
-							Gizmos.DrawWireCube(
-								new Vector3(g.position.x+.5f, g.position.y+.5f), 
+				if (this.DrawPlants) {
+					/*
+					foreach (Vector2Int v in this.cameraController.viewRect) {
+						Tile tile = this.map[v];
+						Gizmos.color = new Color(0, 1, 0, .4f);
+						if (tile != null && tile.GetTilable(Layer.Tree) != null) {
+							Gizmos.DrawCube(
+								new Vector3(v.x+.5f, v.y+.5f), 
 								Vector3.one
 							);
 						}
-					}
+					}*/
 				}
-				if (this.DrawGizmosRegions) {
-					foreach (MapRegion region in this.map.regions) {
-						Gizmos.color = new Color(0, 0, 1, .5f);
-						Gizmos.DrawCube(
-							new Vector3(
-								region.regionRect.max.x-(region.regionRect.width/2f),
-								region.regionRect.max.y-(region.regionRect.height/2f)
-							), 
-							new Vector3(region.regionRect.width-.5f, region.regionRect.height-.5f, 1f)
+
+				if (this.DrawGizmosTiles) {
+					foreach (Vector2Int v in this.cameraController.viewRect) {
+						Gizmos.DrawWireCube(
+							new Vector3(v.x+.5f, v.y+.5f), 
+							Vector3.one
 						);
 					}
 				}

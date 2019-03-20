@@ -14,88 +14,76 @@ using Fy.Helpers;
 
 namespace Fy.World {
 	public class Map {
-		/* Temporary, we will make a settings class later */
-		public const int REGION_SIZE = 25;
-
 		/* Size of our map */
 		public Vector2Int size { get; protected set; }
 
 		/* Rect representing our map */
 		public RectI mapRect;
 
-		/* Public access to _regions */
-		public MapRegion[] regions { get { return this._regions; } }
-
-		/* All our tiles, this is just a 2D array flatten to 1D (https://bit.ly/2F0OiQa) */
-		private Tile[] _tiles; 
-
-		/* Regions in our map */
-		private MapRegion[] _regions;
-
-		/* Region for each position in our map */
-		private Dictionary<int, int> _regionByPosition;
-
 		/* Ground noise map */
 		public float[] groundNoiseMap { get; protected set; }
+
+		public GroundGrid groundGrid;
+		public PlantGrid plantGrid;
 
 		/// Let's create a world, that's not ostentatious at all.
 		public Map(int width, int height) {
 			this.size = new Vector2Int(width, height);
-			this._tiles = new Tile[width*height];
 			this.mapRect = new RectI(new Vector2Int(0, 0), width, height);
 
-			foreach (Vector2Int v in this.mapRect) {
-				this._tiles[v.x + v.y * this.size.x] = new Tile(v, this);
-			}
-
-			this.SetRegions();
+			this.groundGrid = new GroundGrid(this.size);
+			this.plantGrid = new PlantGrid(this.size);
 		}
 
-		/// SetRegions: Define all regions in our map.
-		public void SetRegions() {
-			int _regionLength = (
-				Mathf.CeilToInt(this.size.x/Map.REGION_SIZE) *
-				Mathf.CeilToInt(this.size.y/Map.REGION_SIZE)
-			);
-			this._regions = new MapRegion[_regionLength];
-			this._regionByPosition = new Dictionary<int, int>();
 
-			int i = 0;
-			for (int x = 0; x < this.size.x; x += Map.REGION_SIZE) {
-				for (int y = 0; y < this.size.y; y += Map.REGION_SIZE) {
-					RectI sectionRect = new RectI(
-						new Vector2Int(x, y), Map.REGION_SIZE, Map.REGION_SIZE
-					);
-					sectionRect.Clip(this.mapRect);
-					this._regions[i] = new MapRegion(i, sectionRect, this);
-					
-					foreach (Vector2Int v in sectionRect) {
-						this._regionByPosition.Add(v.x + v.y * this.size.x, i);
-					}
-					i++;
+		public float GetFertilityAt(Vector2Int position) {
+			float fertility = 1f;
+			foreach (Tilable tilable in this.GetAllTilablesAt(position)) {
+				if (tilable.def.fertility == 0f) {
+					return 0f;
 				}
+				fertility *= tilable.def.fertility;
+			}
+			return fertility;
+		}
+
+		public void BuildAllMeshes() {
+			this.groundGrid.BuildStaticMeshes();
+			this.plantGrid.BuildStaticMeshes();
+		}
+
+		public IEnumerable<Tilable> GetAllTilablesAt(Vector2Int position) {
+			
+			Tilable tilable = this.groundGrid.GetTilableAt(position);
+			if (tilable != null) {
+				yield return tilable;
+			}
+			tilable = this.plantGrid.GetTilableAt(position);
+			if (tilable != null) {
+				yield return tilable;
 			}
 		}
 
 		/// Temporary method to add a Ground of definition "dirt" to all our tiles.
 		public void TempMapGen() {
 			this.groundNoiseMap = NoiseMap.GenerateNoiseMap(this.size, 11, NoiseMap.GroundWave(42));
-			foreach (Tile tile in this) {
-				tile.AddTilable(
+			foreach (Vector2Int position in this.mapRect) {
+				this.groundGrid.AddTilable(
 					new Ground(
-						tile.position,
-						Ground.GroundByHeight(this.groundNoiseMap[tile.position.x + tile.position.y * this.size.x])
+						position,
+						Ground.GroundByHeight(this.groundNoiseMap[position.x + position.y * this.size.x])
 					)
 				);
-
-				float _tileFertility = tile.fertility;
+				float _tileFertility = this.GetFertilityAt(position);
 				if (_tileFertility > 0f) {
 					foreach (TilableDef tilableDef in Defs.plants.Values) {
 						if (
 							_tileFertility >= tilableDef.plantDef.minFertility &&
 							Random.value <= tilableDef.plantDef.probability
 						) {
-							tile.AddTilable(new Plant(tile.position, tilableDef));
+							this.plantGrid.AddTilable(
+								new Plant(position, tilableDef, true)
+							);
 							break;
 						}
 					}
@@ -103,49 +91,8 @@ namespace Fy.World {
 			}
 		}
 
-		/// Getter: map[x, y], get the tile at x,y
-		public Tile this[int x, int y] {
-			get {
-				if (x >= 0 && y >= 0 && x < this.size.x && y < this.size.y) {
-					return this._tiles[x + y * this.size.x];
-				}
-				return null;
-			}
-		}
-
-		/// Getter: map[Vector2Int.zero], get the tile a v.
-		public Tile this[Vector2Int v] {
-			get {
-				return this[v.x, v.y];
-			}
-		}
-
-		/// Enumerator: foreach (Tile tile in map) {}
-		public IEnumerator<Tile> GetEnumerator() {
-			foreach (Vector2Int v in this.mapRect) {
-				yield return this[v];
-			}
-		}
-
-		/// Map string description
 		public override string ToString() {
 			return "Map(size="+this.size+")";
-		}
-
-		/// Build all meshes in our regions
-		public void BuildAllRegionMeshes() {
-			foreach (MapRegion region in this.regions) {
-				region.BuildMeshes();
-			}
-		}
-
-		/// Draw all regions
-		public void DrawRegions() {
-			foreach (MapRegion region in this.regions) {
-				if (region.IsVisible()) {
-					region.Draw();
-				}
-			}
 		}
 	}
 }
