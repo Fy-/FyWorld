@@ -12,6 +12,7 @@ using Fy.Definitions;
 using Fy.Helpers;
 
 namespace Fy.Visuals {
+	// Represent graphics for a tilable in our game (or part of it)
 	public class GraphicInstance {
 		/* All graphics instances in our game */
 		public static Dictionary<int, GraphicInstance> instances = new Dictionary<int, GraphicInstance>();
@@ -35,9 +36,6 @@ namespace Fy.Visuals {
 			float drawPriority = -42f
 		) {
 			this.mesh = mesh;
-			if (this.mesh == null) {
-				Debug.Log("WARNING NULL MESH3"+uid + ", " +this.mesh);
-			}
 			this.def = def;
 			this.uid = uid;
 			this.priority = drawPriority / -100f;

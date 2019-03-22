@@ -13,10 +13,9 @@ using Fy.Definitions;
 using Fy.Entity;
 
 namespace Fy.Visuals {
-
-	// Renderer a region
+	// Renderer a bucket (only not instanced graphics)
 	public class BucketRenderer {
-		/* Region */
+		/* Bucket */
 		public LayerGridBucket bucket { get; protected set; }
 
 		/* Layer */

@@ -9,10 +9,12 @@
 using UnityEngine;
 
 namespace Fy.Helpers {
+	// List of directions
 	public enum Direction {
 		S, SW, W, NW, N, NE, E, SE
 	}
 
+	// Utils for directions (position, cardinals, corners).
 	public static class DirectionUtils {
 		public static Vector2Int[] neighbours = new Vector2Int[8];
 		public static int[] cardinals = new int[4];

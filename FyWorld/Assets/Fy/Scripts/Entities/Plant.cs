@@ -15,11 +15,22 @@ using Fy.Helpers;
 namespace Fy.Entity {
 	// Plant
 	public class Plant : Tilable {
+		/* Color for the leafs */
 		private Color _leafColor;
+
+		/* Color for the wood (only used for trees) */
 		private Color _woodColor;
+
+		/* Plant lifetime in ticks */
 		private float _lifetime;
+
+		/* Ticks per state */
 		private float _ticksPerState;
+
+		/* Size per state, at the final state the size should be 1 */
 		private float _sizePerState;
+
+		/* Current plant state */
 		private int _currentState;
 
 		public Plant(Vector2Int position, TilableDef def, bool randomGrow = false) {
@@ -41,10 +52,10 @@ namespace Fy.Entity {
 		}
 
 		public override void UpdateGraphics() {
-			if (this.def.type == TilableType.Grass) {
+			if (this.def.type == TilableType.Grass) { // If we are a grass
 				this._leafColor = Defs.colorPallets["cols_leafsGreen"].GetRandom();
 				this.mainGraphic = GraphicInstance.GetNew(def.graphics, this._leafColor	);
-			} else if (this.def.type == TilableType.Tree) {
+			} else if (this.def.type == TilableType.Tree) { // If we are groot
 				this.addGraphics = new Dictionary<string, GraphicInstance>();
 
 				this._leafColor = Defs.colorPallets["cols_leafsGreen"].GetRandom();
@@ -64,11 +75,12 @@ namespace Fy.Entity {
 						2
 					)
 				);
-			} else {
+			} else { // Standard graphics no coloring or override.
 				this.mainGraphic = GraphicInstance.GetNew(def.graphics);
 			}
 		}
 
+		// Calculate the current plant state.
 		private void GetState() {
 			int state = Mathf.CeilToInt(this.ticks/this._ticksPerState);
 			if (state > this.def.plantDef.states) {
@@ -88,6 +100,7 @@ namespace Fy.Entity {
 			}
 		}
 
+		// Called each tick
 		public void Update() {
 			this.ticks++;
 			this.GetState();
@@ -97,6 +110,7 @@ namespace Fy.Entity {
 			}
 		}
 
+		// Destroy our plant. R.I.P
 		public override void Destroy() {
 			Loki.tick.toDel.Enqueue(this.Update);
 			base.Destroy();

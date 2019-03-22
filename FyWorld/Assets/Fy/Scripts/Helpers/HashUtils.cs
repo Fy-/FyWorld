@@ -9,6 +9,7 @@
 
 namespace Fy.Helpers {
 	public static class HashUtils {
+		// This is temporary, need to make a real class here with stuff like this.
 		public static int HashBoolArray(bool[] arr) {
 			int hash = arr.Length;
 			foreach (bool v in arr) {

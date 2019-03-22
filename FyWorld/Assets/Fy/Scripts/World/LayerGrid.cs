@@ -15,6 +15,7 @@ using Fy.Helpers;
 using Fy.Visuals;
 
 namespace Fy.World {
+	// Grid
 	public abstract class LayerGrid {
 		/* Grid Size */
 		public Vector2Int size { get { return this.rect.size; } }

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 namespace Fy.Entity {
 	public delegate void TickDelegate();
 
+	/// Quick class for ticking our tilables
 	public class Tick {
 		public int tick = 0;
 		public int speed = 1;

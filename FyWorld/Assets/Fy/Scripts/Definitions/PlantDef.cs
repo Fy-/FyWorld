@@ -6,17 +6,16 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+using System.Collections.Generic;
 using UnityEngine;
-using Fy.Visuals;
-using Fy.Entity;
-using Fy.Definitions;
 
-namespace Fy.World {
-	// Grid used for the ground with a special renderer (BucketGroundRenderer)
-	public  class GroundGrid : LayerGrid {
-		public GroundGrid (Vector2Int size) : base(size, Layer.Ground) {
-			this.renderer = typeof(BucketGroundRenderer);
-			this.GenerateBuckets();
-		}
+namespace Fy.Definitions {
+	/// Definition for a plant
+	[System.Serializable]
+	public class PlantDef : Def {
+		public float probability = 0f;
+		public float minFertility = 0f;
+		public int states = 5;
+		public float lifetime = 2f; // Days
 	}
 }

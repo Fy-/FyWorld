@@ -10,14 +10,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fy.Definitions {
-	/// Definition of all our entities.
+	/// Definition for a tilable
 	[System.Serializable]
-	public class Def {
-		/* Unique string identifier */
-		public string uid { get; set; }
+	public class TilableDef : Def {
+		// Layer
+		public Layer layer;
 
-		public override int GetHashCode() {
-			return this.uid.GetHashCode();
-		}
+		// Tilable type
+		public TilableType type = TilableType.Undefined;
+
+		// Grahpic data (for example size, texture, shader/material)
+		public GraphicDef graphics;
+
+		// Ground def
+		public GroundDef groundDef;
+
+		// Plant def
+		public PlantDef plantDef;
+
+		// Fertility of our tilable
+		public float fertility = 0f;
 	}
 }

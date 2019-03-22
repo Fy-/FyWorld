@@ -12,19 +12,25 @@ using UnityEngine;
 namespace Fy.Definitions {
 	// A static class to load our definitions
 	// Everything will be loaded from code or JSON files. 
+	
 	public static partial  class Defs {
-		/* List of ground definitions */
-		public static Dictionary<string, TilableDef> grounds;
-		/*  List of ground ordered by maxHeight */
-		public static SortedDictionary<float, TilableDef> groundsByHeight;
-
-		/* List of color palettes definitions */
-		public static Dictionary<string, ColorPaletteDef> colorPallets;
-
-		/* List of plant definitions */
-		public static Dictionary<string, TilableDef> plants;
-
-		/* List of mountains definitions */
-		public static Dictionary<string, TilableDef> mountains;
+		/// Add a mountain definition to our mountain directionnary
+		public static void AddMountain(TilableDef def) {
+			Defs.mountains.Add(def.uid, def);
+		}
+		// Load all mountains definitions
+		public static void LoadMountainsFromCode() {
+			Defs.mountains = new Dictionary<string, TilableDef>();
+			Defs.AddMountain(
+				new TilableDef {
+					uid = "mountain",
+					layer = Layer.Mountain,
+					graphics = new GraphicDef{
+						textureName = "mountain",
+						color = new Color(72/255f, 72/255f, 72/255f, 1f)
+					}
+				}
+			);
+		}
 	}
 }

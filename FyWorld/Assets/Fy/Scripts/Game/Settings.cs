@@ -7,6 +7,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 namespace Fy {
+	// All const settings
 	public static class Settings {
 		public const int BUCKET_SIZE = 32;
 		public const int TICKS_PER_DAY = 3000;

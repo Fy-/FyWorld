@@ -13,6 +13,7 @@ using Fy.Helpers;
 using Fy.Entity;
 
 namespace Fy {
+	/// Static class use to find stuff in our game.
 	public static class Loki {
 		public static GameManager manager;
 		public static CameraController cameraController { get { return Loki.manager.cameraController; } }
@@ -27,6 +28,8 @@ namespace Fy {
 			Defs.LoadMountainsFromCode(); // Loading our mountains definitions;
 			Defs.LoadColorPalletsFromCode(); // Loading our pallets;
 		}
+
+		// Register the game manager when we start a game.
 		public static void NewGame(GameManager manager) {
 			Loki.manager = manager;
 		}

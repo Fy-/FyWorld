@@ -12,6 +12,7 @@ using Fy.Entity;
 using Fy.Definitions;
 
 namespace Fy.World {
+	// Generic grid with no renderer for tilables.
 	public  class TilableGrid : LayerGrid {
 		public TilableGrid (Vector2Int size) : base(size, Layer.Plant) {
 			this.renderer = null;

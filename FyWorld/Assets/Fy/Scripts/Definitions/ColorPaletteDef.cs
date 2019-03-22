@@ -6,17 +6,17 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+using System.Collections.Generic;
 using UnityEngine;
-using Fy.Visuals;
-using Fy.Entity;
-using Fy.Definitions;
 
-namespace Fy.World {
-	// Grid used for the ground with a special renderer (BucketGroundRenderer)
-	public  class GroundGrid : LayerGrid {
-		public GroundGrid (Vector2Int size) : base(size, Layer.Ground) {
-			this.renderer = typeof(BucketGroundRenderer);
-			this.GenerateBuckets();
+namespace Fy.Definitions {
+	// Definition for a color palette 
+	[System.Serializable]
+	public class ColorPaletteDef : Def {
+		public List<Color> colors = new List<Color>(15);
+
+		public Color GetRandom() {
+			return this.colors[Random.Range(0, this.colors.Count)];
 		}
 	}
 }

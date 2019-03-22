@@ -14,7 +14,7 @@ using Fy.Entity;
 using Fy.Helpers;
 
 namespace Fy.Visuals {
-    // Renderer the ground for a region
+    // Renderer the ground for a bucket
     // Please check my tutorial at: https://fyworld.net/gamedev/unity-tutorial-tile-blending-edge-smoothing/
     // Video version: https://www.youtube.com/watch?v=1z6i14IOV8Q&list=PL3zJehMxBSE82elgeomlaixuSXcJUm0gO
     public class BucketGroundRenderer : BucketRenderer  {

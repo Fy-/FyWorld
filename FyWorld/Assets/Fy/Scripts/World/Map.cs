@@ -13,6 +13,7 @@ using Fy.Entity;
 using Fy.Helpers;
 
 namespace Fy.World {
+	// Our map
 	public class Map {
 		/* Size of our map */
 		public Vector2Int size { get; protected set; }
@@ -36,6 +37,7 @@ namespace Fy.World {
 			this.grids.Add(Layer.Mountain, new TilableGrid(this.size));
 		}
 
+		// Get the fertility on a specific position.
 		public float GetFertilityAt(Vector2Int position) {
 			float fertility = 1f;
 			foreach (Tilable tilable in this.GetAllTilablesAt(position)) {
@@ -47,28 +49,33 @@ namespace Fy.World {
 			return fertility;
 		}
 
+		// Build all static meshes.
 		public void BuildAllMeshes() {
 			foreach (LayerGrid grid in this.grids.Values) {
 				grid.BuildStaticMeshes();
 			}
 		}
 
+		// Update visible matrices for our tilables.
 		public void CheckAllMatrices() {
 			foreach (LayerGrid grid in this.grids.Values) {
 				grid.CheckMatriceUpdates();
 			}
 		}
 
+		// Draw all tilables for visible buckets.
 		public void DrawTilables() {
 			foreach (LayerGrid grid in this.grids.Values) {
 				grid.DrawBuckets();
 			}
 		}
 
+		// Get tilable on at position on a specific layer
 		public Tilable GetTilableAt(Vector2Int position, Layer layer) {
 			return this.grids[layer].GetTilableAt(position);
 		}
 
+		// Get all tilable at a specific position.
 		public IEnumerable<Tilable> GetAllTilablesAt(Vector2Int position) {
 			foreach (LayerGrid grid in this.grids.Values) {
 				Tilable tilable = grid.GetTilableAt(position);
@@ -78,7 +85,7 @@ namespace Fy.World {
 			}
 		}
 
-		/// Temporary method to add a Ground of definition "dirt" to all our tiles.
+		/// Temporary method @TODO: Clean this shit.
 		public void TempMapGen() {
 			this.groundNoiseMap = NoiseMap.GenerateNoiseMap(this.size, 11, NoiseMap.GroundWave(42));
 			foreach (Vector2Int position in this.mapRect) {

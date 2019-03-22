@@ -15,6 +15,7 @@ using Fy.Helpers;
 using Fy.Visuals;
 
 namespace Fy.World {
+	// A bucket (region in a grid)
 	public class LayerGridBucket {
 		/* Rect is rectangle of the physical space of our bucket */
 		public RectI rect { get; protected set; }

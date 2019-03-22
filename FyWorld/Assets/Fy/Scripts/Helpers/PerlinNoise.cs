@@ -9,6 +9,7 @@
 using UnityEngine;
 
 namespace Fy.Helpers {
+	// Represent a wave of noise.
 	public struct Wave {
 		public float seed;
 		public float frequency;
@@ -21,6 +22,7 @@ namespace Fy.Helpers {
 		}
 	}
 
+	// Utility to generate a noise map (used for our grounds).
 	public static class NoiseMap {
 		public static Wave[] GroundWave(float seed) {
 			Wave[] waves = new Wave[3];

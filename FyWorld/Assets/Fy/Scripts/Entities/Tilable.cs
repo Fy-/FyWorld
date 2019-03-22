@@ -39,21 +39,24 @@ namespace Fy.Entity {
 		/* Do we need to reset matrices */
 		public bool resetMatrices = false;
 
+		/* If this is True the tilable is not drawn */
 		public bool hidden = false;
 
+		/* Parent bucket */
 		public LayerGridBucket bucket { get; protected set; }
-
 
 		public void SetBucket(LayerGridBucket bucket) {
 			this.bucket = bucket;
 		}
 
+		// Destroy this tilable
 		public virtual void Destroy() {
 			if (this.bucket != null) {
 				this.bucket.DelTilable(this);
 			}
 		}
 
+		// Generic method to update graphics
 		public virtual void UpdateGraphics() {}
 
 		/// Get the matrice of our tilable

@@ -42,7 +42,7 @@ namespace Fy {
 		/// Generating the map, spawning things.
 		void Start() {
 			this.tick = new Tick();
-			this.map = new Map(500, 500);
+			this.map = new Map(275, 275);
 			this.map.TempMapGen();
 			this.map.BuildAllMeshes();
 			Debug.Log(this.map);
@@ -71,7 +71,7 @@ namespace Fy {
 			}
 		}
 
-		/// Helpers (used for debug).
+		// WARNING WARNING : Clean this shit.
 		void OnDrawGizmos() {
 			if (this._ready) {
 				/*
