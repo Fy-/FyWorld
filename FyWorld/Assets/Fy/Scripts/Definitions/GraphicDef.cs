@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fy.Definitions {
-	/// Represent a grahpic in out game.
+	// Represent a grahpic in out game.
 	[System.Serializable]
 	public class GraphicDef : Def {
 		/* Texture name in the Resources/Textures directory */

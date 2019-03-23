@@ -18,7 +18,7 @@ namespace Fy.Definitions {
 		public static void AddMountain(TilableDef def) {
 			Defs.mountains.Add(def.uid, def);
 		}
-		// Load all mountains definitions
+		/// Load all mountains definitions
 		public static void LoadMountainsFromCode() {
 			Defs.mountains = new Dictionary<string, TilableDef>();
 			Defs.AddMountain(

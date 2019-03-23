@@ -45,18 +45,19 @@ namespace Fy.Entity {
 		/* Parent bucket */
 		public LayerGridBucket bucket { get; protected set; }
 
+		/// Register the bucket of the tilable
 		public void SetBucket(LayerGridBucket bucket) {
 			this.bucket = bucket;
 		}
 
-		// Destroy this tilable
+		/// Destroy this tilable
 		public virtual void Destroy() {
 			if (this.bucket != null) {
 				this.bucket.DelTilable(this);
 			}
 		}
 
-		// Generic method to update graphics
+		/// Generic method to update graphics
 		public virtual void UpdateGraphics() {}
 
 		/// Get the matrice of our tilable

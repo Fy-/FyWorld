@@ -24,6 +24,7 @@ namespace Fy.Helpers {
 
 	// Utility to generate a noise map (used for our grounds).
 	public static class NoiseMap {
+		/// List of default waves for our noise map.
 		public static Wave[] GroundWave(float seed) {
 			Wave[] waves = new Wave[3];
 			waves[0] = new Wave(seed * 42, 1, 1);
@@ -33,6 +34,7 @@ namespace Fy.Helpers {
 			return waves;
 		}
 
+		/// Generate a float array of value between 0f and 1f.
 		public static float[] GenerateNoiseMap(Vector2Int size, float scale, Wave[] waves) {
 			float[] noisemap = new float[size.x*size.y];
 			for (int x = 0; x < size.x; x++) {

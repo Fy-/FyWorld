@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fy.Definitions {
-	/// Definition for a terrain/ground
+	// Definition for a terrain/ground
 	[System.Serializable]
 	public class GroundDef : Def {
 		public float maxHeight;

@@ -27,6 +27,7 @@ namespace Fy.Visuals {
 		public float priority { get; protected set; }
 		public Mesh mesh { get; protected set; }
 
+		/// Create a new graphic instance
 		public GraphicInstance(
 			int uid, 
 			GraphicDef def, 
@@ -48,10 +49,7 @@ namespace Fy.Visuals {
 			}
 		}
 
-		public override string ToString() {
-			return "GraphicInstance(gdef="+this.def.ToString()+", uid="+this.uid+", priority="+this.priority+", mat="+this.material.ToString()+", texture="+this.texture.ToString()+", mesh="+this.mesh.ToString()+")";
-		}
-
+		/// Set the variable _Color of the material/shader
 		private void SetColor(Color color) {
 			this.color = color;
 			this.material.SetColor("_Color", this.color);
@@ -82,7 +80,7 @@ namespace Fy.Visuals {
 			return this.uid;
 		}
 
-		// Unique id generator for GraphicInstance
+		/// Unique id generator for GraphicInstance
 		public static int GetUID(
 			GraphicDef def, 
 			Color color, 
@@ -91,6 +89,10 @@ namespace Fy.Visuals {
 			Mesh mesh
 		) {
 			return def.materialName.GetHashCode() + texture.GetHashCode() + color.GetHashCode() + drawPriority.GetHashCode() + mesh.GetHashCode();
+		}
+
+		public override string ToString() {
+			return "GraphicInstance(gdef="+this.def.ToString()+", uid="+this.uid+", priority="+this.priority+", mat="+this.material.ToString()+", texture="+this.texture.ToString()+", mesh="+this.mesh.ToString()+")";
 		}
 	}
 }

@@ -30,6 +30,7 @@ namespace Fy.Visuals {
 		/* Region position */
 		private Vector3 _position;
 
+		// Create a new bucket on a grid (each layer as a grid, maybe we want the parent grid here ?)
 		public BucketRenderer(LayerGridBucket bucket, Layer layer) {
 			this.bucket = bucket;
 			this.layer = layer;
@@ -37,7 +38,7 @@ namespace Fy.Visuals {
 			this._position = new Vector3(0, 0, 0);
 		}
 
-		// Get the current mesh for the graphic instance (or create a new one)
+		/// Get the current mesh for the graphic instance (or create a new one)
 		public MeshData GetMesh(int graphicInstance, bool useSize = true, MeshFlags flags = MeshFlags.Base) {
 			if (this.meshes.ContainsKey(graphicInstance)) {
 				return this.meshes[graphicInstance];
@@ -51,7 +52,7 @@ namespace Fy.Visuals {
 			return this.meshes[graphicInstance];
 		}
 
-		// Draw the mesh on the screen
+		/// Draw the mesh on the screen
 		public void Draw() {
 			if (this._redraw) {
 				// Clear the current meshes.

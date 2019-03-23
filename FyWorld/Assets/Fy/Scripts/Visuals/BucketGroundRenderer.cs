@@ -20,6 +20,7 @@ namespace Fy.Visuals {
     public class BucketGroundRenderer : BucketRenderer  {
         public BucketGroundRenderer(LayerGridBucket bucket, Layer layer) : base(bucket, layer) {}
 
+        /// Build meshes for the ground
         public override void BuildMeshes() {
             List<int> neighboursGraphicsList = new List<int>();
             int[] neighboursGraphics = new int[8];

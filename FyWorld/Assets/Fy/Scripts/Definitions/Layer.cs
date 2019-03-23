@@ -19,6 +19,7 @@ namespace Fy.Definitions {
 
 	// Layer utilities
 	public static class LayerUtils {
+		/// Get the height of a layer (z position)
 		public static float Height (Layer layer) {
 			return (int)layer * - 1f;
 		}

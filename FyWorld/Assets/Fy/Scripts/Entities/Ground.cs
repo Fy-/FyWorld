@@ -19,7 +19,7 @@ namespace Fy.Entity {
 			this.mainGraphic = GraphicInstance.GetNew(def.graphics);
 		}
 
-		// Get the correct ground definition by height.
+		/// Get the correct ground definition by height.
 		public static TilableDef GroundByHeight(float height) {
 			foreach (TilableDef tilableDef in Defs.groundsByHeight.Values) {
 				if (height <= tilableDef.groundDef.maxHeight) {

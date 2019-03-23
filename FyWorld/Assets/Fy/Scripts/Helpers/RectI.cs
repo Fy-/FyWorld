@@ -26,11 +26,13 @@ namespace Fy.Helpers {
 		public int height { get { return  this.max.y - this.min.y; } }
 		public int area { get { return  this.width * this.height; } }
 
+		/// Create from min, max
 		public RectI(Vector2Int min, Vector2Int max) {
 			this.min = min;
 			this.max = max;
 		}
 
+		/// Create from min, width, height (calculate max)
 		public RectI(Vector2Int min, int width, int height) {
 			this.min = min;
 			this.max = new Vector2Int(this.min.x+width, this.min.y+height);

@@ -14,7 +14,7 @@ using Fy.Visuals;
 
 
 namespace Fy.Entity {
-	/// Utility for connected tilables (mountains, walls)
+	// Utility for connected tilables (mountains, walls)
 	public class ConnectedTilable {
 		/* Array of connections for each neighbours (see Direction.cs for indexing) */
 		public bool[] connections { get; protected set; } 
@@ -39,7 +39,7 @@ namespace Fy.Entity {
 			this.corners = new bool[4];
 		}
 
-		// Check neighbours and fill this.connections.
+		/// Check neighbours and fill this.connections.
 		private void SetLinks() {
 			// Iterate over each neighbour and check if the tilable is linked.
 			for (int i = 0; i < 8; i++) {
@@ -47,7 +47,7 @@ namespace Fy.Entity {
 			}
 		}
 
-		// Check if this.tilable is linked with an other tilable at "position".
+		/// Check if this.tilable is linked with an other tilable at "position".
 		private bool HasLink(Vector2Int position) {
 			Tilable tilable = Loki.map.GetTilableAt(position, this.tilable.def.layer);
 			if (tilable == null || this.tilable.def != tilable.def) {
@@ -56,7 +56,7 @@ namespace Fy.Entity {
 			return true;
 		}
 
-		// Update this.tilable graphics according to the tilable connections.
+		/// Update this.tilable graphics according to the tilable connections.
 		public void UpdateGraphics() {
 			int connsInt = 0;
 			this.SetLinks();

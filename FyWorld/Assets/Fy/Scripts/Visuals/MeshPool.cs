@@ -16,6 +16,7 @@ namespace Fy.Visuals {
 		public static Dictionary<float, MeshData> planes = new Dictionary<float, MeshData>();
 		public static Dictionary<int, MeshData> cornerPlanes = new Dictionary<int, MeshData>();
 
+		/// Get the mesh for corners for a connected tilable
 		public static Mesh GetCornersPlane(bool[] corners) {
 			int id = HashUtils.HashBoolArray(corners);
 			if (MeshPool.cornerPlanes.ContainsKey(id))  {
@@ -35,6 +36,7 @@ namespace Fy.Visuals {
 			return MeshPool.planes[id].mesh;
 		}
 
+		/// Generate the mesh for corners for a connected tilable
 		public static MeshData GenCornersPlane(bool[] corners) {
 			MeshData meshData = new MeshData(4, (MeshFlags.Base | MeshFlags.UV));
 			for (int i = 0; i < 4; i++) {

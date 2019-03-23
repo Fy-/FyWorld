@@ -21,7 +21,8 @@ namespace Fy.Helpers {
 		public static int[] corners = new int[4];
 		public static int[] connections = new int[4];
 
-		public static void SetNeighbours() {
+		/// Set all statics for directions
+		public static void LoadStatics() {
 			DirectionUtils.neighbours[0] = new Vector2Int(0,-1);
 			DirectionUtils.neighbours[1] = new Vector2Int(-1, -1);
 			DirectionUtils.neighbours[2] = new Vector2Int(-1, 0);

@@ -13,23 +13,24 @@ using Fy.Helpers;
 using Fy.Entity;
 
 namespace Fy {
-	/// Static class use to find stuff in our game.
+	// Static class use to find stuff in our game.
 	public static class Loki {
 		public static GameManager manager;
 		public static CameraController cameraController { get { return Loki.manager.cameraController; } }
 		public static Map map { get { return Loki.manager.map; } }
 		public static Tick tick { get { return Loki.manager.tick; } }
 
+		/// Load all statics definitions
 		public static void LoadStatics() {
 			Res.Load(); // Load all our resources;
-			DirectionUtils.SetNeighbours(); // Set neighbours;
+			DirectionUtils.LoadStatics(); // Set neighbours;
 			Defs.LoadGroundsFromCode(); // Loading our ground definitions;
 			Defs.LoadPlantsFromCode();; // Loading our plants definitions;
 			Defs.LoadMountainsFromCode(); // Loading our mountains definitions;
 			Defs.LoadColorPalletsFromCode(); // Loading our pallets;
 		}
 
-		// Register the game manager when we start a game.
+		/// Register the game manager when we start a game.
 		public static void NewGame(GameManager manager) {
 			Loki.manager = manager;
 		}
