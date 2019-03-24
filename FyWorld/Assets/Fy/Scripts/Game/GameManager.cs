@@ -21,12 +21,13 @@ namespace Fy {
 	{
 		/* Map */
 		public CameraController cameraController;
+		public StackableLabelController stackableLabelController;
 		public Tick tick;
 		public Map map;
 		public bool DrawGizmosTiles = false;
 		public bool DrawNoiseMap = false;
-		public bool DrawPlants = false;
 		public bool DrawBuckets = false;
+		public bool ready { get { return this._ready; } }
 
 		/* Are we ready ? */
 		private bool _ready;
@@ -35,6 +36,7 @@ namespace Fy {
 		void Awake() {
 			this._ready = false;
 			this.cameraController = this.GetComponent<CameraController>();
+			this.stackableLabelController = this.GetComponentInChildren<StackableLabelController>();
 			Loki.LoadStatics();
 			Loki.NewGame(this);
 		}
@@ -73,66 +75,15 @@ namespace Fy {
 
 		// WARNING WARNING : Clean this shit.
 		void OnDrawGizmos() {
-			if (this._ready) {
-				/*
-
-					foreach (MapRegion region in this.map.regions) {
-						Gizmos.color = new Color(0, 0, 1, .5f);
-						Gizmos.DrawCube(
-							new Vector3(
-								region.regionRect.max.x-(region.regionRect.width/2f),
-								region.regionRect.max.y-(region.regionRect.height/2f)
-							), 
-							new Vector3(region.regionRect.width-.5f, region.regionRect.height-.5f, 1f)
-						);
-					}
-				*/
-
+			if (this._ready && Settings.DEBUG) {
 				if (this.DrawBuckets) {
-					Gizmos.color = new Color(0, 0, 1, .5f);
-					foreach (LayerGridBucket bucket in this.map.grids[Layer.Ground].buckets) {
-						Gizmos.DrawCube(
-							new Vector3(
-								bucket.rect.max.x-(bucket.rect.width/2f),
-								bucket.rect.max.y-(bucket.rect.height/2f)
-							), 
-							new Vector3(bucket.rect.width-.5f, bucket.rect.height-.5f, 1f)
-						);
-					}
+					DebugRenderer.DrawBuckets();
 				}
-				/*
-				if (this.DrawNoiseMap) {
-					foreach (Vector2Int v in this.cameraController.viewRect) {
-						float h = this.map.groundNoiseMap[v.x + v.y * this.map.size.x];
-						Gizmos.color = new Color(h, h, h, .9f);
-						Gizmos.DrawCube(
-							new Vector3(v.x+.5f, v.y+.5f), 
-							Vector3.one
-						);
-					}
-				}*/
-
-				if (this.DrawPlants) {
-					/*
-					foreach (Vector2Int v in this.cameraController.viewRect) {
-						Tile tile = this.map[v];
-						Gizmos.color = new Color(0, 1, 0, .4f);
-						if (tile != null && tile.GetTilable(Layer.Tree) != null) {
-							Gizmos.DrawCube(
-								new Vector3(v.x+.5f, v.y+.5f), 
-								Vector3.one
-							);
-						}
-					}*/
-				}
-
 				if (this.DrawGizmosTiles) {
-					foreach (Vector2Int v in this.cameraController.viewRect) {
-						Gizmos.DrawWireCube(
-							new Vector3(v.x+.5f, v.y+.5f), 
-							Vector3.one
-						);
-					}
+					DebugRenderer.DrawTiles();
+				}
+				if (this.DrawNoiseMap) {
+					DebugRenderer.DrawNoiseMap();
 				}
 			}
 		}

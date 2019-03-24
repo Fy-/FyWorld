@@ -35,6 +35,7 @@ namespace Fy.World {
 			this.grids.Add(Layer.Ground, new GroundGrid(this.size));
 			this.grids.Add(Layer.Plant, new TilableGrid(this.size));
 			this.grids.Add(Layer.Mountain, new TilableGrid(this.size));
+			this.grids.Add(Layer.Stackable, new TilableGrid(this.size));
 		}
 
 		/// Get the fertility on a specific position. (Maybe we want a grid for this).
@@ -70,6 +71,13 @@ namespace Fy.World {
 			}
 		}
 
+		/// Spawn a tilable on the map
+		public void Spawn(Vector2Int position, Tilable tilable, bool force=false) {
+			if (force || tilable.def.layer == Layer.Undefined || this.GetTilableAt(position, tilable.def.layer) == null) {
+				this.grids[tilable.def.layer].AddTilable(tilable);
+			}
+		}
+
 		/// Get tilable on at position on a specific layer
 		public Tilable GetTilableAt(Vector2Int position, Layer layer) {
 			return this.grids[layer].GetTilableAt(position);
@@ -89,7 +97,8 @@ namespace Fy.World {
 		public void TempMapGen() {
 			this.groundNoiseMap = NoiseMap.GenerateNoiseMap(this.size, 11, NoiseMap.GroundWave(42));
 			foreach (Vector2Int position in this.rect) {
-				this.grids[Layer.Ground].AddTilable(
+				this.Spawn(
+					position,
 					new Ground(
 						position,
 						Ground.GroundByHeight(this.groundNoiseMap[position.x + position.y * this.size.x])
@@ -97,7 +106,8 @@ namespace Fy.World {
 				);
 
 				if (this.grids[Layer.Ground].GetTilableAt(position).def.uid == "rocks") {
-					this.grids[Layer.Mountain].AddTilable(
+					this.Spawn(
+						position,
 						new Mountain(position, Defs.mountains["mountain"])
 					);
 				}
@@ -109,7 +119,8 @@ namespace Fy.World {
 							_tileFertility >= tilableDef.plantDef.minFertility &&
 							Random.value <= tilableDef.plantDef.probability
 						) {
-							this.grids[Layer.Plant].AddTilable(
+							this.Spawn(
+								position,
 								new Plant(position, tilableDef, true)
 							);
 							break;
@@ -129,6 +140,14 @@ namespace Fy.World {
 				if (changed) {
 					bucket.rebuildMatrices = true;
 				}
+			}
+
+			foreach (Vector2Int position in new RectI(new Vector2Int(10, 10), 10, 10)) {
+				this.Spawn(position, new Stackable(
+					position,
+					Defs.stackables["logs"],
+					Random.Range(1, Defs.stackables["logs"].maxStack)
+				));
 			}
 		}
 

@@ -13,21 +13,24 @@ namespace Fy.Definitions {
 	// A static class to load our definitions
 	// Everything will be loaded from code or JSON files. 
 	public static partial  class Defs {
-		/* List of ground definitions */
-		public static Dictionary<string, TilableDef> grounds;
-		/*  List of ground ordered by maxHeight */
-		public static SortedDictionary<float, TilableDef> groundsByHeight;
+		/// Add a plant definition to our plant dictionary
+		public static void AddStackable(TilableDef def) {
+			Defs.stackables.Add(def.uid, def);
+		}
 
-		/* List of color palettes definitions */
-		public static Dictionary<string, ColorPaletteDef> colorPallets;
+		/// Load all plant definitions
+		public static void LoadStackablesFromCode() {
+			Defs.stackables = new Dictionary<string, TilableDef>();
 
-		/* List of plant definitions */
-		public static Dictionary<string, TilableDef> plants;
-
-		/* List of mountains definitions */
-		public static Dictionary<string, TilableDef> mountains;
-
-		/* List of stackables defintions */
-		public static Dictionary<string, TilableDef> stackables;
+			Defs.AddStackable(new TilableDef{
+				uid = "logs",
+				layer = Layer.Stackable,
+				graphics = new GraphicDef{
+					textureName = "logs_stack",
+					color = new Color(112/255f, 78/255f, 46/255f, 1f)
+				},
+				maxStack = 25
+			});
+		}
 	}
 }

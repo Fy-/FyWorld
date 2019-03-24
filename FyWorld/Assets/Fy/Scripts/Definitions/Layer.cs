@@ -14,6 +14,7 @@ namespace Fy.Definitions {
 		Ground, // Ground layer.
 		Mountain,
 		Plant,
+		Stackable,
 		Count // Count is just a nice trick to get the enum length.
 	}
 

@@ -54,8 +54,8 @@ namespace Fy.Controllers {
 		private void UpdateViewRect() {
 			this.viewRect = new RectI(
 				new Vector2Int(
-					Mathf.FloorToInt(this._camera.transform.position.x - this._camera.orthographicSize * this._camera.aspect - 1f),
-					Mathf.FloorToInt(this._camera.transform.position.y - this._camera.orthographicSize -1f)
+					Mathf.FloorToInt(this._camera.transform.position.x - this._camera.orthographicSize * this._camera.aspect ),
+					Mathf.FloorToInt(this._camera.transform.position.y - this._camera.orthographicSize )
 				),
 				new Vector2Int(
 					Mathf.FloorToInt(this._camera.transform.position.x + this._camera.orthographicSize * this._camera.aspect),

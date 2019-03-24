@@ -13,22 +13,25 @@ namespace Fy.Definitions {
 	/// Definition for a tilable
 	[System.Serializable]
 	public class TilableDef : Def {
-		// Layer
+		/* Layer */
 		public Layer layer;
 
-		// Tilable type
+		/* Tilable type */
 		public TilableType type = TilableType.Undefined;
 
-		// Grahpic data (for example size, texture, shader/material)
+		/* Grahpic data (for example size, texture, shader/material) */
 		public GraphicDef graphics;
 
-		// Ground def
+		/* Ground def */
 		public GroundDef groundDef;
 
-		// Plant def
+		/* Plant def */
 		public PlantDef plantDef;
 
-		// Fertility of our tilable
+		/* Fertility of our tilable */
 		public float fertility = 0f;
+
+		/* Max stack count */
+		public int maxStack = 0;
 	}
 }

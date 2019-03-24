@@ -6,15 +6,15 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-namespace Fy {
-	// All const settings
-	public static class Settings {
-		public const int BUCKET_SIZE = 32;
-		public const int TICKS_PER_DAY = 3000;
-		public const int DAYS_PER_SEASON = 14;
-		public const int SEASONS_PER_YEAR = 4;
-		public const int TICKS_PER_SEASON = Settings.TICKS_PER_DAY * Settings.DAYS_PER_SEASON;
-		public const int TICKS_PER_YEAR = Settings.SEASONS_PER_YEAR * Settings.TICKS_PER_SEASON;
-		public const bool DEBUG = true;
+using UnityEngine;
+using Fy.Definitions;
+
+namespace Fy.Entity
+{
+    /// Item tilable	
+    public class Item : Tilable {
+		public Item(TilableDef def) {
+			this.def = def;
+		}
 	}
 }
