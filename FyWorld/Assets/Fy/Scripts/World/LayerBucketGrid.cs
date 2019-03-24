@@ -39,6 +39,7 @@ namespace Fy.World {
 
 		private BucketRenderer _staticRenderer;
 		
+		private bool _visible = false;
 
 		public LayerGridBucket(int uid, RectI rect, Layer layer, Type renderer) {
 			this.uid = uid;
@@ -53,13 +54,23 @@ namespace Fy.World {
 			}
 		}
 
-		public bool IsVisible() {
-			return (
+		public void SetVisible(bool visible) {
+			this._visible = visible;
+		}
+
+		public bool CalcVisible() {
+			this._visible = (
 				this.rect.min.x >= Loki.cameraController.viewRect.min.x - Settings.BUCKET_SIZE &&
 				this.rect.max.x <= Loki.cameraController.viewRect.max.x + Settings.BUCKET_SIZE &&
 				this.rect.min.y >= Loki.cameraController.viewRect.min.y - Settings.BUCKET_SIZE &&
 				this.rect.max.y <= Loki.cameraController.viewRect.max.y + Settings.BUCKET_SIZE 
 			);
+
+			return this._visible;
+		}
+
+		public bool IsVisible() {
+			return this._visible;
 		}
 
 		public void DrawStatics() {

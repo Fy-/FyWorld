@@ -62,6 +62,7 @@ namespace Fy.Controllers {
 					Mathf.FloorToInt(this._camera.transform.position.y + this._camera.orthographicSize)
 				)
 			);
+			Loki.map.UpdateVisibles();
 		}
 
 		/// Set up the camera, max and min zoom and the initial desired zoom.!

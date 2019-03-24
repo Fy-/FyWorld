@@ -65,8 +65,12 @@ namespace Fy.Entity {
 			this._max = max;
 			this._parent = parent;
 			this.Create(count);
-			float scale = (float)count / (float)this.def.maxStack;
-			this._parent.scale = new Vector3(scale, scale, 1f);
+			/*
+				We should think about this and maybe add steps, like for plants
+				for example if it's less than half .7 scale, else 1f
+				float scale = (float)count / (float)this.def.maxStack;
+				this._parent.scale = new Vector3(scale, scale, 1f);
+			*/
 		}
 
 		/// Create x items.

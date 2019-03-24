@@ -38,6 +38,19 @@ namespace Fy.World {
 			this.grids.Add(Layer.Stackable, new TilableGrid(this.size));
 		}
 
+		public void UpdateVisibles() {
+			int i = 0;
+			foreach (LayerGridBucket bucket in this.grids[Layer.Ground].buckets){
+				bool bucketVisible = bucket.CalcVisible();
+				foreach (LayerGrid grid in this.grids.Values) {
+					if (grid.layer != Layer.Ground) {
+						grid.buckets[i].SetVisible(bucketVisible);
+					}
+				}
+				i++;
+			}
+		}
+
 		/// Get the fertility on a specific position. (Maybe we want a grid for this).
 		public float GetFertilityAt(Vector2Int position) {
 			float fertility = 1f;

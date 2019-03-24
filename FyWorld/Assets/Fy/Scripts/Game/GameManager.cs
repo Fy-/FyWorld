@@ -14,6 +14,7 @@ using Fy.World;
 using Fy.Entity;
 using Fy.Helpers;
 using Fy.Controllers;
+using Fy.Characters;
 
 namespace Fy {
 	// Manage the game. (yep).
@@ -48,6 +49,11 @@ namespace Fy {
 			this.map.TempMapGen();
 			this.map.BuildAllMeshes();
 			Debug.Log(this.map);
+
+			/// TEST STUFF
+			Debug.Log(new HumanStats());
+			Debug.Log(new HumanStats());
+			Debug.Log(new HumanStats());
 
 			this.StartCoroutine(this.TickLoop());
 			this._ready = true;
