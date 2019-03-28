@@ -25,6 +25,9 @@ namespace Fy.Definitions {
 			Defs.AddPlant(new TilableDef{
 				uid = "grass",
 				layer = Layer.Plant,
+				pathCost = .95f,
+				blockPlant = true,
+				blockStackable = true,
 				type = TilableType.Grass,
 				graphics = new GraphicDef{
 					textureName = "grass"
@@ -38,6 +41,9 @@ namespace Fy.Definitions {
 				uid = "tree",
 				layer = Layer.Plant,
 				type = TilableType.Tree,
+				blockPath = true,
+				blockStackable = true,
+				blockPlant = true,
 				graphics = new GraphicDef{
 					textureName = "tree",
 					size = new Vector2(2, 3f),

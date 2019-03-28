@@ -8,7 +8,7 @@
 */
 using UnityEngine;
 using Fy.Visuals;
-using Fy.Entity;
+using Fy.Entities;
 using Fy.Definitions;
 
 namespace Fy.World {

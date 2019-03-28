@@ -13,7 +13,7 @@ using Fy.Helpers;
 using Fy.Visuals;
 
 
-namespace Fy.Entity {
+namespace Fy.Entities {
 	// Utility for connected tilables (mountains, walls)
 	public class ConnectedTilable {
 		/* Array of connections for each neighbours (see Direction.cs for indexing) */

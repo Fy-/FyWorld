@@ -9,7 +9,7 @@
 using UnityEngine;
 using Fy.Definitions;
 
-namespace Fy.Entity
+namespace Fy.Entities
 {
     /// Item tilable	
     public class Item : Tilable {

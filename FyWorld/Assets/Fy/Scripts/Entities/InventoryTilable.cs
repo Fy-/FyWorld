@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fy.Definitions;
 
-namespace Fy.Entity {
+namespace Fy.Entities {
 	// Inventory of tilables
 	public class InventoryTilable {
 		/* List of tilable or a queue */

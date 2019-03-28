@@ -12,7 +12,7 @@ using Fy.Definitions;
 using Fy.Helpers;
 using Fy.Visuals;
 
-namespace Fy.Entity {
+namespace Fy.Entities {
 	/// Stackable tilable	
 	public class Stackable : Tilable {
 		public InventoryTilable inventory { get; protected set; }

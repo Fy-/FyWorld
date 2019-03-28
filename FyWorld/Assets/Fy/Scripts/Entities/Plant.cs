@@ -12,7 +12,7 @@ using Fy.Definitions;
 using Fy.Visuals;
 using Fy.Helpers;
 
-namespace Fy.Entity {
+namespace Fy.Entities {
 	// Plant
 	public class Plant : Tilable {
 		/* Color for the leafs */

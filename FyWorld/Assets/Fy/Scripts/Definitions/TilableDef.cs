@@ -31,6 +31,15 @@ namespace Fy.Definitions {
 		/* Fertility of our tilable */
 		public float fertility = 0f;
 
+		/* pathCost of our tilable */
+		public float pathCost = 1f;
+
+		public bool blockPath = false;
+		public bool blockPlant = false;
+		public bool blockStackable = false;
+		public bool blockBuilding = false;
+		public bool supportRoof = false;
+
 		/* Max stack count */
 		public int maxStack = 0;
 	}

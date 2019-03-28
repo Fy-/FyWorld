@@ -10,7 +10,7 @@ using Fy.Controllers;
 using Fy.World;
 using Fy.Definitions;
 using Fy.Helpers;
-using Fy.Entity;
+using Fy.Entities;
 
 namespace Fy {
 	// Static class use to find stuff in our game.
@@ -30,6 +30,8 @@ namespace Fy {
 			Defs.LoadMountainsFromCode(); // Loading our mountains definitions;
 			Defs.LoadStackablesFromCode(); // Loading our stackables definitions;
 			Defs.LoadColorPalletsFromCode(); // Loading our pallets;
+			Defs.LoadAnimalsFromCode(); // Loading animals;
+			Defs.LoadTasksFromCode(); // Loading tasks;
 		}
 
 		/// Register the game manager when we start a game.

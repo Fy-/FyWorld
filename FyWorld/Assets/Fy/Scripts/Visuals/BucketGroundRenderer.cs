@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fy.World;
 using Fy.Definitions;
-using Fy.Entity;
+using Fy.Entities;
 using Fy.Helpers;
 
 namespace Fy.Visuals {

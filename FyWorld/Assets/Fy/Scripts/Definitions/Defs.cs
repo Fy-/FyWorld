@@ -29,5 +29,11 @@ namespace Fy.Definitions {
 
 		/* List of stackables defintions */
 		public static Dictionary<string, TilableDef> stackables;
+
+		/* List of animals definitions */
+		public static Dictionary<string, AnimalDef> animals;
+
+		/* List of tasks definitions */
+		public static Dictionary<string, TaskDef> tasks;
 	}
 }

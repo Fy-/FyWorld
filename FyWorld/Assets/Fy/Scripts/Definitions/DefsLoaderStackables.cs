@@ -25,6 +25,7 @@ namespace Fy.Definitions {
 			Defs.AddStackable(new TilableDef{
 				uid = "logs",
 				layer = Layer.Stackable,
+				blockStackable = true,
 				graphics = new GraphicDef{
 					textureName = "logs_stack",
 					color = new Color(112/255f, 78/255f, 46/255f, 1f)

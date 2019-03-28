@@ -12,7 +12,7 @@ using Fy.Definitions;
 using Fy.Helpers;
 using Fy.Visuals;
 
-namespace Fy.Entity {
+namespace Fy.Entities {
 	/// Mountain tilable	
 	public class Mountain : Tilable {
 		private ConnectedTilable _connectedUtility;

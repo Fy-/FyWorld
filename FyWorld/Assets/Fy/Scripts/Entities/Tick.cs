@@ -8,7 +8,7 @@
 */
 using System.Collections.Generic;
 
-namespace Fy.Entity {
+namespace Fy.Entities {
 	public delegate void TickDelegate();
 
 	/// Quick class for ticking our tilables

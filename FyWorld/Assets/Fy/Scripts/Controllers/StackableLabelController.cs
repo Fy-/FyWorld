@@ -11,7 +11,7 @@ using UnityEngine;
 using TMPro;
 using Fy.Helpers;
 using Fy.World;
-using Fy.Entity;
+using Fy.Entities;
 using Fy.Definitions;
 
 namespace Fy.Controllers {

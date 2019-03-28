@@ -10,7 +10,7 @@ using UnityEngine;
 using Fy.Definitions;
 using Fy.Visuals;
 
-namespace Fy.Entity {
+namespace Fy.Entities {
 	/// Ground Tilable
 	public class Ground : Tilable {
 		public Ground(Vector2Int position, TilableDef def) {

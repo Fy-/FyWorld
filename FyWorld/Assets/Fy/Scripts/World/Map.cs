@@ -9,8 +9,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Fy.Definitions;
-using Fy.Entity;
+using Fy.Entities;
 using Fy.Helpers;
+using Fy.Characters;
 
 namespace Fy.World {
 	// Our map
@@ -27,10 +28,21 @@ namespace Fy.World {
 		/* List of all the grids (one per layer + some utility grids) */
 		public Dictionary<Layer, LayerGrid> grids;
 
+		/* Tile properties */
+		public TileProperty[] tiles { get; protected set; }
+
+		/* List of characters on our map */
+		public List<BaseCharacter> characters { get; protected set; }
+
 		/// Let's create a world, that's not ostentatious at all.
 		public Map(int width, int height) {
 			this.rect = new RectI(new Vector2Int(0, 0), width, height);
+			this.tiles = new TileProperty[width * height];
 
+			foreach (Vector2Int position in this.rect) {
+				this.tiles[position.x + position.y * this.size.y] = new TileProperty(position);
+			}
+			this.characters = new List<BaseCharacter>();
 			this.grids = new Dictionary<Layer, LayerGrid>();
 			this.grids.Add(Layer.Ground, new GroundGrid(this.size));
 			this.grids.Add(Layer.Plant, new TilableGrid(this.size));
@@ -38,6 +50,17 @@ namespace Fy.World {
 			this.grids.Add(Layer.Stackable, new TilableGrid(this.size));
 		}
 
+		// Get tile property by position
+		public TileProperty this[Vector2Int position] {
+			get {
+				if (position.x >= 0 && position.y >= 0 && position.x < this.size.x && position.y < this.size.y) {
+					return this.tiles[position.x + position.y * this.size.y];
+				}
+				return null;
+			}
+		}
+
+		/// Update the list of visible buckets for each grid.
 		public void UpdateVisibles() {
 			int i = 0;
 			foreach (LayerGridBucket bucket in this.grids[Layer.Ground].buckets){
@@ -49,18 +72,6 @@ namespace Fy.World {
 				}
 				i++;
 			}
-		}
-
-		/// Get the fertility on a specific position. (Maybe we want a grid for this).
-		public float GetFertilityAt(Vector2Int position) {
-			float fertility = 1f;
-			foreach (Tilable tilable in this.GetAllTilablesAt(position)) {
-				if (tilable.def.fertility == 0f) {
-					return 0f;
-				}
-				fertility *= tilable.def.fertility;
-			}
-			return fertility;
 		}
 
 		/// Build all static meshes.
@@ -81,6 +92,20 @@ namespace Fy.World {
 		public void DrawTilables() {
 			foreach (LayerGrid grid in this.grids.Values) {
 				grid.DrawBuckets();
+			}
+		}
+
+		/// Spawn a Character
+		public void SpawnCharacter(BaseCharacter character) {
+			this.characters.Add(character);
+		}
+
+		/// Update drawing for our characters
+		public void DrawCharacters() {
+			foreach (BaseCharacter character in this.characters) {
+				if (Loki.cameraController.viewRect.Contains(character.position)) {
+					character.UpdateDraw();
+				}
 			}
 		}
 
@@ -125,11 +150,10 @@ namespace Fy.World {
 					);
 				}
 
-				float _tileFertility = this.GetFertilityAt(position);
-				if (_tileFertility > 0f) {
+				if (this[position].fertility > 0f && !this[position].blockPlant) {
 					foreach (TilableDef tilableDef in Defs.plants.Values) {
 						if (
-							_tileFertility >= tilableDef.plantDef.minFertility &&
+							this[position].fertility >= tilableDef.plantDef.minFertility &&
 							Random.value <= tilableDef.plantDef.probability
 						) {
 							this.Spawn(
@@ -156,11 +180,13 @@ namespace Fy.World {
 			}
 
 			foreach (Vector2Int position in new RectI(new Vector2Int(10, 10), 10, 10)) {
-				this.Spawn(position, new Stackable(
-					position,
-					Defs.stackables["logs"],
-					Random.Range(1, Defs.stackables["logs"].maxStack)
-				));
+				if (this[position].blockStackable == false) {
+					this.Spawn(position, new Stackable(
+						position,
+						Defs.stackables["logs"],
+						Random.Range(1, Defs.stackables["logs"].maxStack)
+					));
+				}
 			}
 		}
 

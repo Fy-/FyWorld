@@ -12,12 +12,15 @@ using Fy.Definitions;
 using Fy.Visuals;
 using Fy.World;
 
-namespace Fy.Entity {
-	// A tilable is just an entity contain in a tile/layer.
-	public class Tilable {
+namespace Fy.Entities {
+	/// A thing in our game
+	public abstract class Entity {
 		/*  Position */
 		public Vector2Int position { get; protected set; }
+	}
 
+	// A tilable is just an entity contain in a tile/layer.
+	public class Tilable : Entity {
 		/* Scale */
 		public Vector3 scale = Vector3.one;
 

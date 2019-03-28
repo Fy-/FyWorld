@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fy.Definitions;
 using Fy.World;
-using Fy.Entity;
+using Fy.Entities;
 using Fy.Helpers;
 using Fy.Controllers;
 using Fy.Characters;
@@ -28,6 +28,9 @@ namespace Fy {
 		public bool DrawGizmosTiles = false;
 		public bool DrawNoiseMap = false;
 		public bool DrawBuckets = false;
+		public bool DrawAStar = false;
+		public bool DrawFertility = false;
+		public bool DrawPaths = false;
 		public bool ready { get { return this._ready; } }
 
 		/* Are we ready ? */
@@ -51,9 +54,47 @@ namespace Fy {
 			Debug.Log(this.map);
 
 			/// TEST STUFF
-			Debug.Log(new HumanStats());
-			Debug.Log(new HumanStats());
-			Debug.Log(new HumanStats());
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+
+//			Fy.Characters.AI.TargetList.GetRandomTargetInRange(new Vector2Int(10, 10));
 
 			this.StartCoroutine(this.TickLoop());
 			this._ready = true;
@@ -63,6 +104,7 @@ namespace Fy {
 		void Update() {
 			if (this._ready) {
 				this.map.DrawTilables();
+				this.map.DrawCharacters();
 			}
 		}
 
@@ -74,7 +116,7 @@ namespace Fy {
 
 		IEnumerator TickLoop() {
 			for(;;) {
-				yield return new WaitForSeconds(.1f/this.tick.speed);
+				yield return new WaitForSeconds(.01f/this.tick.speed);
 				this.tick.DoTick();
 			}
 		}
@@ -82,6 +124,14 @@ namespace Fy {
 		// WARNING WARNING : Clean this shit.
 		void OnDrawGizmos() {
 			if (this._ready && Settings.DEBUG) {
+				if (this.DrawPaths) {
+					foreach (BaseCharacter character in this.map.characters) {
+						DebugRenderer.DrawCurrentPath(character.movement);
+					}
+				}
+				if (this.DrawAStar) {
+					DebugRenderer.DrawAStar();
+				}
 				if (this.DrawBuckets) {
 					DebugRenderer.DrawBuckets();
 				}
@@ -90,6 +140,9 @@ namespace Fy {
 				}
 				if (this.DrawNoiseMap) {
 					DebugRenderer.DrawNoiseMap();
+				}
+				if (this.DrawFertility) {
+					DebugRenderer.DrawFertility();
 				}
 			}
 		}

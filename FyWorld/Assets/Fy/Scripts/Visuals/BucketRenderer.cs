@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fy.World;
 using Fy.Definitions;
-using Fy.Entity;
+using Fy.Entities;
 
 namespace Fy.Visuals {
 	// Renderer a bucket (only not instanced graphics)

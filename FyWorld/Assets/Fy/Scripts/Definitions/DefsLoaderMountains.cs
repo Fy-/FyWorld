@@ -24,6 +24,11 @@ namespace Fy.Definitions {
 			Defs.AddMountain(
 				new TilableDef {
 					uid = "mountain",
+					blockPath = true,
+					blockStackable = true,
+					supportRoof = true,
+					blockBuilding = true,
+					blockPlant = true,
 					layer = Layer.Mountain,
 					graphics = new GraphicDef{
 						textureName = "mountain",

@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using Fy.Entity;
+using Fy.Entities;
 using Fy.Definitions;
 using Fy.Helpers;
 using Fy.Visuals;

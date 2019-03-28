@@ -28,6 +28,7 @@ namespace Fy.Definitions {
 				new TilableDef{
 					uid = "water",
 					layer = Layer.Ground,
+					blockPath = true,
 					graphics = new GraphicDef{
 						textureName = "water",
 						materialName = "grounds",
@@ -63,6 +64,7 @@ namespace Fy.Definitions {
 				new TilableDef{
 					uid = "rocks",
 					layer = Layer.Ground,
+					pathCost = 1.05f,
 					graphics = new GraphicDef{
 						textureName = "rocks",
 						materialName = "grounds",

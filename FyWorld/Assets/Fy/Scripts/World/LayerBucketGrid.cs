@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using Fy.Entity;
+using Fy.Entities;
 using Fy.Definitions;
 using Fy.Helpers;
 using Fy.Visuals;
@@ -137,7 +137,8 @@ namespace Fy.World {
 		public void DelTilable(Tilable tilable) {
 			Vector2Int localPosition = this.GetLocalPosition(tilable.position);
 			this.tilables[localPosition.x + localPosition.y * this.rect.width] = null;
-
+			Loki.map[tilable.position].Update();
+			
 			if (tilable.def.type != TilableType.Undefined) {
 				this.titlablesByType[tilable.def.type].Remove(tilable);
 				if (this.titlablesByType[tilable.def.type].Count == 0) {
@@ -145,7 +146,9 @@ namespace Fy.World {
 				}
 			}
 
-			this.rebuildMatrices = true;
+			if (tilable.def.graphics.isInstanced) {
+				this.rebuildMatrices = true;
+			}
 		}
 
 		public void AddTilable(Tilable tilable) {
@@ -153,7 +156,8 @@ namespace Fy.World {
 			Vector2Int localPosition = this.GetLocalPosition(tilable.position);
 			this.tilables[localPosition.x + localPosition.y * this.rect.width] = tilable;
 			tilable.SetBucket(this);
-			
+			Loki.map[tilable.position].Update();
+
 			// Add to tilableByType dictionary
 			if (tilable.def.type != TilableType.Undefined) {
 				if (!this.titlablesByType.ContainsKey(tilable.def.type)) {
@@ -170,9 +174,8 @@ namespace Fy.World {
 						this.AddMatrice(graphicInstance.uid, tilable.GetMatrice(graphicInstance.uid));
 					}
 				}
+				this.rebuildMatrices = true;
 			}
-
-			this.rebuildMatrices = true;
 		}
 
 
