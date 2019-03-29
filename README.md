@@ -1,4 +1,5 @@
 # FyWorld : Base-Building / Simulation Game Tutorial made with Unity
+![Preview Thumbnail](https://raw.githubusercontent.com/Fy-/FyWorld/master/preview.png)
 
 [About](#about)  
 [Copyright & Licensing](#copyright--licensing)  
