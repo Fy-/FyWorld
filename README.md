@@ -8,15 +8,14 @@
 [Contact](#contact)
 
 ## About
-FyWorld is a top down simulation game in a fantasy medieval world. 
-It’s a base-building / simulation open source game made with Unity and I’m recording everything. You can look at this like a mega-tutorial or just a crazy geek trying to make a Rimworld like game while streaming everything.
+FyWorld is a top down simulation game in a fantasy medieval world.  
+It’s a base-building / simulation open source game made with Unity and I’m recording everything. You can look at this like a mega-tutorial or just a crazy geek trying to make a Rimworld like game while streaming everything.  
 Fy World was created by Florian "Fy-" Gasquez, whose work was supported via Patreon:
-
  * https://www.patreon.com/fy
  
 ## Copyright & Licensing
-The base project code is copyrighted by Florian "Fy-" Gasquez and is covered by multiple licenses.
-All program code (i.e. C#, Lua, XML) is licensed under GPL v3.0 unless otherwise specified.  Please see the "LICENSE" file for more information.
+The base project code is copyrighted by Florian "Fy-" Gasquez and is covered by multiple licenses.  
+All program code (i.e. C#, Lua, XML) is licensed under GPL v3.0 unless otherwise specified.  Please see the "LICENSE" file for more information.  
 All non-code assets (e.g. art, sound) is licensed under CC BY-NC-SA 3.0 (Attribution-NonCommercial-ShareAlike 3.0 Unported) unless otherwise specified.
 
 ## Links & Playlist
