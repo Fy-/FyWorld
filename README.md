@@ -15,8 +15,8 @@ Fy World was created by Florian "Fy-" Gasquez, whose work was supported via Patr
  
 ## Copyright & Licensing
 The base project code is copyrighted by Florian "Fy-" Gasquez and is covered by multiple licenses.  
-All program code (i.e. C#, Lua, XML) is licensed under GPL v3.0 unless otherwise specified.  Please see the "LICENSE" file for more information.  
-All non-code assets (e.g. art, sound) is licensed under CC BY-NC-SA 3.0 (Attribution-NonCommercial-ShareAlike 3.0 Unported) unless otherwise specified.
+All program code (i.e. C#) is licensed under GPL v3.0 unless otherwise specified.  Please see the "LICENSE" file for more information.  
+All non-code assets (e.g. art, sound, txt, story, XML, JSON) is licensed under CC BY-NC-SA 3.0 (Attribution-NonCommercial-ShareAlike 3.0 Unported) unless otherwise specified.
 
 ## Links & Playlist
  * Youtube Playlist: https://www.youtube.com/watch?v=ckDSPMe1Yf4&list=PL3zJehMxBSE_MWK954EZy0Ygy1p6sWg3i
