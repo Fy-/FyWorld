@@ -1,7 +1,8 @@
 # FyWorld : Base-Building / Simulation Game Tutorial made with Unity
 ![Preview Thumbnail](https://raw.githubusercontent.com/Fy-/FyWorld/master/preview.png)
 
-[About](#about)  
+[About](#about) 
+[Story](#story)
 [Copyright & Licensing](#copyright--licensing)  
 [Links & Playlist](#links--playlist)  
 [Inspiration](#inspiration)  
@@ -12,6 +13,12 @@ FyWorld is a top down simulation game in a fantasy medieval world.
 It’s a base-building / simulation open source game made with Unity and I’m recording everything. You can look at this like a mega-tutorial or just a crazy geek trying to make a Rimworld like game while streaming everything.  
 Fy World was created by Florian "Fy-" Gasquez, whose work was supported via Patreon:
  * https://www.patreon.com/fy
+ 
+## Story
+> There was a time long ago when humans wandered the world in great numbers. There was a time of legends and heroes, of incredible accomplishments and great deeds, a time when the world knew true grandeur. But this time is ending and a God watching this extinction event with amusement decide to let escape some people through a magic portal
+
+The chosen ones arrive in this new hostile world and you’ll need to guide your new belivers, help them manage their health, habitations, occupations and needs. All your choices will have consequences on this new fragile realm.  
+Do you feel worthy of being a God?
  
 ## Copyright & Licensing
 The base project code is copyrighted by Florian "Fy-" Gasquez and is covered by multiple licenses.  
