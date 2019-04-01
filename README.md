@@ -1,22 +1,29 @@
 # FyWorld : Base-Building / Simulation Game Tutorial made with Unity
+![Preview Thumbnail](https://raw.githubusercontent.com/Fy-/FyWorld/master/preview.png)
 
 [About](#about)  
+[Story](#story)  
 [Copyright & Licensing](#copyright--licensing)  
 [Links & Playlist](#links--playlist)  
 [Inspiration](#inspiration)  
 [Contact](#contact)
 
 ## About
-FyWorld is a top down simulation game in a fantasy medieval world. 
-It’s a base-building / simulation open source game made with Unity and I’m recording everything. You can look at this like a mega-tutorial or just a crazy geek trying to make a Rimworld like game while streaming everything.
+FyWorld is a top down simulation game in a fantasy medieval world.  
+It’s a base-building / simulation open source game made with Unity and I’m recording everything. You can look at this like a mega-tutorial or just a crazy geek trying to make a Rimworld like game while streaming everything.  
 Fy World was created by Florian "Fy-" Gasquez, whose work was supported via Patreon:
-
  * https://www.patreon.com/fy
  
+## Story
+> There was a time long ago when humans wandered the world in great numbers. There was a time of legends and heroes, of incredible accomplishments and great deeds, a time when the world knew true grandeur. But this time is ending and a God watching this extinction event with amusement decide to let escape some people through a magic portal
+
+The chosen ones arrive in this new hostile world and you’ll need to guide your new belivers, help them manage their health, habitations, occupations and needs. All your choices will have consequences on this new fragile realm.  
+Do you feel worthy of being a God?
+ 
 ## Copyright & Licensing
-The base project code is copyrighted by Florian "Fy-" Gasquez and is covered by multiple licenses.
-All program code (i.e. C#, Lua, XML) is licensed under GPL v3.0 unless otherwise specified.  Please see the "LICENSE" file for more information.
-All non-code assets (e.g. art, sound) is licensed under CC BY-NC-SA 3.0 (Attribution-NonCommercial-ShareAlike 3.0 Unported) unless otherwise specified.
+The base project code is copyrighted by Florian "Fy-" Gasquez and is covered by multiple licenses.  
+All program code (i.e. C#) is licensed under GPL v3.0 unless otherwise specified.  Please see the "LICENSE" file for more information.  
+All non-code assets (e.g. art, sound, txt, story, XML, JSON) is licensed under CC BY-NC-SA 3.0 (Attribution-NonCommercial-ShareAlike 3.0 Unported) unless otherwise specified.
 
 ## Links & Playlist
  * Youtube Playlist: https://www.youtube.com/watch?v=ckDSPMe1Yf4&list=PL3zJehMxBSE_MWK954EZy0Ygy1p6sWg3i
