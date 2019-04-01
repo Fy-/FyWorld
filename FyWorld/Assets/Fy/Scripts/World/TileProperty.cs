@@ -6,9 +6,11 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+using System.Collections.Generic;
 using Priority_Queue;
 using UnityEngine;
 using Fy.Entities;
+using Fy.Characters;
 
 namespace Fy.World {
 	public class TileProperty  {
@@ -28,8 +30,11 @@ namespace Fy.World {
 		public float fCost { get { return this.gCost + this.hCost; } }
 		public TileProperty parent { get; set; }
 
+		public List<BaseCharacter> characters { get; set; }
+
 		public TileProperty(Vector2Int position) {
 			this.position = position;
+			this.characters = new List<BaseCharacter>();
 			this.Reset();
 		}
 

@@ -32,10 +32,13 @@ namespace Fy.Characters {
 		private Vector2Int _nextPosition;
 		private bool _hasDestination;
 		private Queue<Vector2Int> _path;
-		private float _speed = .2f;
+		private float _speed = .1f;
+		private BaseCharacter _character;
 
-		public CharacterMovement(Vector2Int position) {
+		public CharacterMovement(Vector2Int position, BaseCharacter character) {
 			this.position = position;
+			this._character = character;
+			Loki.map[this.position].characters.Add(this._character);
 			this.ResetMovement();
 		}
 
@@ -60,6 +63,7 @@ namespace Fy.Characters {
 				return;
 			}
 			if (this.position == this._nextPosition) {
+				
 				this._nextPosition = this._path.Dequeue();
 				this.UpdateLookingAt();
 			}
@@ -69,6 +73,8 @@ namespace Fy.Characters {
 			this._movementPercent += distanceThisFrame / distance;
 
 			if (this._movementPercent >= 1f) {
+				Loki.map[this.position].characters.Remove(this._character);
+				Loki.map[this._nextPosition].characters.Add(this._character);
 				this.position = this._nextPosition;
 				this._movementPercent = 0f;
 			}
@@ -77,9 +83,9 @@ namespace Fy.Characters {
 
 
 		private void ResetMovement() {
-			this.destination = position;
+			this.destination = this.position;
 			this._hasDestination = false;
-			this._nextPosition = position;
+			this._nextPosition = this.position;
 			this._movementPercent = 0f;
 			this._path = new Queue<Vector2Int>();
 		}

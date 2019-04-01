@@ -14,13 +14,13 @@ namespace Fy.Characters {
 		public string name;
 
 		/* Value of the stat */
-		public int baseValue;
+		public float baseValue;
 
 		/* Buff value */
-		public int buffValue;
+		public float buffValue;
 
 		/* Real value */
-		public int value { get { return this.baseValue + this.buffValue; } }
+		public float value { get { return this.baseValue + this.buffValue; } }
 
 		public Stat(string name) {
 			this.name = name;
@@ -69,12 +69,15 @@ namespace Fy.Characters {
 
 	// Vital
 	public class Vital : Attribute {
-		private int _currentValue;
+		private float _currentValue;
 
-		public int currentValue {
+		public float currentValue {
 			get {
 				if (this._currentValue > this.value) {
 					this._currentValue = value;
+				}
+				if (this._currentValue < 0) {
+					this._currentValue = 0;
 				}
 				return this._currentValue;
 			}

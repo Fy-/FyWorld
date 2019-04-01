@@ -19,4 +19,9 @@ namespace Fy.Definitions {
 			return this.colors[Random.Range(0, this.colors.Count)];
 		}
 	}
+
+	[System.Serializable]
+	public class NamedColorPaletteDef : Def {
+		public Dictionary<string, Color> colors = new Dictionary<string, Color>();
+	}
 }

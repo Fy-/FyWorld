@@ -18,8 +18,11 @@ namespace Fy.Definitions {
 		/*  List of ground ordered by maxHeight */
 		public static SortedDictionary<float, TilableDef> groundsByHeight;
 
-		/* List of color palettes definitions */
+		/* List of color pallets definitions */
 		public static Dictionary<string, ColorPaletteDef> colorPallets;
+
+		/* List of named color pallets defininitions */
+		public static Dictionary<string, NamedColorPaletteDef> namedColorPallets;
 
 		/* List of plant definitions */
 		public static Dictionary<string, TilableDef> plants;

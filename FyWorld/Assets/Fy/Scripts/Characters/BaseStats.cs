@@ -8,6 +8,7 @@
 */
 using System.Collections.Generic;
 using UnityEngine;
+using Fy.Helpers;
 
 namespace Fy.Characters {
 	public class BaseStats {
@@ -20,7 +21,7 @@ namespace Fy.Characters {
 			this.stats = new Dictionary<Stats, Stat>();
 			foreach (Stats stat in StatsUtils.stats) {
 				this.stats.Add(stat, new Stat(stat.ToString()));
-				this.stats[stat].baseValue = Random.Range(1, 5);
+				this.stats[stat].baseValue = Random.Range(5, 10);
 			}
 
 			this.vitals = new Dictionary<Vitals, Vital>();
@@ -38,14 +39,29 @@ namespace Fy.Characters {
 		
 		protected virtual void LoadAttributes() {
 
-			this.attributes[Attributes.WalkSpeed].AddModifier(new StatModifier(this.stats[Stats.Strength], .5f));
-			this.attributes[Attributes.WalkSpeed].AddModifier(new StatModifier(this.stats[Stats.Endurance], .5f));
+			this.attributes[Attributes.WalkSpeed].AddModifier(new StatModifier(this.stats[Stats.Strength], .3f));
+			this.attributes[Attributes.WalkSpeed].AddModifier(new StatModifier(this.stats[Stats.Endurance], .2f));
 
-			this.attributes[Attributes.HealthRegen].AddModifier(new StatModifier(this.stats[Stats.Strength], .3f));
-			this.attributes[Attributes.HealthRegen].AddModifier(new StatModifier(this.stats[Stats.Endurance], .3f));
+			this.attributes[Attributes.HealthRegen].AddModifier(new StatModifier(this.stats[Stats.Strength], .1f));
+			this.attributes[Attributes.HealthRegen].AddModifier(new StatModifier(this.stats[Stats.Endurance], .2f));
 
-			this.attributes[Attributes.EnergyRegen].AddModifier(new StatModifier(this.stats[Stats.Wisdom], .3f));
-			this.attributes[Attributes.EnergyRegen].AddModifier(new StatModifier(this.stats[Stats.Endurance], .3f));
+			this.attributes[Attributes.EnergyRegen].AddModifier(new StatModifier(this.stats[Stats.Endurance], .2f));
+
+			this.attributes[Attributes.PhysicalArmour].AddModifier(new StatModifier(this.stats[Stats.Strength], .1f));
+			this.attributes[Attributes.PhysicalArmour].AddModifier(new StatModifier(this.stats[Stats.Endurance], .3f));
+
+			this.attributes[Attributes.PhysicalAttack].AddModifier(new StatModifier(this.stats[Stats.Strength], .3f));
+			this.attributes[Attributes.PhysicalAttack].AddModifier(new StatModifier(this.stats[Stats.Agility], .2f));
+
+			this.attributes[Attributes.ManaRegen].AddModifier(new StatModifier(this.stats[Stats.Intellect], .3f));
+			this.attributes[Attributes.ManaRegen].AddModifier(new StatModifier(this.stats[Stats.Wisdom], .2f));
+
+			this.attributes[Attributes.CriticalChance].AddModifier(new StatModifier(this.stats[Stats.Agility], .2f));
+			this.attributes[Attributes.CriticalChance].AddModifier(new StatModifier(this.stats[Stats.Intellect], .2f));
+
+			this.attributes[Attributes.Charisma].AddModifier(new StatModifier(this.stats[Stats.Wisdom], .2f));
+			this.attributes[Attributes.Charisma].AddModifier(new StatModifier(this.stats[Stats.Strength], .2f));
+
 
 			foreach (Attribute att in this.attributes.Values) {
 				att.Update();
@@ -54,14 +70,21 @@ namespace Fy.Characters {
 
 		protected virtual void LoadVitals() {
 			this.vitals[Vitals.Health].AddModifier(new StatModifier(this.stats[Stats.Endurance], 20f));
-			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Agility], 2f));
-			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Strength], 2f));
-			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Wisdom], 2f));
+			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Agility], 5f));
+			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Strength], 5f));
+			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Wisdom], 5f));
 			this.vitals[Vitals.Mana].AddModifier(new StatModifier(this.stats[Stats.Intellect], 10f));
+			this.vitals[Vitals.Joy].baseValue = 100;
 
 			foreach (Vital vital in this.vitals.Values) {
 				vital.Update();
 				vital.Fill();
+			}
+		}
+
+		public virtual void Update() {
+			if (this.vitals[Vitals.Energy].currentValue > 0) {
+				this.vitals[Vitals.Energy].currentValue -= .2f;
 			}
 		}
 

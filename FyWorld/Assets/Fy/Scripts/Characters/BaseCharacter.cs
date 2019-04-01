@@ -21,14 +21,16 @@ namespace Fy.Characters {
 		public TaskRunner taskRunner { get; protected set; }
 		public new Vector2Int position { get { return this.movement.position; } }
 		public GraphicInstance graphics { get; protected set; }
+		public string name { get; protected set; }
 
 		private Mesh _mesh;
 
 		public BaseCharacter(Vector2Int position, LivingDef def) {
 			this.stats = new BaseStats();
 			this.def = def;
-			this.movement = new CharacterMovement(position);
+			this.movement = new CharacterMovement(position, this);
 			this.taskRunner = new TaskRunner();
+			this.name = "Undefined "+Random.Range(1000,9999);
 
 			if (this.def.graphics != null) {
 				this.graphics = GraphicInstance.GetNew(this.def.graphics);
@@ -44,6 +46,7 @@ namespace Fy.Characters {
 			} else {
 				this.taskRunner.task.Update();
 			}
+			this.stats.Update();
 		}
 
 		public virtual void UpdateDraw() {

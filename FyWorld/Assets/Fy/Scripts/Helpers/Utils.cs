@@ -10,6 +10,10 @@ using UnityEngine;
 
 namespace Fy.Helpers {
 	public static class Utils {
+		public static float Normalize(float min, float max, float value) {
+			return (value - min) / (max - min);
+		}
+
 		public static float Distance(Vector2Int a, Vector2Int b) {
 			if (
 				Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) == 1

@@ -14,6 +14,7 @@ namespace Fy.Helpers {
 	public static class Res {
 		public static Dictionary<string, Material> materials;
 		public static Dictionary<string, Texture2D> textures;
+		public static Dictionary<string, GameObject> prefabs;
 
 		/// Load resources
 		public static void Load() {
@@ -22,6 +23,12 @@ namespace Fy.Helpers {
 			foreach (Material mat in Resources.LoadAll<Material>("Materials/")) {
 				Res.materials.Add(mat.name, mat);
 			}
+
+			Res.prefabs = new Dictionary<string, GameObject>();
+			foreach (GameObject prefab in Resources.LoadAll<GameObject>("Prefabs/")) {
+				Res.prefabs.Add(prefab.name, prefab);
+			}
+
 
 			/* Load all textures in Resources/Textures into our textures dictionary */
 			Res.textures = new Dictionary<string, Texture2D>();

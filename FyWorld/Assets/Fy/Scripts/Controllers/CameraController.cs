@@ -26,6 +26,11 @@ namespace Fy.Controllers {
 		
 		public float sensitivity { get; protected set; }
 		public Vector3 mousePosition { get; protected set; }
+		public Vector2Int tileMapMousePosition { 
+			get {
+				return new Vector2Int((int)this.mousePosition.x, (int)this.mousePosition.y);
+			}
+		}
 
 		public RectI viewRect;
 		private Vector3 _lastMousePosition;

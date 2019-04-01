@@ -17,10 +17,25 @@ namespace Fy.Definitions {
 		public static void AddColorPalette(ColorPaletteDef def) {
 			Defs.colorPallets.Add(def.uid, def);
 		}
+		public static void AddColorPalette(NamedColorPaletteDef def) {
+			Defs.namedColorPallets.Add(def.uid, def);
+		}
 
 		/// Load all color definitions
 		public static void LoadColorPalletsFromCode() {
 			Defs.colorPallets = new Dictionary<string, ColorPaletteDef>();
+			Defs.namedColorPallets = new Dictionary<string, NamedColorPaletteDef>();
+
+			Defs.AddColorPalette(new NamedColorPaletteDef{
+				uid = "cols_vitals",
+				colors = new Dictionary<string, Color>{
+					{"Health", new Color(51/255f, 12/255f, 12/255f, 1)},
+					{"Energy", new Color(51/255f, 38/255f, 12/255f, 1)},
+					{"Mana", new Color(12/255f, 23/255f, 51/255f, 1)},
+					{"Joy", new Color(51/255f, 12/255f, 50/255f, 1)},
+				}
+			});
+
 			Defs.AddColorPalette(new ColorPaletteDef{
 				uid = "cols_leafsGreen",
 				colors = new List<Color>{

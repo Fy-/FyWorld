@@ -125,7 +125,7 @@ namespace Fy.Characters.AI {
 		}
 
 		public virtual bool Perform() {
-			if (this.def.ticksToPerform == 0) {
+			if (this.def.ticksToPerform <= 0) {
 				this.End();
 				return true;
 			} else {

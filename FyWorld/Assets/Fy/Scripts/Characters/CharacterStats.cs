@@ -32,7 +32,6 @@ namespace Fy.Characters {
 		PhysicalArmour, // [strength + endurance]
 		PhysicalAttack, // [strength + agility]
 		MagicalAttack, // [intellect + wisdom]
-		MagicalArmour, // [wisdom + endurance]
 		HealthRegen, // [endurance + strength]
 		EnergyRegen,  // [wisdom + endurance]
 		ManaRegen, // [intellect + wisdom]
