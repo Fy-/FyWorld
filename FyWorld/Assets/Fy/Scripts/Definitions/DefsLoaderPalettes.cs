@@ -30,7 +30,7 @@ namespace Fy.Definitions {
 				uid = "cols_vitals",
 				colors = new Dictionary<string, Color>{
 					{"Health", new Color(51/255f, 12/255f, 12/255f, 1)},
-					{"Energy", new Color(51/255f, 38/255f, 12/255f, 1)},
+					{"Energy", new Color(20/255f, 38/255f, 12/255f, 1)},
 					{"Mana", new Color(12/255f, 23/255f, 51/255f, 1)},
 					{"Joy", new Color(51/255f, 12/255f, 50/255f, 1)},
 				}

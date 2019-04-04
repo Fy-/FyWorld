@@ -50,6 +50,7 @@ namespace Fy.Characters {
 
 				if (pathResult.success == false) {
 					task.taskStatus = TaskStatus.Failed; // Maybe a special failed condition;
+					this.ResetMovement();
 					return;
 				}
 				
