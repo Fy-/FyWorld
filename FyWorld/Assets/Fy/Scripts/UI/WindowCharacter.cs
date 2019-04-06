@@ -21,44 +21,33 @@ namespace Fy.UI {
 			this._character = character;
 			this.SetTitle(this._character.name);
 			this.AddTab("Character");
-			this.AddTab("Skills");
-			this.AddTab("Detailed stats");
+			//this.AddTab("Skills");
+			this.AddTab("Infos");
 		}
 
 		public override void Content() {
 			if (this.activeTab == 0) {
-				Rect contentRect = this.rect;
-				if (this._hasTitle) {
-				 	contentRect = contentRect.FromTopRight(this.rect, 0, this.headerSize);
-				}
-				contentRect = contentRect.Padding(this.padding);
-
-				float[] heights = new float[this._character.stats.vitals.Values.Count];
-				int i;
-				for (i = 0; i < heights.Length; i++) { heights[i] = 26; }
-				
-				Rect[] vGrid = contentRect.VerticalGrid(heights, 5);
-				i = 1;
+				this.vGrid.H2("Vitals");
 				foreach (Vital vital in this._character.stats.vitals.Values) {
 					WindowComponents.FillableBarWithLabelValue(
-						vGrid[i], 
-						vital.name, 
-						Utils.Normalize(0, vital.value, vital.currentValue), 
+						this.vGrid.GetNewRect(20f),
+						vital.name,
+						vital,
 						Defs.namedColorPallets["cols_vitals"].colors[vital.name]
 					);
-					i++;
+				}
+				this.vGrid.H2("Stats");
+				foreach (Stat stat in this._character.stats.stats.Values) {
+					WindowComponents.SimpleStat(this.vGrid.GetNewRect(20f), stat.name, stat.value, stat.baseValue);
 				}
 			} else if (this.activeTab == 1) {
-				
+				this.vGrid.H2("Infos");
+				this.vGrid.Paragraph(this._character.def.shortDesc);
+				this.vGrid.H2("Detailled Stats");
+				foreach (Stat attr in this._character.stats.attributes.Values) {
+					WindowComponents.SimpleStat(this.vGrid.GetNewRect(20f), attr.name, attr.value, attr.baseValue);
+				}
 			}
-
-			/*
-
-			GUILayout.BeginVertical();
-			WindowComponents.Label("Hello <3");
-			WindowComponents.Label("Hello <3");
-			WindowComponents.Label("Hello <3");
-			GUILayout.EndVertical();*/
 		}
 	}
 }

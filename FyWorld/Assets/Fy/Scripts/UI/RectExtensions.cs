@@ -12,6 +12,15 @@ using UnityEngine.UI;
 
 namespace Fy.UI {
 	public static class RectExtensions {
+		public static Rect InvertY(this Rect self) {
+			return new Rect(
+				self.x,
+				1f - self.y - self.height,
+				self.width,
+				self.height
+			);
+		}
+
 		public static Rect RoundToInt(this Rect self) {
 			return new Rect(
 				Mathf.RoundToInt(self.x),
@@ -85,6 +94,7 @@ namespace Fy.UI {
 				result.Add(new Rect(x, self.y, width-space, self.height));
 				x += width+space;
 			}
+			result[0] = new Rect(self.x, self.y, x+space*2, self.height);
 			return result.ToArray();
 		}
 
@@ -96,7 +106,7 @@ namespace Fy.UI {
 				result.Add(new Rect(self.x, y, self.width, height-space));
 				y += height+space;
 			}
-			result[0].Height(y);
+			result[0] = new Rect(self.x, self.y, self.width, y+space*2);
 			return result.ToArray();
 		}
 	}

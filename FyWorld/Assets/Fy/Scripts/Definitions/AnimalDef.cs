@@ -14,6 +14,7 @@ namespace Fy.Definitions {
 
 	[System.Serializable]
 	public class LivingDef : Def {
+		public string shortDesc;
 		public GraphicDef graphics;
 	}
 

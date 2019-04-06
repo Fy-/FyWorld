@@ -16,9 +16,12 @@ namespace Fy.Helpers {
 		public static Dictionary<string, Texture2D> textures;
 		public static Dictionary<string, GameObject> prefabs;
 		public static Dictionary<Color, Texture2D> unicolorTextures = new Dictionary<Color, Texture2D>();
+		public static GUISkin defaultGUI;
 
 		/// Load resources
 		public static void Load() {
+			Res.defaultGUI = Resources.Load<GUISkin>("UI/defaultGUI");
+
 			/* Load all mats in Resources/Materials into our materials dictionary */
 			Res.materials = new Dictionary<string, Material>();
 			foreach (Material mat in Resources.LoadAll<Material>("Materials/")) {

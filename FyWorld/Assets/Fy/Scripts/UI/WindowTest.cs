@@ -16,11 +16,7 @@ namespace Fy.UI {
 
 		}
 		public override void Content() {
-			GUILayout.BeginVertical();
-			WindowComponents.Label("Hello <3");
-			WindowComponents.Label("Hello <3");
-			WindowComponents.Label("Hello <3");
-			GUILayout.EndVertical();
+		
 		}
 	}
 }

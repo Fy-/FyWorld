@@ -10,14 +10,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Fy.Helpers;
+using Fy.Characters;
 
 namespace Fy.UI {
 	public static class WindowComponents {
 		public static GUIStyle emptyStyle;
 		public static GUIStyle labelStyle;
 		public static GUIStyle titleStyle;
+		public static GUIStyle subTitleStyle;
+
 		public static GUIStyle buttonLabelStyle;
-		public static GUIStyle tabLabelStyle;
+		public static GUIStyle vitalLabelStyle;
+		public static GUIStyle blockTextStyle;
+		public static GUIStyle windowStyle;
 
 		public static Dictionary<int, Dictionary<Rect, Rect>> subRectCache;
 
@@ -34,111 +39,62 @@ namespace Fy.UI {
 			WindowComponents.titleStyle.fontStyle = FontStyle.Bold;
 			WindowComponents.titleStyle.alignment = TextAnchor.MiddleCenter;
 
+			WindowComponents.subTitleStyle = new GUIStyle("label");
+			WindowComponents.subTitleStyle.fontSize = 14;
+			WindowComponents.subTitleStyle.fontStyle = FontStyle.Bold;
+			WindowComponents.subTitleStyle.alignment = TextAnchor.MiddleLeft;
+
 			WindowComponents.buttonLabelStyle = new GUIStyle("label");
 			WindowComponents.buttonLabelStyle.fontStyle = FontStyle.Bold;
 			WindowComponents.buttonLabelStyle.fontSize = 14;
 			WindowComponents.buttonLabelStyle.padding = new RectOffset(2,2,2,2);
 			WindowComponents.buttonLabelStyle.alignment = TextAnchor.MiddleCenter;
 
-			WindowComponents.tabLabelStyle = new GUIStyle("label");
-			WindowComponents.tabLabelStyle.fontStyle = FontStyle.Bold;
-			WindowComponents.tabLabelStyle.fontSize = 14;
-			WindowComponents.tabLabelStyle.padding = new RectOffset(2, 2, 5, 2);
-			WindowComponents.tabLabelStyle.alignment = TextAnchor.MiddleCenter;
+			WindowComponents.vitalLabelStyle = new GUIStyle("label");
+			WindowComponents.vitalLabelStyle.fontStyle = FontStyle.Bold;
+			WindowComponents.vitalLabelStyle.fontSize = 14;
+			WindowComponents.vitalLabelStyle.padding = new RectOffset(2, 2, 2, 2);
+			WindowComponents.vitalLabelStyle.alignment = TextAnchor.MiddleCenter;
+
+			WindowComponents.blockTextStyle = new GUIStyle("label");
+			WindowComponents.blockTextStyle.fontSize = 12;
+			WindowComponents.blockTextStyle.padding = new RectOffset(2, 2, 2, 2);
+			WindowComponents.blockTextStyle.alignment = TextAnchor.UpperLeft;
+			WindowComponents.blockTextStyle.wordWrap = true;
 		}
 
-		public static void WindowTitle(Rect rect, string text) {
-			GUI.Label(rect, text, WindowComponents.titleStyle);
-		}
-		public static void ButtonLabel(Rect rect, string text) {
-			GUI.Label(rect, text, WindowComponents.buttonLabelStyle);
-		}
-		public static void TabLabel(Rect rect, string text) {
-			GUI.Label(rect, text, WindowComponents.tabLabelStyle);
-		}
 		public static void Label(Rect rect, string text) {
 			GUI.Label(rect, text, WindowComponents.labelStyle);
 		}
-		public static void Label(string text) {
-			GUILayout.Label(text);
-		}
-
-		/// Window Background
-		public static void WindowBackground(Rect rect) {
-			WindowComponents.DrawTextureWithBorder(rect, Res.textures["box_default"]);
-		}
-
-		/// TextButton()
-		public static bool TextButton(Rect rect, string text) {
-			bool over = false;
-			if (rect.Contains(Event.current.mousePosition)) {
-				WindowComponents.DrawTextureWithBorder(rect, Res.textures["button_default_over"] );
-				over = true;
-			} else {
-				WindowComponents.DrawTextureWithBorder(rect, Res.textures["button_default"]);
-			}
-			
-			WindowComponents.ButtonLabel(rect, text);
-			return over && Input.GetMouseButton(0);			
-		}
 
 		/// FillableBar()
-		public static void FillableBar(Rect rect, float percent, Color fillColor) {
-			WindowComponents.DrawTextureWithBorder(rect, Res.textures["button_default"]);
+		public static void FillableBar(Rect rect, float percent, Vital vital, Color fillColor) {
+			WindowComponents.DrawTextureWithBorder(rect, Res.textures["fillable_border"]);
 			rect = rect.Contract(2f);
 			GUI.DrawTexture(rect.Width(rect.width*percent), Res.TextureUnicolor(fillColor));
+			GUI.Label(rect, vital.currentValue.ToString()+" / "+vital.value.ToString(), WindowComponents.vitalLabelStyle);
 		}
 
 		/// FillableBarWithLabelValue
-		public static void FillableBarWithLabelValue(Rect rect, string name, float percent, Color fillColor) {
+		public static void FillableBarWithLabelValue(Rect rect, string name, Vital vital, Color fillColor) {
+			float percent = Utils.Normalize(0, vital.value, vital.currentValue);
 			Rect[] hGrid = rect.HorizontalGrid(new float[] {70, rect.width-140, 70}, 5);
 			WindowComponents.Label(hGrid[1], name);
-			WindowComponents.FillableBar(hGrid[2], percent, fillColor);
+			WindowComponents.FillableBar(hGrid[2], percent, vital, fillColor);
 			WindowComponents.Label(hGrid[3], Mathf.Round(percent*100).ToString()+"%");
 		}
 
-		/// WindowTabs 
-		public static void WindowTabs(Rect rect, string[] tabsNames, int active, Window window) {
-			float[] tabsWidths = new float[tabsNames.Length];
-			for (int i = 0; i < tabsNames.Length; i++) {
-				tabsWidths[i] = WindowComponents.buttonLabelStyle.CalcSize(new GUIContent(tabsNames[i])).x + WindowComponents.buttonLabelStyle.padding.horizontal + 40;
-			}
-			Rect[] hGrid = rect.HorizontalGrid(tabsWidths);
-			for (int i = 0; i < tabsNames.Length; i++) {
-				Texture2D texture = (active == i) ? Res.textures["tab_active"] : Res.textures["tab_default"];
-				float height = (active == i) ? hGrid[i+1].height : hGrid[i+1].height - 4;
-				Rect currentRect = hGrid[i+1].Height(height);
+		/// SimpleStat
+		public static void SimpleStat(Rect rect, string text, float value, float baseValue=-1f) {
+			Rect[] hGrid = rect.HorizontalGrid(new float[]{rect.width-70, 70}, 5);
 
-				if (active != i && currentRect.Contains(Event.current.mousePosition)) {
-					WindowComponents.DrawTextureWithBorder(currentRect, Res.textures["tab_over"]);
-					if (GUI.Button(currentRect, string.Empty, WindowComponents.emptyStyle)) {
-						window.SetActiveTab(i);
-					}
-				} else {
-					WindowComponents.DrawTextureWithBorder(currentRect, texture);
-				}
-
-				WindowComponents.TabLabel(currentRect, tabsNames[i]);
-			}
+			WindowComponents.Label(hGrid[1], text);
+			WindowComponents.Label(hGrid[2], "<b>"+value.ToString()+"</b>");
 		}
 
-		/// ImageButton()
-		/// CloseButton()
-		/// VitalBar()
-		
-		/// EditableStat()
-		/// Stat()
-
-		/// DrawLine()
-		/// DrawBox()
-		/// DrawTexture()
-		/// DrawFillableBar()
-		/// DrawBackground()
-		/// DrawShadow()
-
-		/// DrawTexture() 
-		public static Dictionary<Rect, Rect> SplitTexture(Rect r, float textureWidth) {
-			int k = (int)(r.width+r.height*666)+(int)(r.x*777+r.y)+(int)(textureWidth*333);
+		/// Split texture by corners/cards/filling 
+		public static Dictionary<Rect, Rect> SplitTextureBorderUV(Rect r, float textureWidth) {
+			int k = (int)((r.width+textureWidth)+r.height*666);
 			if (WindowComponents.subRectCache.ContainsKey(k)) {
 				return WindowComponents.subRectCache[k];
 			}
@@ -184,23 +140,16 @@ namespace Fy.UI {
 			return WindowComponents.subRectCache[k];
 		}
 
+
 		public static void DrawTextureWithBorder(Rect rect, Texture2D texture) {
 			Rect r = rect.RoundToInt();
 			GUI.BeginGroup(r);
 
-			foreach (KeyValuePair<Rect, Rect> kv in WindowComponents.SplitTexture(r, texture.width)) {
-				WindowComponents.DrawTexture(kv.Key, kv.Value, texture);
+			foreach (KeyValuePair<Rect, Rect> kv in WindowComponents.SplitTextureBorderUV(r, texture.width)) {
+				GUI.DrawTextureWithTexCoords(kv.Key, texture, kv.Value.InvertY());
 			}
 
 			GUI.EndGroup();
 		}
-		public static void DrawTexture(Rect dr, Rect tr, Texture2D texture)  {
-			tr.y = 1f - tr.y - tr.height;
-			GUI.DrawTextureWithTexCoords(dr, texture, tr);
-		}
-
-
-		/// VerticalGrid
-		
 	}
 }

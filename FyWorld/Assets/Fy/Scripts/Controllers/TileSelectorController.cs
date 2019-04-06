@@ -44,7 +44,7 @@ namespace Fy.Controllers {
 			}
 			
 			if (this._characterWindows.ContainsKey(character)) {
-				Debug.Log("Just show it");
+				this._characterWindows[character].Show();
 			} else {
 				this._characterWindows.Add(character, new WindowCharacter(character));
 			}
