@@ -15,10 +15,10 @@ using Fy.Characters.AI;
 
 namespace Fy.Characters { 
 	public abstract class BaseCharacter : Entity {
-		public BaseStats stats { get; protected set; }
 		public LivingDef def { get; protected set; }
+		public CharacterStats stats { get; protected set; }
 		public CharacterMovement movement { get; protected set; }
-		public TaskRunner taskRunner { get; protected set; }
+		public CharacterBrain brain { get; protected set; }
 		public new Vector2Int position { get { return this.movement.position; } }
 		public GraphicInstance graphics { get; protected set; }
 		public string name { get; protected set; }
@@ -26,10 +26,10 @@ namespace Fy.Characters {
 		private Mesh _mesh;
 
 		public BaseCharacter(Vector2Int position, LivingDef def) {
-			this.stats = new BaseStats();
+			this.stats = new CharacterStats();
 			this.def = def;
 			this.movement = new CharacterMovement(position, this);
-			this.taskRunner = new TaskRunner();
+			this.brain = new CharacterBrain(this, this.GetBrainNode());
 			this.name = "Undefined "+Random.Range(1000,9999);
 
 			if (this.def.graphics != null) {
@@ -39,13 +39,16 @@ namespace Fy.Characters {
 			Loki.tick.toAdd.Enqueue(this.Update);
 		}
 
+		public virtual BrainNodePriority GetBrainNode() {
+			BrainNodePriority brainNode = new BrainNodePriority();
+
+			brainNode.AddSubnode(new SleepNode(() => (this.stats.vitals[Vitals.Energy].ValueInfToPercent(.15f))));
+			brainNode.AddSubnode(new IdleNodeTaskData());
+			return brainNode;
+		}
+
 		public virtual void Update() {
-			///this.movement.Move(Target.GetRandomTargetInRange(this.position));
-			if (this.taskRunner.running == false || this.taskRunner.task.taskStatus == TaskStatus.Failed || this.taskRunner.task.taskStatus == TaskStatus.Success) {
-				this.taskRunner.StartTask(Defs.tasks["task_idle"], this, new TargetList(Target.GetRandomTargetInRange(this.position)));
-			} else {
-				this.taskRunner.task.Update();
-			}
+			this.brain.Update();
 			this.stats.Update();
 		}
 

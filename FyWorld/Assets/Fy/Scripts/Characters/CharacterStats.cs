@@ -7,55 +7,123 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+using Fy.Helpers;
 
 namespace Fy.Characters {
-	public static class StatsUtils {
-		public static Stats[] stats = (Stats[])Enum.GetValues(typeof(Stats));
-		public static Attributes[] attributes = (Attributes[])Enum.GetValues(typeof(Attributes));
-		public static Vitals[] vitals = (Vitals[])Enum.GetValues(typeof(Vitals));
-		public static Skills[] skills = (Skills[])Enum.GetValues(typeof(Skills));
-	}
+	public class CharacterStats {
+		public Dictionary<Stats, Stat> stats { get; protected set; }
+		public Dictionary<Vitals, Vital> vitals { get; protected set; }
+		public Dictionary<Attributes, Attribute> attributes { get; protected set; }
+		public bool sleep { get; protected set; }
+		public Action onWakeUp = null;
+		public Action onSleep = null;
 
-	[Serializable]
-	public enum Stats {
-		Strength,
-		Agility,
-		Endurance,
-		Intellect,
-		Wisdom
-	}
+		public CharacterStats() {
+			this.sleep = false;
+			this.stats = new Dictionary<Stats, Stat>();
+			foreach (Stats stat in StatsUtils.stats) {
+				this.stats.Add(stat, new Stat(stat.ToString()));
+				this.stats[stat].baseValue = UnityEngine.Random.Range(5, 10);
+			}
 
-	[Serializable]
-	public enum Attributes {
-		WalkSpeed, // [strength + endurance]
-		InventorySize, // [strength]
-		PhysicalArmour, // [strength + endurance]
-		PhysicalAttack, // [strength + agility]
-		MagicalAttack, // [intellect + wisdom]
-		HealthRegen, // [endurance + strength]
-		EnergyRegen,  // [wisdom + endurance]
-		ManaRegen, // [intellect + wisdom]
-		CriticalChance, // [agility + intellect]
-		Charisma, // [wisdom + strength] This will help us for positive and negative social interactions
-	}
+			this.vitals = new Dictionary<Vitals, Vital>();
+			foreach (Vitals vital in StatsUtils.vitals) {
+				this.vitals.Add(vital, new Vital(vital.ToString()));
+			}
+			this.LoadVitals();
 
-	[Serializable]
-	public enum Vitals {
-		Health, // [endurance] When this reach 0 we die.
-		Energy, // [endurance] Every job or action consume energy, we need to sleep to refill this & eat
-		Mana, // [intellect] We need this for magic stuff,
-		Joy, // TBD
-	}
+			this.attributes = new Dictionary<Attributes, Attribute>();
+			foreach (Attributes att in StatsUtils.attributes) {
+				this.attributes.Add(att, new Attribute(att.ToString()));
+			}
+			this.LoadAttributes();
+		}
+		
+		protected virtual void LoadAttributes() {
 
-	[Serializable]
-	public enum Skills {
-		Healing, // [wisdom + intellect]
-		Building, // [agility + strength]
-		Manufacturing, // [agility + intellect]
-		Entertaining, // [charisma]
-		Growing, // [agility + wisdom]
-		Cutting, // [strength + agility]
-		Mining, // [strength + agility]
-		Cooking, // [agility + intellect]
+			this.attributes[Attributes.WalkSpeed].AddModifier(new StatModifier(this.stats[Stats.Strength], .3f));
+			this.attributes[Attributes.WalkSpeed].AddModifier(new StatModifier(this.stats[Stats.Endurance], .2f));
+
+			this.attributes[Attributes.HealthRegen].AddModifier(new StatModifier(this.stats[Stats.Strength], .1f));
+			this.attributes[Attributes.HealthRegen].AddModifier(new StatModifier(this.stats[Stats.Endurance], .2f));
+
+			this.attributes[Attributes.EnergyRegen].AddModifier(new StatModifier(this.stats[Stats.Endurance], .2f));
+
+			this.attributes[Attributes.PhysicalArmour].AddModifier(new StatModifier(this.stats[Stats.Strength], .1f));
+			this.attributes[Attributes.PhysicalArmour].AddModifier(new StatModifier(this.stats[Stats.Endurance], .3f));
+
+			this.attributes[Attributes.PhysicalAttack].AddModifier(new StatModifier(this.stats[Stats.Strength], .3f));
+			this.attributes[Attributes.PhysicalAttack].AddModifier(new StatModifier(this.stats[Stats.Agility], .2f));
+
+			this.attributes[Attributes.ManaRegen].AddModifier(new StatModifier(this.stats[Stats.Intellect], .3f));
+			this.attributes[Attributes.ManaRegen].AddModifier(new StatModifier(this.stats[Stats.Wisdom], .2f));
+
+			this.attributes[Attributes.CriticalChance].AddModifier(new StatModifier(this.stats[Stats.Agility], .2f));
+			this.attributes[Attributes.CriticalChance].AddModifier(new StatModifier(this.stats[Stats.Intellect], .2f));
+
+			this.attributes[Attributes.Charisma].AddModifier(new StatModifier(this.stats[Stats.Wisdom], .2f));
+			this.attributes[Attributes.Charisma].AddModifier(new StatModifier(this.stats[Stats.Strength], .2f));
+
+
+			foreach (Attribute att in this.attributes.Values) {
+				att.Update();
+			}
+		}
+
+		protected virtual void LoadVitals() {
+			this.vitals[Vitals.Health].AddModifier(new StatModifier(this.stats[Stats.Endurance], 20f));
+			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Agility], 5f));
+			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Strength], 5f));
+			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Wisdom], 5f));
+			this.vitals[Vitals.Mana].AddModifier(new StatModifier(this.stats[Stats.Intellect], 10f));
+			this.vitals[Vitals.Joy].baseValue = 100;
+
+			foreach (Vital vital in this.vitals.Values) {
+				vital.Update();
+				vital.Fill();
+			}
+		}
+
+		public virtual void Update() {
+			if (!this.sleep) {
+				if (this.vitals[Vitals.Energy].currentValue > 0) {
+					this.vitals[Vitals.Energy].currentValue -= .2f;
+				}
+			} else {
+				if (this.vitals[Vitals.Energy].currentValue < this.vitals[Vitals.Energy].value) {
+					this.vitals[Vitals.Energy].currentValue += this.attributes[Attributes.EnergyRegen].value;
+				}
+			}
+		}
+
+		public override string ToString() {
+			string str = "BaseStats(";
+			foreach (Stat stat in this.stats.Values) {
+				str += stat.name+":"+stat.value+",";
+			}
+			foreach (Vital stat in this.vitals.Values) {
+				str += stat.name+":"+stat.value+",";
+			}
+			foreach (Attribute stat in this.attributes.Values) {
+				str += stat.name+":"+stat.value+",";
+			}
+			return str+")";
+		}
+
+		public void Sleep() {
+			this.sleep = true;
+			if (this.onSleep != null) {
+				this.onSleep();
+			}
+		}
+		public void WakeUp() {
+			this.sleep = false;
+			if (this.onWakeUp != null) {
+				this.onWakeUp();
+			}
+		}
 	}
 }
+

@@ -6,6 +6,7 @@
 |    :license: GPLv3, see LICENSE for more details.                    |
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+using System;
 using Fy.Definitions;
 using UnityEngine;
 
@@ -31,27 +32,47 @@ namespace Fy.Characters.AI {
 		Eat
 	}
 
+	[System.Serializable]
+	public class TaskData {
+		public TaskDef def;
+		public TargetList targets;
+		public BaseCharacter character;
+		public int ticksToPerform;
+
+		public TaskData(TaskDef def, TargetList targets, BaseCharacter character, int ticksToPerform = 0) {
+			this.def = def;
+			this.targets = targets;
+			this.character = character;
+			this.ticksToPerform = ticksToPerform;
+		}
+	}
+
 	public class TaskRunner {
 		public TaskDef def { get; protected set; }
 		public Task task { get; protected set; }
 		public bool running { get; protected set; }
-		
+		public Action onEndTask = null;
+
 		public TaskRunner() {
 			this.running = false;
 		}
 
-		public void StartTask(TaskDef def, BaseCharacter character, TargetList targets) {
-			this.def = def;
+		public void StartTask(TaskData taskData) {
+			this.def = taskData.def;
 			if (this.def.taskType == TaskType.Sleep) {
-				this.task = new TaskSleep(character, targets, this);
+				this.task = new TaskSleep(taskData, this);
 			} else if (this.def.taskType == TaskType.Idle) {
-				this.task = new TaskIdle(character, targets, this);
+				this.task = new TaskIdle(taskData, this);
 			}
 			this.running = true;
 		}
 
 		public void EndTask() {
+			if (this.onEndTask != null) {
+				this.onEndTask();
+			}
 			this.running = false;
+			this.task = null;
 		}
 	}
 
@@ -62,15 +83,15 @@ namespace Fy.Characters.AI {
 		public TargetList targets { get; protected set; }
 		public TaskDef def { get { return taskRunner.def; } }
 
-		private bool _start = false;
 		private bool _inRange = false;
 		private int _ticks = 0;
 		private int _ticksToPerform = 0;
 
-		public Task(BaseCharacter character, TargetList targets, TaskRunner taskRunner) {
+		public Task(TaskData taskData, TaskRunner taskRunner) {
 			this.taskRunner = taskRunner;
-			this.character = character;
-			this.targets = targets;
+			this.character = taskData.character;
+			this.targets = taskData.targets;
+			this._ticksToPerform = taskData.ticksToPerform;
 			this.Start();
 		}
 
@@ -106,10 +127,6 @@ namespace Fy.Characters.AI {
 		}
 
 		private void Run() {
-			if (!this._start) {
-				this._start = true;
-				this.Start();
-			}
 			if (this.Perform()) {
 				this.End();
 			}
@@ -117,34 +134,24 @@ namespace Fy.Characters.AI {
 
 		public virtual void End() {
 			this.taskStatus = TaskStatus.Success;
+			this.taskRunner.EndTask();
 		}
 
 		public virtual void Start() {
 			this.taskStatus = TaskStatus.Running;
-			this._ticksToPerform = this.def.ticksToPerform;
 		}
 
 		public virtual bool Perform() {
-			if (this.def.ticksToPerform <= 0) {
-				this.End();
+			if (this._ticksToPerform <= 0) {
 				return true;
 			} else {
 				this._ticks++;
 				if (this._ticks >= this._ticksToPerform) {
-					this.End();
 					return true;
 				}
 			}
 
 			return false;
 		}
-	}
-
-	public class TaskIdle : Task {
-		public TaskIdle(BaseCharacter character, TargetList targets, TaskRunner taskRunner) : base(character, targets, taskRunner) {}
-	}
-
-	public class TaskSleep : Task {
-		public TaskSleep(BaseCharacter character, TargetList targets, TaskRunner taskRunner) : base(character, targets, taskRunner) {}
 	}
  }

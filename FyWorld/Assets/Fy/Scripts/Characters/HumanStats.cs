@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fy.Characters {
-	public class HumanStats : BaseStats {
+	public class HumanStats : CharacterStats {
 		public HumanStats() : base() {}
 		
 		protected override void LoadAttributes() {

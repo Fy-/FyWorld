@@ -7,6 +7,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 using System.Collections.Generic;
+using Fy.Helpers;
 
 namespace Fy.Characters {
 	public class Stat {
@@ -84,6 +85,13 @@ namespace Fy.Characters {
 			set {
 				this._currentValue = value;
 			}
+		}
+
+		public bool ValueInfToPercent(float v) {
+			if (v >= Utils.Normalize(0, this.value, this.currentValue)) {
+				return true;
+			}
+			return false;
 		}
 
 		public Vital(string name) : base(name) {
