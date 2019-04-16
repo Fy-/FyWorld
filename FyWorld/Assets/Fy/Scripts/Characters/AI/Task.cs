@@ -63,6 +63,8 @@ namespace Fy.Characters.AI {
 				this.task = new TaskSleep(taskData, this);
 			} else if (this.def.taskType == TaskType.Idle) {
 				this.task = new TaskIdle(taskData, this);
+			} else if (this.def.taskType == TaskType.Eat) {
+				this.task = new TaskEat(taskData, this);
 			}
 			this.running = true;
 		}

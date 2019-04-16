@@ -39,13 +39,7 @@ namespace Fy.Characters {
 			Loki.tick.toAdd.Enqueue(this.Update);
 		}
 
-		public virtual BrainNodePriority GetBrainNode() {
-			BrainNodePriority brainNode = new BrainNodePriority();
-
-			brainNode.AddSubnode(new SleepNode(() => (this.stats.vitals[Vitals.Energy].ValueInfToPercent(.15f))));
-			brainNode.AddSubnode(new IdleNodeTaskData());
-			return brainNode;
-		}
+		public abstract BrainNodePriority GetBrainNode();
 
 		public virtual void Update() {
 			this.brain.Update();

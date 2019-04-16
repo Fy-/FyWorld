@@ -28,6 +28,9 @@ namespace Fy.UI {
 		public override void Content() {
 			if (this.activeTab == 0) {
 				this.vGrid.H2("Vitals");
+				if (this._character.brain.currentTaskData != null) {
+					this.vGrid.Span(this._character.brain.currentTaskData.def.uid);
+				}
 				foreach (Vital vital in this._character.stats.vitals.Values) {
 					WindowComponents.FillableBarWithLabelValue(
 						this.vGrid.GetNewRect(20f),

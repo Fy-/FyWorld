@@ -15,8 +15,23 @@ using Fy.Helpers;
 using Fy.Visuals;
 
 namespace Fy.World {
+	public class BucketProperty {
+		public float vegetalNutriments;
+		public float nutriments;
+		//public int woodQuantity;
+
+		public BucketProperty() {
+			this.vegetalNutriments = 0f;
+			this.nutriments = 0f;
+		}
+	}
+
+
 	// A bucket (region in a grid)
 	public class LayerGridBucket {
+		/* Bucket properties */
+		public BucketProperty properties { get; protected set; }
+
 		/* Rect is rectangle of the physical space of our bucket */
 		public RectI rect { get; protected set; }
 
@@ -49,6 +64,8 @@ namespace Fy.World {
 			this.titlablesByType = new Dictionary<TilableType, HashSet<Tilable>>();
 			this.tilablesMatrices = new Dictionary<int, List<Matrix4x4>>();
 			this.tilablesMatricesArr = new Dictionary<int, Matrix4x4[]>();
+			this.properties = new BucketProperty();
+
 			if (renderer != null) {
 				this._staticRenderer = (BucketRenderer)Activator.CreateInstance(renderer, this, this.layer);
 			}
@@ -136,6 +153,16 @@ namespace Fy.World {
 
 		public void DelTilable(Tilable tilable) {
 			Vector2Int localPosition = this.GetLocalPosition(tilable.position);
+
+			// Titlable properties
+			if (tilable.def.type == TilableType.Grass) { // Maybe we want some categories like "Food -> Vegetal Food"
+				if (tilable.def.nutriments > 0f) {
+					this.properties.vegetalNutriments -= tilable.def.nutriments;
+					this.properties.nutriments -= tilable.def.nutriments;
+				}
+			}
+
+			// Remove all data
 			this.tilables[localPosition.x + localPosition.y * this.rect.width] = null;
 			Loki.map[tilable.position].Update();
 			
@@ -164,6 +191,14 @@ namespace Fy.World {
 					this.titlablesByType.Add(tilable.def.type, new HashSet<Tilable>());
 				}
 				this.titlablesByType[tilable.def.type].Add(tilable);
+			}
+
+			// Titlable properties
+			if (tilable.def.type == TilableType.Grass) { // Maybe we want some categories like "Food -> Vegetal Food"
+				if (tilable.def.nutriments > 0f) {
+					this.properties.vegetalNutriments += tilable.def.nutriments;
+					this.properties.nutriments += tilable.def.nutriments;
+				}
 			}
 
 			// Add matrice to list if isInstanced.

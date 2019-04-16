@@ -25,10 +25,10 @@ namespace Fy.Characters {
 
 			this.taskRunner.onEndTask = delegate {
 				if (this.taskRunner.task.taskStatus == TaskStatus.Success) {
-					Debug.Log("Clearing task (success)");
+					///Debug.Log("Clearing task (success)");
 					this.currentTaskData = null;
 				} else if (this.taskRunner.task.taskStatus ==  TaskStatus.Failed) {
-					Debug.Log("Clearing task (failed)");
+					//Debug.Log("Clearing task (failed)");
 					this.currentTaskData = null;
 				}
 			};
@@ -39,7 +39,7 @@ namespace Fy.Characters {
 				this.GetNextTaskData();
 			} else {
 				if (this.taskRunner.running == false) {
-					Debug.Log("Starting new task: "+this.currentTaskData.def.uid);
+					//Debug.Log("Starting new task: "+this.currentTaskData.def.uid);
 					this.taskRunner.StartTask(this.currentTaskData);
 				} else {
 					if (this.taskRunner.task.taskStatus == TaskStatus.Running) {

@@ -30,7 +30,11 @@ namespace Fy.Characters {
 
 			this.vitals = new Dictionary<Vitals, Vital>();
 			foreach (Vitals vital in StatsUtils.vitals) {
-				this.vitals.Add(vital, new Vital(vital.ToString()));
+				if (vital == Vitals.Hunger || vital  == Vitals.Joy) {
+					this.vitals.Add(vital, new Vital(vital.ToString(), 100));
+				} else {
+					this.vitals.Add(vital, new Vital(vital.ToString()));
+				}
 			}
 			this.LoadVitals();
 
@@ -89,12 +93,16 @@ namespace Fy.Characters {
 		public virtual void Update() {
 			if (!this.sleep) {
 				if (this.vitals[Vitals.Energy].currentValue > 0) {
-					this.vitals[Vitals.Energy].currentValue -= .2f;
+					this.vitals[Vitals.Energy].currentValue -= .15f;
 				}
 			} else {
 				if (this.vitals[Vitals.Energy].currentValue < this.vitals[Vitals.Energy].value) {
 					this.vitals[Vitals.Energy].currentValue += this.attributes[Attributes.EnergyRegen].value;
 				}
+			}
+
+			if (this.vitals[Vitals.Hunger].currentValue > 0) {
+				this.vitals[Vitals.Hunger].currentValue -= .3f;
 			}
 		}
 

@@ -28,6 +28,12 @@ namespace Fy.Characters {
 			this.baseValue = 0;
 			this.buffValue = 0;
 		}
+
+		public Stat(string name, int max) {
+			this.name = name;
+			this.baseValue = max;
+			this.buffValue = 0;	
+		}
 	}
 
 	// Modifier of an implicit statistic
@@ -54,15 +60,20 @@ namespace Fy.Characters {
 			this._modifiers = new List<StatModifier>();
 		}
 
+		public Attribute(string name, int max) : base(name, max) {
+			this._modifiers = new List<StatModifier>();
+		}
+
 		public void AddModifier(StatModifier modifier) {
 			this._modifiers.Add(modifier);
 		}
 
 		public void Update() {
-			this.baseValue = 0;
-			if (this._modifiers.Count > 0) {
-				foreach (StatModifier modifier in this._modifiers) {
-					this.baseValue += (int)(modifier.stat.value * modifier.ratio);
+			if (this.baseValue == 0) {
+				if (this._modifiers.Count > 0) {
+					foreach (StatModifier modifier in this._modifiers) {
+						this.baseValue += (int)(modifier.stat.value * modifier.ratio);
+					}
 				}
 			}
 		}
@@ -96,6 +107,11 @@ namespace Fy.Characters {
 
 		public Vital(string name) : base(name) {
 			this._currentValue = 0;
+		}
+
+		public Vital(string name, int max) : base(name, max) {
+			this.baseValue = max;
+			this._currentValue = max;
 		}
 
 		public void Fill() {

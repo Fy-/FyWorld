@@ -31,6 +31,9 @@ namespace Fy.Definitions {
 		/* Fertility of our tilable */
 		public float fertility = 0f;
 
+		/* Food value */
+		public float nutriments = 0f;
+
 		/* pathCost of our tilable */
 		public float pathCost = 1f;
 

@@ -72,7 +72,7 @@ namespace Fy.UI {
 			WindowComponents.DrawTextureWithBorder(rect, Res.textures["fillable_border"]);
 			rect = rect.Contract(2f);
 			GUI.DrawTexture(rect.Width(rect.width*percent), Res.TextureUnicolor(fillColor));
-			GUI.Label(rect, vital.currentValue.ToString()+" / "+vital.value.ToString(), WindowComponents.vitalLabelStyle);
+			GUI.Label(rect, Mathf.Round(vital.currentValue).ToString()+" / "+vital.value.ToString(), WindowComponents.vitalLabelStyle);
 		}
 
 		/// FillableBarWithLabelValue

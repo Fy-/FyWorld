@@ -32,6 +32,11 @@ namespace Fy.Definitions {
 				uid = "task_idle",
 				taskType = TaskType.Idle
 			});
+
+			Defs.AddTask(new TaskDef{
+				uid = "task_eat",
+				taskType = TaskType.Eat
+			});
 		}
 	}
 }

@@ -44,7 +44,8 @@ namespace Fy.Characters {
 		Health, // [endurance] When this reach 0 we die.
 		Energy, // [endurance] Every job or action consume energy, we need to sleep to refill this & eat
 		Mana, // [intellect] We need this for magic stuff,
-		Joy, // TBD
+		Hunger, // Between 0 and 100
+		Joy, // Between 0 and 100
 	}
 
 	[Serializable]

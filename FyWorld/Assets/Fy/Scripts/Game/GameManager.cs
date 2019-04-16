@@ -54,8 +54,10 @@ namespace Fy {
 			Debug.Log(this.map);
 
 			/// TEST STUFF
-			this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			for (int i = 0; i < 20; i++) {
+				this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
 		
+			}
 //			Fy.Characters.AI.TargetList.GetRandomTargetInRange(new Vector2Int(10, 10));
 
 			this.StartCoroutine(this.TickLoop());
