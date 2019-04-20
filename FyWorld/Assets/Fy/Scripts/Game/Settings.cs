@@ -16,5 +16,8 @@ namespace Fy {
 		public const int TICKS_PER_SEASON = Settings.TICKS_PER_DAY * Settings.DAYS_PER_SEASON;
 		public const int TICKS_PER_YEAR = Settings.SEASONS_PER_YEAR * Settings.TICKS_PER_SEASON;
 		public const bool DEBUG = true;
+		public const int EYE_COUNT = 1;
+		public const int HAIR_COUNT = 1;
+		public const int BODY_COUNT = 0;
 	}
 }

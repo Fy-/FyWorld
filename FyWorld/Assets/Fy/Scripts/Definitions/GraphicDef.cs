@@ -14,7 +14,7 @@ namespace Fy.Definitions {
 	[System.Serializable]
 	public class GraphicDef : Def {
 		/* Texture name in the Resources/Textures directory */
-		public string textureName;
+		public string textureName = string.Empty;
 
 		/* Material name in the Resources/Materials directory */
 		public string materialName = "tilables";

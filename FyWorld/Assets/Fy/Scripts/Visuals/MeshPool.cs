@@ -15,6 +15,7 @@ namespace Fy.Visuals {
 		/* Dictionary of planes where the identifier is representative of the size of the plane. */
 		public static Dictionary<float, MeshData> planes = new Dictionary<float, MeshData>();
 		public static Dictionary<int, MeshData> cornerPlanes = new Dictionary<int, MeshData>();
+		public static Dictionary<float, MeshData> humanPlanes = new Dictionary<float, MeshData>();
 
 		/// Get the mesh for corners for a connected tilable
 		public static Mesh GetCornersPlane(bool[] corners) {
@@ -34,6 +35,16 @@ namespace Fy.Visuals {
 			}
 			MeshPool.planes.Add(id, MeshPool.GenPlaneMesh(size));
 			return MeshPool.planes[id].mesh;
+		}
+
+		/// Get a plane mesh of the size "size"
+		public static Mesh GetHumanPlaneMesh(Vector2 size, Direction direction) {
+			float id = (size.x + size.y*666f)+(int)direction*333f;
+			if (MeshPool.humanPlanes.ContainsKey(id)) {
+				return MeshPool.humanPlanes[id].mesh;
+			}
+			MeshPool.humanPlanes.Add(id, MeshPool.GenHumanMesh(size, direction));
+			return MeshPool.humanPlanes[id].mesh;
 		}
 
 		/// Generate the mesh for corners for a connected tilable
@@ -69,6 +80,44 @@ namespace Fy.Visuals {
 					meshData.AddTriangle(vIndex, 0, 2, 3);
 				}
 			}
+			meshData.Build();
+			return meshData;
+		}
+
+		/// Generate a plane with uv corresponding to the direction of the character.
+		public static MeshData GenHumanMesh(Vector2 size, Direction direction) {
+			float uy = 1f/3f;
+
+			MeshData meshData = new MeshData(1, (MeshFlags.Base | MeshFlags.UV));
+			meshData.vertices.Add(new Vector3(0, 0));
+			meshData.vertices.Add(new Vector3(0, size.y));
+			meshData.vertices.Add(new Vector3(size.x, size.y));
+			meshData.vertices.Add(new Vector3(size.x, 0));
+
+			if (direction == Direction.N) {
+				meshData.UVs.Add(new Vector2(0f, uy));
+				meshData.UVs.Add(new Vector2(0f, uy*2f));
+				meshData.UVs.Add(new Vector2(1f, uy*2f));
+				meshData.UVs.Add(new Vector2(1f, uy));
+			} else if (direction == Direction.S) {
+				meshData.UVs.Add(new Vector2(0f, uy*2f));
+				meshData.UVs.Add(new Vector2(0f, 1f));
+				meshData.UVs.Add(new Vector2(1f, 1f));
+				meshData.UVs.Add(new Vector2(1f, uy*2f));
+			} else if (direction == Direction.E) {
+				meshData.UVs.Add(new Vector2(0f, 0f));
+				meshData.UVs.Add(new Vector2(0f, uy));
+				meshData.UVs.Add(new Vector2(1f, uy));
+				meshData.UVs.Add(new Vector2(1f, 0f));
+			} else if (direction == Direction.W) {
+				meshData.UVs.Add(new Vector2(1f, 0f));
+				meshData.UVs.Add(new Vector2(1f, uy));
+				meshData.UVs.Add(new Vector2(0f, uy));
+				meshData.UVs.Add(new Vector2(0f, 0f));
+			}
+
+			meshData.AddTriangle(0, 0, 1, 2);
+			meshData.AddTriangle(0, 0, 2, 3);
 			meshData.Build();
 			return meshData;
 		}

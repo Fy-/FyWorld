@@ -13,10 +13,14 @@ namespace Fy.Definitions {
 	// Definition for a color palette 
 	[System.Serializable]
 	public class ColorPaletteDef : Def {
-		public List<Color> colors = new List<Color>(15);
+		public List<Color> colors = new List<Color>();
 
 		public Color GetRandom() {
 			return this.colors[Random.Range(0, this.colors.Count)];
+		}
+
+		public int GetRandomID() {
+			return Random.Range(0, this.colors.Count);
 		}
 	}
 

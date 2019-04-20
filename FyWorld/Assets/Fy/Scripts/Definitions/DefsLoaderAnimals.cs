@@ -23,10 +23,20 @@ namespace Fy.Definitions {
 			Defs.animals = new Dictionary<string, AnimalDef>();
 
 			Defs.AddAnimal(new AnimalDef{
+				uid = "human",
+				shortDesc = "Weid animal.",
+				/*graphics = new GraphicDef{
+					textureName = "chicken_front"
+				},*/
+				graphics = new GraphicDef()
+			});
+
+			Defs.AddAnimal(new AnimalDef{
 				uid = "chicken",
 				shortDesc = "A chicken (Gallus gallus domesticus) is a kind of domesticated bird. It is raised in many places for its meat and eggs.",
 				graphics = new GraphicDef{
-					textureName = "chicken_front"
+					textureName = "chicken_front",
+					size = new Vector2(.7f, .7f)
 				},
 			});
 		}

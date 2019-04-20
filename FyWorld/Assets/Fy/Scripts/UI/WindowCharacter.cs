@@ -30,6 +30,8 @@ namespace Fy.UI {
 				this.vGrid.H2("Vitals");
 				if (this._character.brain.currentTaskData != null) {
 					this.vGrid.Span(this._character.brain.currentTaskData.def.uid);
+				} else {
+					this.vGrid.Span("Doing nothing...");
 				}
 				foreach (Vital vital in this._character.stats.vitals.Values) {
 					WindowComponents.FillableBarWithLabelValue(

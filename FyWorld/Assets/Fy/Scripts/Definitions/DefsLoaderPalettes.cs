@@ -26,6 +26,34 @@ namespace Fy.Definitions {
 			Defs.colorPallets = new Dictionary<string, ColorPaletteDef>();
 			Defs.namedColorPallets = new Dictionary<string, NamedColorPaletteDef>();
 
+			Defs.AddColorPalette(new ColorPaletteDef{
+				uid = "human_hair",
+				colors = new List<Color> {
+					new Color(150/255f, 150/255f, 150/255f, 1),
+					new Color(179/255f, 75/255f, 165/255f, 1),
+					new Color(87/255f, 75/255f, 179/255f, 1),
+					new Color(76/255f, 179/255f, 130/255f, 1),
+					new Color(90/255f, 175/255f, 75/255f, 1),
+					new Color(177/255f, 179/255f, 76/255f, 1),
+					new Color(117/255f, 49/255f, 29/255f, 1),
+					new Color(31/255f, 17/255f, 12/255f, 1),
+				}
+			});
+
+
+			Defs.AddColorPalette(new ColorPaletteDef{
+				uid = "human_body",
+				colors = new List<Color> {
+					new Color(190/255f, 160/255f, 135/255f, 1f),
+					new Color(70/255f, 50/255f, 25/255f, 1f),
+					new Color(39/255f, 29/255f, 8/255f, 1f),
+					new Color(220/255f, 220/255f, 220/255f, 1f),
+					new Color(161/255f, 128/255f, 68/255f, 1f),
+					new Color(215/255f, 167/255f, 208/255f, 1f)
+				}
+			});
+
+
 			Defs.AddColorPalette(new NamedColorPaletteDef{
 				uid = "cols_vitals",
 				colors = new Dictionary<string, Color>{

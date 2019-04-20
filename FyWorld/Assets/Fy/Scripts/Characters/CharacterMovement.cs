@@ -14,6 +14,7 @@ using Fy.Characters.AI;
 
 namespace Fy.Characters {
 	public class CharacterMovement {
+		public System.Action<Direction> onChangeDirection;
 		public Vector2Int position { get; protected set; }
 		public Direction lookingAt { get; protected set; }
 		public Vector2Int destination { get; protected set; }
@@ -42,7 +43,24 @@ namespace Fy.Characters {
 			this.ResetMovement();
 		}
 
-		private void UpdateLookingAt() {}
+		private void UpdateLookingAt(Vector2Int nextPos) {
+			Direction original = this.lookingAt;
+			Vector2Int t = nextPos - this.position;
+
+			if (t.x > 0) {
+				this.lookingAt = Direction.E;
+			} else if (t.x < 0) {
+				this.lookingAt = Direction.W;
+			} else if (t.y > 0) {
+				this.lookingAt = Direction.N;
+			} else {
+				this.lookingAt = Direction.S;
+			}
+
+			if (this.lookingAt != original && this.onChangeDirection != null) {
+				this.onChangeDirection(this.lookingAt);
+			}
+		}
 
 		public void Move(Task task) {
 			if (this._hasDestination == false) {
@@ -63,10 +81,10 @@ namespace Fy.Characters {
 				this.ResetMovement();
 				return;
 			}
+			
 			if (this.position == this._nextPosition) {
-				
 				this._nextPosition = this._path.Dequeue();
-				this.UpdateLookingAt();
+				this.UpdateLookingAt(this._nextPosition);
 			}
 
 			float distance = Utils.Distance(this.position, this._nextPosition);

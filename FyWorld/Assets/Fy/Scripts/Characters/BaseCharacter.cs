@@ -20,7 +20,7 @@ namespace Fy.Characters {
 		public CharacterMovement movement { get; protected set; }
 		public CharacterBrain brain { get; protected set; }
 		public new Vector2Int position { get { return this.movement.position; } }
-		public GraphicInstance graphics { get; protected set; }
+		public GraphicInstance graphics { get; set; }
 		public string name { get; protected set; }
 
 		private Mesh _mesh;
@@ -30,13 +30,18 @@ namespace Fy.Characters {
 			this.def = def;
 			this.movement = new CharacterMovement(position, this);
 			this.brain = new CharacterBrain(this, this.GetBrainNode());
-			this.name = "Undefined "+Random.Range(1000,9999);
+			this.name = this.SetName();
 
-			if (this.def.graphics != null) {
+			if (this.def.graphics != null && this.def.graphics.textureName != string.Empty) { // @TODO: do this but better.
 				this.graphics = GraphicInstance.GetNew(this.def.graphics);
+
 			}
 
 			Loki.tick.toAdd.Enqueue(this.Update);
+		}
+
+		public virtual string SetName() {
+			return "Undefined "+Random.Range(1000,9999);
 		}
 
 		public abstract BrainNodePriority GetBrainNode();
