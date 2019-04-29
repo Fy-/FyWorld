@@ -10,9 +10,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fy.Characters {
+	// Human stats
 	public class HumanStats : CharacterStats {
 		public HumanStats() : base() {}
-		
+
+		/// Define all humans attributes.
 		protected override void LoadAttributes() {
 			base.LoadAttributes();
 			

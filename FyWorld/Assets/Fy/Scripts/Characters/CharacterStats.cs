@@ -12,12 +12,24 @@ using UnityEngine;
 using Fy.Helpers;
 
 namespace Fy.Characters {
+	// Character stats
 	public class CharacterStats {
+		/* All base stats */
 		public Dictionary<Stats, Stat> stats { get; protected set; }
+
+		/* All vitals, (bars, hp, mp, etc...) */
 		public Dictionary<Vitals, Vital> vitals { get; protected set; }
+
+		/* Attributes (or implicit stats) */
 		public Dictionary<Attributes, Attribute> attributes { get; protected set; }
+
+		/* Are we sleeping */
 		public bool sleep { get; protected set; }
+
+		/* Callback when we wake up */
 		public Action onWakeUp = null;
+
+		/* Callback when we go to sleep */
 		public Action onSleep = null;
 
 		public CharacterStats() {
@@ -45,6 +57,7 @@ namespace Fy.Characters {
 			this.LoadAttributes();
 		}
 		
+		/// Define all default attributes.
 		protected virtual void LoadAttributes() {
 
 			this.attributes[Attributes.WalkSpeed].AddModifier(new StatModifier(this.stats[Stats.Strength], .3f));
@@ -76,6 +89,7 @@ namespace Fy.Characters {
 			}
 		}
 
+		// Define all default vitals.
 		protected virtual void LoadVitals() {
 			this.vitals[Vitals.Health].AddModifier(new StatModifier(this.stats[Stats.Endurance], 20f));
 			this.vitals[Vitals.Energy].AddModifier(new StatModifier(this.stats[Stats.Agility], 5f));
@@ -90,6 +104,7 @@ namespace Fy.Characters {
 			}
 		}
 
+		// Update stats
 		public virtual void Update() {
 			if (!this.sleep) {
 				if (this.vitals[Vitals.Energy].currentValue > 0) {
@@ -120,12 +135,15 @@ namespace Fy.Characters {
 			return str+")";
 		}
 
+		/// Go to sleep
 		public void Sleep() {
 			this.sleep = true;
 			if (this.onSleep != null) {
 				this.onSleep();
 			}
 		}
+
+		/// Wake up
 		public void WakeUp() {
 			this.sleep = false;
 			if (this.onWakeUp != null) {

@@ -13,12 +13,24 @@ using Fy.Definitions;
 using Fy.Characters.AI;
 
 namespace Fy.Characters {
+	// Character movement
 	public class CharacterMovement {
+		/* Callback called when we change direction */
 		public System.Action<Direction> onChangeDirection;
+
+		/* Current tile */
 		public Vector2Int position { get; protected set; }
+
+		/* Direction we are looking at */
 		public Direction lookingAt { get; protected set; }
+
+		/* Final destination */
 		public Vector2Int destination { get; protected set; }
+
+		/* Current path queue, list of tile positions */
 		public Queue<Vector2Int> path { get { return this._path; } }
+
+		/* Character position on screen */
 		public Vector3 visualPosition { 
 			get {
 				return new Vector3( 
@@ -29,11 +41,22 @@ namespace Fy.Characters {
 			}
 		}
 
+		/* Movement percent between currentPosition and nextPosition */
 		private float _movementPercent;
+
+		/* Next tile */
 		private Vector2Int _nextPosition;
+
+		/* Do we have a destionation ? */
 		private bool _hasDestination;
+
+		/* Current path queue, list of tile positions */
 		private Queue<Vector2Int> _path;
+
+		/* Character speed. TODO: definine this using character.stats */
 		private float _speed = .1f;
+
+		/* Character */
 		private BaseCharacter _character;
 
 		public CharacterMovement(Vector2Int position, BaseCharacter character) {
@@ -43,6 +66,7 @@ namespace Fy.Characters {
 			this.ResetMovement();
 		}
 
+		// Check if lookingAt is the same if not, call onChangeDirection.
 		private void UpdateLookingAt(Vector2Int nextPos) {
 			Direction original = this.lookingAt;
 			Vector2Int t = nextPos - this.position;
@@ -62,6 +86,7 @@ namespace Fy.Characters {
 			}
 		}
 
+		/// Check if we have a path, if not try to get one. Then move towards the destination, tile by tile.
 		public void Move(Task task) {
 			if (this._hasDestination == false) {
 				PathResult pathResult = AI.PathFinder.GetPath(this.position, task.targets.currentPosition);
@@ -99,8 +124,7 @@ namespace Fy.Characters {
 			}
 		}
 
-
-
+		// Reset all data about the movement (used at the end of a path)
 		private void ResetMovement() {
 			this.destination = this.position;
 			this._hasDestination = false;

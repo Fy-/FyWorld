@@ -10,10 +10,18 @@ using UnityEngine;
 using Fy.Characters.AI;
 
 namespace Fy.Characters {
+	// Base Btree for character actions
 	public class CharacterBrain {
+		/* Character */
 		public BaseCharacter character { get; protected set; }
+
+		/* Root node */
 		public BrainNode brainNode { get; protected set; }
+
+		/* Task runner */
 		public TaskRunner taskRunner { get; protected set; }
+
+		/* Data about the current task */
 		public TaskData currentTaskData { get; protected set; }
 
 		public CharacterBrain(BaseCharacter character, BrainNode brainNode) {
@@ -34,6 +42,7 @@ namespace Fy.Characters {
 			};
 		}
 
+		/// Check if we have a current task (the data at least), if not get the next task in tree.
 		public void Update() {
 			if (this.currentTaskData == null) {
 				this.GetNextTaskData();
@@ -49,6 +58,7 @@ namespace Fy.Characters {
 			}
 		} 
 
+		/// Get the next task data in tree.
 		public void GetNextTaskData() {
 			TaskData nextTaskData = this.brainNode.GetTaskData();
 			if (nextTaskData != null) {

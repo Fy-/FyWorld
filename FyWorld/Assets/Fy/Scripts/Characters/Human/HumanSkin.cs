@@ -23,6 +23,7 @@ namespace Fy.Characters {
 		public int hairColorID;
 		public int bodyColorID;
 
+		/// Create a human skin, can be randomized.
 		public HumanSkinData(bool randomize = false) {
 			if (!randomize) {
 				this.eyeID = 0;
@@ -45,12 +46,25 @@ namespace Fy.Characters {
 
 
 	public class HumanSkin  {
+		/* Skin Data */
 		public HumanSkinData skinData { get; protected set; }
+
+		/* Hair graphics */
 		public GraphicInstance hairGraphic { get; protected set; }
+
+		/* Head graphics */
 		public GraphicInstance headGraphic { get; protected set; }
+
+		/* Eyes graphics */
 		public GraphicInstance eyesGraphic { get; protected set; }
+		
+		/* Body graphics */
 		public GraphicInstance bodyGraphic { get; protected set; }
+
+		/* Human object (skin owner) */
 		public Human human { get; protected set; }
+
+		/* Skin size */
 		public Vector2 size { get ; protected set; }
 
 		public HumanSkin(Human human) {
@@ -60,6 +74,7 @@ namespace Fy.Characters {
 			this.UpdateLookingAt(Direction.S);
 		}
 
+		// Update the meshes to correct UVs depending on the property lookingAt (direction from human.movement)
 		public void UpdateLookingAt(Direction dir) {
 			this.bodyGraphic = GraphicInstance.GetNew(
 				this.human.def.graphics,
@@ -91,10 +106,12 @@ namespace Fy.Characters {
 			);	
 		}
 
+		/// Get the correct visual position. @TODO: maybe use y?
 		private Vector3 GetVisualPosition(float priority) {
 			return this.human.movement.visualPosition + new Vector3(0, 0, priority);
 		}
 
+		/// Draw all the meshes for the skin.
 		public void UpdateDraw() {
 			Graphics.DrawMesh(
 				this.bodyGraphic.mesh,
@@ -126,6 +143,7 @@ namespace Fy.Characters {
 			);
 		}
 
+		/// Randomize the skin.
 		public void Randomize() {
 			this.skinData = new HumanSkinData(true);
 		}
