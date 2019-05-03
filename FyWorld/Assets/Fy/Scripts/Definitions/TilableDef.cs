@@ -29,7 +29,7 @@ namespace Fy.Definitions {
 		public PlantDef plantDef;
 
 		/* Fertility of our tilable */
-		public float fertility = 0f;
+		public float fertility = 1f;
 
 		/* Food value */
 		public float nutriments = 0f;

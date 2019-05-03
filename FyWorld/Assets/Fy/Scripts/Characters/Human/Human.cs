@@ -10,6 +10,7 @@ using UnityEngine;
 using Fy.Definitions;
 using Fy.Characters.AI;
 using Fy.Visuals;
+using Fy.World;
 using Fy.Helpers;
 
 namespace Fy.Characters {
@@ -30,6 +31,7 @@ namespace Fy.Characters {
 
 			brainNode.AddSubnode(new SleepNode(() => (this.stats.vitals[Vitals.Energy].ValueInfToPercent(.15f))));
 			//brainNode.AddSubnode(new EatVegiesNode(() => (this.stats.vitals[Vitals.Hunger].ValueInfToPercent(.25f))));
+			brainNode.AddSubnode(new GrowNode(WorldUtils.FieldHasWork));
 			brainNode.AddSubnode(new IdleNodeTaskData());
 			return brainNode;
 		}

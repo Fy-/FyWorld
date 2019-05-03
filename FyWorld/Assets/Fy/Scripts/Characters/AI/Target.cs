@@ -17,6 +17,7 @@ namespace Fy.Characters.AI {
 	public class TargetList {
 		public Queue<Target> targets = new Queue<Target>();
 		public Target current { get; protected set; }
+		public bool setAdjs = false;
 
 		public Vector2Int currentPosition { 
 			get {
@@ -69,9 +70,8 @@ namespace Fy.Characters.AI {
 				Loki.map[this.current.position].reserved = false;
 			}
 			this.current = this.targets.Dequeue();
+			
 		}
-
-		
 	}
 
 	// A target in our game.

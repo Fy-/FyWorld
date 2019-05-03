@@ -48,6 +48,7 @@ namespace Fy.World {
 			this.grids.Add(Layer.Plant, new TilableGrid(this.size));
 			this.grids.Add(Layer.Mountain, new TilableGrid(this.size));
 			this.grids.Add(Layer.Stackable, new TilableGrid(this.size));
+			this.grids.Add(Layer.Helpers, new TilableGrid(this.size));
 		}
 
 		// Get tile property by position
@@ -179,7 +180,7 @@ namespace Fy.World {
 				}
 			}
 
-			foreach (Vector2Int position in new RectI(new Vector2Int(10, 10), 10, 10)) {
+			foreach (Vector2Int position in new RectI(new Vector2Int(10, 10), 5, 5)) {
 				if (this[position].blockStackable == false) {
 					this.Spawn(position, new Stackable(
 						position,

@@ -29,7 +29,11 @@ namespace Fy.Characters.AI {
 	public enum TaskType {
 		Idle,
 		Sleep,
-		Eat
+		Eat,
+		Cut,
+		Harvest,
+		Sow, 
+		Dirt
 	}
 
 	[System.Serializable]
@@ -65,13 +69,24 @@ namespace Fy.Characters.AI {
 				this.task = new TaskIdle(taskData, this);
 			} else if (this.def.taskType == TaskType.Eat) {
 				this.task = new TaskEat(taskData, this);
+			} else if (this.def.taskType == TaskType.Cut) {
+				this.task = new TaskCut(taskData, this);
+			} else if (this.def.taskType == TaskType.Dirt) {
+				this.task = new TaskDirt(taskData, this);
+			} else if (this.def.taskType == TaskType.Sow) {
+				this.task = new TaskSow(taskData, this);
 			}
+
 			this.running = true;
 		}
 
 		public void EndTask() {
+
 			if (this.onEndTask != null) {
 				this.onEndTask();
+			}
+			if (this.task.targets.current != null) {
+				Loki.map[this.task.targets.current.position].reserved = false;
 			}
 			this.running = false;
 			this.task = null;
@@ -94,6 +109,11 @@ namespace Fy.Characters.AI {
 			this.character = taskData.character;
 			this.targets = taskData.targets;
 			this._ticksToPerform = taskData.ticksToPerform;
+
+			if (this.taskRunner.def.targetType == TargetType.Adjacent) {
+				this.targets.current.GetClosestAdj(this.character.position);
+			}
+
 			this.Start();
 		}
 

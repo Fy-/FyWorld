@@ -84,6 +84,18 @@ namespace Fy.Helpers {
 			}
 		}
 
+		public static void DrawReserved() {
+			Gizmos.color = Color.red;
+			foreach (Vector2Int v in Loki.cameraController.viewRect) {
+				if (Loki.map[v] != null && Loki.map[v].reserved) {
+					Gizmos.DrawWireCube(
+						new Vector3(v.x+.5f, v.y+.5f), 
+						Vector3.one
+					);
+				}
+			}
+		}
+
 		public static void DrawNoiseMap() {
 			foreach (Vector2Int v in Loki.cameraController.viewRect) {
 				try {

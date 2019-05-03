@@ -33,7 +33,11 @@ namespace Fy.Entities {
 		/* Current plant state */
 		private int _currentState;
 
+		/* Plant current grow state */
+		public int state { get { return this._currentState; } }
+
 		public Plant(Vector2Int position, TilableDef def, bool randomGrow = false) {
+			this.addGraphics = new Dictionary<string, GraphicInstance>();
 			this.position = position;
 			this.def = def;
 			this._lifetime = this.def.plantDef.lifetime*Settings.TICKS_PER_DAY;
@@ -42,11 +46,11 @@ namespace Fy.Entities {
 
 			if (randomGrow) {
 				this.ticks = Random.Range(0, (int)(this._lifetime-this._ticksPerState));
-				this.GetState();
 			} else {
+				this.ticks = 0;
 				this._currentState = 1;
 			}
-
+			this.GetState();
 			this.UpdateGraphics();
 			Loki.tick.toAdd.Enqueue(this.Update);
 		}
@@ -56,7 +60,6 @@ namespace Fy.Entities {
 				this._leafColor = Defs.colorPallets["cols_leafsGreen"].GetRandom();
 				this.mainGraphic = GraphicInstance.GetNew(def.graphics, this._leafColor	);
 			} else if (this.def.type == TilableType.Tree) { // If we are groot
-				this.addGraphics = new Dictionary<string, GraphicInstance>();
 
 				this._leafColor = Defs.colorPallets["cols_leafsGreen"].GetRandom();
 				this._woodColor = Defs.colorPallets["cols_wood"].colors[0];
@@ -67,14 +70,23 @@ namespace Fy.Entities {
 					1
 				);
 
-				this.addGraphics.Add("leafs", 
-					GraphicInstance.GetNew(
+				if (this.addGraphics.ContainsKey("leafs")) {
+					this.addGraphics["leafs"] = GraphicInstance.GetNew(
 						def.graphics,
 						this._leafColor,
 						Res.textures[this.def.graphics.textureName+"_leafs"],
 						2
-					)
-				);
+					);
+				} else {
+					this.addGraphics.Add("leafs", 
+						GraphicInstance.GetNew(
+							def.graphics,
+							this._leafColor,
+							Res.textures[this.def.graphics.textureName+"_leafs"],
+							2
+						)
+					);
+				}
 			} else { // Standard graphics no coloring or override.
 				this.mainGraphic = GraphicInstance.GetNew(def.graphics);
 			}
@@ -114,6 +126,10 @@ namespace Fy.Entities {
 		public override void Destroy() {
 			Loki.tick.toDel.Enqueue(this.Update);
 			base.Destroy();
+		}
+
+		public void Cut() {
+			this.Destroy();
 		}
 	}
 }

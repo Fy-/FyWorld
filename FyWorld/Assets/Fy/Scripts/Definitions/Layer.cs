@@ -12,6 +12,7 @@ namespace Fy.Definitions {
 	public enum Layer : ushort {
 		Undefined, // This is used if we don't want a grahpic representation.
 		Ground, // Ground layer.
+		Helpers,
 		Mountain,
 		Stackable,
 		Plant,

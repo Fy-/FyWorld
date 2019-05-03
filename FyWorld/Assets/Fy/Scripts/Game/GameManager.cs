@@ -31,6 +31,7 @@ namespace Fy {
 		public bool DrawAStar = false;
 		public bool DrawFertility = false;
 		public bool DrawPaths = false;
+		public bool DrawReserved = false;
 		public bool ready { get { return this._ready; } }
 
 		/* Are we ready ? */
@@ -54,11 +55,14 @@ namespace Fy {
 			Debug.Log(this.map);
 
 			/// TEST STUFF
+			/*
 			for (int i = 0; i < 5; i++) {
 				this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
-			}
+			}*/
+			GrowArea area = new GrowArea(Defs.plants["carrot"]);
+			area.Add(new RectI(new Vector2Int(15,15), 6, 6));
 			for (int i = 0; i < 5; i++) {
-				this.map.SpawnCharacter(new Human(new Vector2Int(15,15), Defs.animals["human"]));
+				this.map.SpawnCharacter(new Human(new Vector2Int(10,10), Defs.animals["human"]));
 			}
 //			Fy.Characters.AI.TargetList.GetRandomTargetInRange(new Vector2Int(10, 10));
 
@@ -90,6 +94,9 @@ namespace Fy {
 		// WARNING WARNING : Clean this shit.
 		void OnDrawGizmos() {
 			if (this._ready && Settings.DEBUG) {
+				if (this.DrawReserved) {
+					DebugRenderer.DrawReserved();
+				}
 				if (this.DrawPaths) {
 					foreach (BaseCharacter character in this.map.characters) {
 						DebugRenderer.DrawCurrentPath(character.movement);

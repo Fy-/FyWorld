@@ -23,6 +23,23 @@ namespace Fy.Definitions {
 			Defs.plants = new Dictionary<string, TilableDef>();
 
 			Defs.AddPlant(new TilableDef{
+				uid = "carrot",
+				layer = Layer.Plant,
+				pathCost = .95f,
+				blockPlant = true,
+				nutriments = 2f,
+				blockStackable = true,
+				type = TilableType.Plant,
+				graphics = new GraphicDef{
+					textureName = "carrot"
+				},
+				plantDef = new PlantDef{
+					probability = .1f,
+					minFertility = .1f
+				}
+			});
+
+			Defs.AddPlant(new TilableDef{
 				uid = "grass",
 				layer = Layer.Plant,
 				pathCost = .95f,

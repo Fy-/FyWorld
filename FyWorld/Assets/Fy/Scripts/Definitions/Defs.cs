@@ -13,6 +13,18 @@ namespace Fy.Definitions {
 	// A static class to load our definitions
 	// Everything will be loaded from code or JSON files. 
 	public static partial  class Defs {
+		/* Empty default def */
+		public static TilableDef empty;
+
+		public static void LoadDefaultsDefs() {
+			Defs.empty = new TilableDef{
+				uid = "empty",
+				layer = Layer.Helpers,
+				graphics = new GraphicDef{}
+			};
+		}
+
+
 		/* List of ground definitions */
 		public static Dictionary<string, TilableDef> grounds;
 		/*  List of ground ordered by maxHeight */

@@ -24,9 +24,10 @@ namespace Fy {
 		/// Load all statics definitions
 		public static void LoadStatics() {
 			Res.Load(); // Load all our resources;
-			DirectionUtils.LoadStatics(); // Set neighbours;
+			DirectionUtils.LoadStatics(); // Set neighbours;0
+			Defs.LoadDefaultsDefs();
 			Defs.LoadGroundsFromCode(); // Loading our ground definitions;
-			Defs.LoadPlantsFromCode();; // Loading our plants definitions;
+			Defs.LoadPlantsFromCode(); // Loading our plants definitions;
 			Defs.LoadMountainsFromCode(); // Loading our mountains definitions;
 			Defs.LoadStackablesFromCode(); // Loading our stackables definitions;
 			Defs.LoadColorPalletsFromCode(); // Loading our pallets;

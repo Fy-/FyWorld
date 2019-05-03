@@ -29,6 +29,30 @@ namespace Fy.Definitions {
 			});
 
 			Defs.AddTask(new TaskDef{
+				uid = "task_cut",
+				taskType = TaskType.Cut,
+				targetType = TargetType.Adjacent,
+			});
+
+			Defs.AddTask(new TaskDef{
+				uid = "task_harvest",
+				taskType = TaskType.Harvest,
+				targetType = TargetType.Adjacent,
+			});
+
+			Defs.AddTask(new TaskDef{
+				uid = "task_dirt",
+				taskType = TaskType.Dirt,
+				targetType = TargetType.Adjacent,
+			});
+
+			Defs.AddTask(new TaskDef{
+				uid = "task_sow",
+				taskType = TaskType.Sow,
+				targetType = TargetType.Adjacent,
+			});
+
+			Defs.AddTask(new TaskDef{
 				uid = "task_idle",
 				taskType = TaskType.Idle
 			});
