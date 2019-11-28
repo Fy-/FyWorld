@@ -15,6 +15,7 @@ using Fy.Entities;
 using Fy.Helpers;
 using Fy.Controllers;
 using Fy.Characters;
+using Fy.UI;
 
 namespace Fy {
 	// Manage the game. (yep).
@@ -54,18 +55,34 @@ namespace Fy {
 			this.map.BuildAllMeshes();
 			Debug.Log(this.map);
 
+
 			/// TEST STUFF
+
+
+			foreach (Vector2Int position in new RectI(new Vector2Int(10, 10), 5, 5)) {
+				if (this.map[position].blockStackable == false) {
+					this.map.Spawn(position, new Stackable(
+						position,
+						Defs.stackables["logs"],
+						Random.Range(1, Defs.stackables["logs"].maxStack)
+					));
+				}
+			}
 			/*
 			for (int i = 0; i < 5; i++) {
 				this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
 			}*/
 			GrowArea area = new GrowArea(Defs.plants["carrot"]);
 			area.Add(new RectI(new Vector2Int(15,15), 6, 6));
+
+			StockArea stockarea = new StockArea(Defs.empty);
+			stockarea.Add(new RectI(new Vector2Int(5,5), 6, 6));
+
 			for (int i = 0; i < 5; i++) {
 				this.map.SpawnCharacter(new Human(new Vector2Int(10,10), Defs.animals["human"]));
 			}
 //			Fy.Characters.AI.TargetList.GetRandomTargetInRange(new Vector2Int(10, 10));
-
+			new WindowTest();
 			this.StartCoroutine(this.TickLoop());
 			this._ready = true;
 		}

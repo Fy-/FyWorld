@@ -179,16 +179,6 @@ namespace Fy.World {
 					bucket.rebuildMatrices = true;
 				}
 			}
-
-			foreach (Vector2Int position in new RectI(new Vector2Int(10, 10), 5, 5)) {
-				if (this[position].blockStackable == false) {
-					this.Spawn(position, new Stackable(
-						position,
-						Defs.stackables["logs"],
-						Random.Range(1, Defs.stackables["logs"].maxStack)
-					));
-				}
-			}
 		}
 
 		public override string ToString() {
