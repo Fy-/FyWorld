@@ -72,7 +72,8 @@ namespace Fy.UI {
 		protected bool _hasTitle;
 		protected bool _hasTabs = false;
 		protected bool _show = true;
-	
+		protected bool _centered = true;
+
 
 		private int _id;
 
@@ -80,7 +81,6 @@ namespace Fy.UI {
 		public Window() {
 			Window.windows.Add(this);
 			this._id = Window.windows.Count;
-
 			this._hasTitle = (this.title == "") ? false : true;
 			this.closeButton = true;
 			this.draggable = false;
@@ -89,7 +89,9 @@ namespace Fy.UI {
 			this.tabs = new List<string>();
 			this.padding = new RectOffset(20, 20, 10, 10);
 			this.initialSize = new Vector2(400f, 400f);
-			this.rect = this.GetRectAtCenter();
+			if (this._centered) {
+				this.rect = this.GetRectAtCenter();
+			}
 			this.size = this.initialSize;
 		}
 
@@ -130,7 +132,9 @@ namespace Fy.UI {
 
 		public void UpdateHeight (float height) {
 			this.initialSize = new Vector2(this.initialSize.x, height);
-			this.rect = this.GetRectAtCenter();
+			if (this._centered) {
+				this.rect = this.GetRectAtCenter();
+			}
 		}
 
 		public virtual void Header() {
@@ -144,7 +148,6 @@ namespace Fy.UI {
 
 		/// OnGUI()
 		public virtual void DoMyWindow(int windowID) {
-			
 			this.vGrid = new WindowVerticalGrid();
 			this.vGrid.Begin(this.rect.size, this);
 			this.Header();

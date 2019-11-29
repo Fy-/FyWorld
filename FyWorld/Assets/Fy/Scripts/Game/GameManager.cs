@@ -82,7 +82,7 @@ namespace Fy {
 				this.map.SpawnCharacter(new Human(new Vector2Int(10,10), Defs.animals["human"]));
 			}
 //			Fy.Characters.AI.TargetList.GetRandomTargetInRange(new Vector2Int(10, 10));
-			new WindowTest();
+			//new WindowBuildMenu();
 			this.StartCoroutine(this.TickLoop());
 			this._ready = true;
 		}

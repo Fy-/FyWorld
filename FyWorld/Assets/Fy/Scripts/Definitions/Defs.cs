@@ -24,6 +24,8 @@ namespace Fy.Definitions {
 			};
 		}
 
+		/* List of menu orders */
+		public static Dictionary<string, MenuOrderDef> orders;
 
 		/* List of ground definitions */
 		public static Dictionary<string, TilableDef> grounds;

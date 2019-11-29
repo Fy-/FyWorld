@@ -33,6 +33,8 @@ namespace Fy.Entities {
 		/* Current plant state */
 		private int _currentState;
 
+		protected bool cutOrdered = false;
+
 		/* Plant current grow state */
 		public int state { get { return this._currentState; } }
 
@@ -120,6 +122,11 @@ namespace Fy.Entities {
 				// Also we want to try to reproduce here.
 				this.Destroy();
 			}
+		}
+
+		public void OrderToCut() {
+			this.cutOrdered = true;
+			// Add visual maker 
 		}
 
 		// Destroy our plant. R.I.P

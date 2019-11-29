@@ -81,7 +81,7 @@ namespace Fy.World {
 			foreach (GrowArea area in GrowArea.areas) {
 				foreach (Vector2Int position in area.positions) {
 					Tilable tilable = Loki.map.grids[Layer.Plant].GetTilableAt(position);
-					if (!Loki.map[position].reserved && tilable != null && tilable.def != area.plantDef) {
+					if (!Loki.map[position].reserved && tilable != null && tilable.def != area.plantDef && tilable.def.cuttable) {
 						return true;
 					}
 				}

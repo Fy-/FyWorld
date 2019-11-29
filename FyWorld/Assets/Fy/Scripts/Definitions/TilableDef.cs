@@ -42,6 +42,7 @@ namespace Fy.Definitions {
 		public bool blockStackable = false;
 		public bool blockBuilding = false;
 		public bool supportRoof = false;
+		public bool cuttable = false;
 
 		/* Max stack count */
 		public int maxStack = 0;

@@ -13,6 +13,7 @@ namespace Fy.Helpers {
 	// Resource manager
 	public static class Res {
 		public static Dictionary<string, Material> materials;
+		public static Dictionary<string, Sprite> sprites;
 		public static Dictionary<string, Texture2D> textures;
 		public static Dictionary<string, GameObject> prefabs;
 		public static Dictionary<Color, Texture2D> unicolorTextures = new Dictionary<Color, Texture2D>();
@@ -28,16 +29,22 @@ namespace Fy.Helpers {
 				Res.materials.Add(mat.name, mat);
 			}
 
+			/* Load all prefabs in Resources/Prefabs into our prefabs dictionary */
 			Res.prefabs = new Dictionary<string, GameObject>();
 			foreach (GameObject prefab in Resources.LoadAll<GameObject>("Prefabs/")) {
 				Res.prefabs.Add(prefab.name, prefab);
 			}
 
-
 			/* Load all textures in Resources/Textures into our textures dictionary */
 			Res.textures = new Dictionary<string, Texture2D>();
 			foreach (Texture2D text in Resources.LoadAll<Texture2D>("Textures/")) {
 				Res.textures.Add(text.name, text);
+			}
+
+			/* Load all textures in Resources/Textures into our textures dictionary */
+			Res.sprites = new Dictionary<string, Sprite>();
+			foreach (Sprite sprite in Resources.LoadAll<Sprite>("Textures/")) {
+				Res.sprites.Add(sprite.name, sprite);
 			}
 		}
 

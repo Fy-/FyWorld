@@ -27,6 +27,7 @@ namespace Fy.Definitions {
 			Defs.AddGround(
 				new TilableDef{
 					uid = "water",
+					fertility = 0,
 					layer = Layer.Ground,
 					blockPath = true,
 					graphics = new GraphicDef{

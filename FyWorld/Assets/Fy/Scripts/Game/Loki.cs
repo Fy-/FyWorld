@@ -33,6 +33,7 @@ namespace Fy {
 			Defs.LoadColorPalletsFromCode(); // Loading our pallets;
 			Defs.LoadAnimalsFromCode(); // Loading animals;
 			Defs.LoadTasksFromCode(); // Loading tasks;
+			Defs.LoadMenuOrdersFromCode(); // Loading orders;
 		}
 
 		/// Register the game manager when we start a game.

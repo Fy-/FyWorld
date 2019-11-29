@@ -13,6 +13,6 @@ namespace Fy.Definitions {
 		Undefined,
 		Grass,
 		Tree,
-		Plant
+		Plant // Harvestable
 	}
 }

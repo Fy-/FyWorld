@@ -30,6 +30,7 @@ namespace Fy.Definitions {
 				nutriments = 2f,
 				blockStackable = true,
 				type = TilableType.Plant,
+				cuttable = true,
 				graphics = new GraphicDef{
 					textureName = "carrot"
 				},
@@ -45,6 +46,7 @@ namespace Fy.Definitions {
 				pathCost = .95f,
 				blockPlant = true,
 				nutriments = 1f,
+				cuttable = true,
 				blockStackable = true,
 				type = TilableType.Grass,
 				graphics = new GraphicDef{
@@ -61,6 +63,7 @@ namespace Fy.Definitions {
 				type = TilableType.Tree,
 				blockPath = true,
 				blockStackable = true,
+				cuttable = true,
 				blockPlant = true,
 				graphics = new GraphicDef{
 					textureName = "tree",
