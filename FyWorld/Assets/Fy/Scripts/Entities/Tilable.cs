@@ -11,6 +11,7 @@ using UnityEngine;
 using Fy.Definitions;
 using Fy.Visuals;
 using Fy.World;
+using Fy.Helpers;
 
 namespace Fy.Entities {
 	/// A thing in our game
@@ -53,6 +54,10 @@ namespace Fy.Entities {
 			this.bucket = bucket;
 		}
 
+		// Current Order on the tilable
+		public MenuOrderDef currentOrder { get; protected set; }
+		public bool hasOrder { get { return !(this.currentOrder == null); } }
+
 		/// Destroy this tilable
 		public virtual void Destroy() {
 			if (this.bucket != null) {
@@ -62,6 +67,32 @@ namespace Fy.Entities {
 
 		/// Generic method to update graphics
 		public virtual void UpdateGraphics() {}
+
+		public virtual void AddOrder(MenuOrderDef def) {
+			this.currentOrder = def;
+			if (this.addGraphics == null) {
+				this.addGraphics = new Dictionary<string, GraphicInstance>();
+			}
+			this.UpdateOrderGraphics();
+		}
+
+		public virtual void ClearOrder() {
+			this.addGraphics.Remove(this.currentOrder.name);
+			this.currentOrder = null;
+		}
+
+		public virtual void UpdateOrderGraphics() {
+			if (!this.addGraphics.ContainsKey(this.currentOrder.name)) {
+				this.addGraphics.Add(this.currentOrder.name, 
+					GraphicInstance.GetNew(
+						this.currentOrder.graphics,
+						Color.white,
+						Res.textures[this.currentOrder.graphics.textureName],
+						42
+					)
+				);
+			}
+		}
 
 		/// Get the matrice of our tilable
 		public Matrix4x4 GetMatrice(int graphicUID) {

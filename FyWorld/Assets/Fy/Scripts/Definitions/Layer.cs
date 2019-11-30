@@ -16,6 +16,8 @@ namespace Fy.Definitions {
 		Mountain,
 		Stackable,
 		Plant,
+		Orders,
+		FX,
 		Count // Count is just a nice trick to get the enum length.
 	}
 

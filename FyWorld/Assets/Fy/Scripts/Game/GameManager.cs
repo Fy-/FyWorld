@@ -58,7 +58,7 @@ namespace Fy {
 
 			/// TEST STUFF
 
-
+			/*
 			foreach (Vector2Int position in new RectI(new Vector2Int(10, 10), 5, 5)) {
 				if (this.map[position].blockStackable == false) {
 					this.map.Spawn(position, new Stackable(
@@ -67,11 +67,11 @@ namespace Fy {
 						Random.Range(1, Defs.stackables["logs"].maxStack)
 					));
 				}
-			}
-			/*
+			}*/
+			
 			for (int i = 0; i < 5; i++) {
 				this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
-			}*/
+			}
 			GrowArea area = new GrowArea(Defs.plants["carrot"]);
 			area.Add(new RectI(new Vector2Int(15,15), 6, 6));
 

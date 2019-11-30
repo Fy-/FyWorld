@@ -21,8 +21,11 @@ namespace Fy.World {
 	}
 
 	public static class WorldUtils {
-		public static Tilable FieldNextPlantToCut(Vector2Int playerPosition) {
+		public static List<Tilable> cutOrdered = new List<Tilable>();
+
+		public static Tilable FieldNextToCut(Vector2Int playerPosition) {
 			List<Tilable> toCut = new List<Tilable>();
+
 			foreach (GrowArea area in GrowArea.areas) {
 				foreach (Vector2Int position in area.positions) {
 					Tilable tilable = Loki.map.grids[Layer.Plant].GetTilableAt(position);
@@ -31,7 +34,16 @@ namespace Fy.World {
 					}
 				}
 			}
+			return WorldUtils.ClosestTilableFromEnum(playerPosition, toCut);
+		}
 
+		public static Tilable NextToCut(Vector2Int playerPosition) {
+			List<Tilable> toCut = new List<Tilable>(); 
+			foreach (Tilable tilable in WorldUtils.cutOrdered) {
+				if (!Loki.map[tilable.position].reserved) { // RETHINK THIS
+					toCut.Add(tilable);
+				}
+			}
 			return WorldUtils.ClosestTilableFromEnum(playerPosition, toCut);
 		}
 
@@ -86,8 +98,11 @@ namespace Fy.World {
 					}
 				}
 			}
-
 			return false;
+		}
+
+		public static bool HasPlantsToCut() {
+			return WorldUtils.cutOrdered.Count > 0;
 		}
 
 		public static bool FieldHastPlantsToHarverst() {

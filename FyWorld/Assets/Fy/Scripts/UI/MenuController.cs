@@ -123,10 +123,12 @@ namespace Fy.UI {
 	    		button.onClick.AddListener(
 	    			delegate {
 	    				this.ClearOrders();
-	    				this.currentOrder = order;
-	    				orderLink.image.color = this.activeColor;
-	    				this.info.title.text = order.name;
-	    				this.info.desc.text = order.shortDesc;
+	    				if (this.currentOrder != order) {
+		    				this.currentOrder = order;
+		    				orderLink.image.color = this.activeColor;
+		    				this.info.title.text = order.name;
+		    				this.info.desc.text = order.shortDesc;
+	    				}
 	    			}
 	    		);
 	    		this.links.Add(orderLink);
@@ -141,10 +143,14 @@ namespace Fy.UI {
 	    	button = go.GetComponentInChildren<Button>();
 	    	button.onClick.AddListener(
 	    		delegate {
-	    			this.ClearSelection();
-	    			this.current = id;
-	    			this.buttons[this.current].image.color = this.activeColor;
-	    			this.tabs[this.current].go.SetActive(true);
+	    			if (this.current != id) {
+	    				this.ClearSelection();
+		    			this.current = id;
+		    			this.buttons[this.current].image.color = this.activeColor;
+		    			this.tabs[this.current].go.SetActive(true);
+	    			} else {
+	    				this.Reset();
+	    			}
 	    		}
 	    	);
 	    	this.buttons[id] = new MenuOrderButton(go, button, text, image);

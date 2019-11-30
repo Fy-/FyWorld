@@ -17,7 +17,7 @@ namespace Fy.Characters.AI {
 		private class CutPlantAtPosition: BrainNode {
 			public override TaskData GetTaskData() {
 				// Closest plant to cut to the character position
-				Tilable tilable = WorldUtils.FieldNextPlantToCut(this.character.position);
+				Tilable tilable = WorldUtils.FieldNextToCut(this.character.position);
 				if (tilable != null) {
 					return new TaskData(
 						Defs.tasks["task_cut"],

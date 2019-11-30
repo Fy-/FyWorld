@@ -29,5 +29,7 @@ namespace Fy.Definitions {
 		public ActionDelegate action;
 		public ActionAreaDelegate actionArea;
 		public SelectorType selector;
+		public GraphicDef graphics;
+		public Layer layer;
 	}
 }

@@ -48,6 +48,8 @@ namespace Fy.World {
 			this.grids.Add(Layer.Plant, new TilableGrid(this.size));
 			this.grids.Add(Layer.Mountain, new TilableGrid(this.size));
 			this.grids.Add(Layer.Stackable, new TilableGrid(this.size));
+			this.grids.Add(Layer.Orders, new TilableGrid(this.size));
+			this.grids.Add(Layer.FX, new TilableGrid(this.size));
 			this.grids.Add(Layer.Helpers, new TilableGrid(this.size));
 		}
 

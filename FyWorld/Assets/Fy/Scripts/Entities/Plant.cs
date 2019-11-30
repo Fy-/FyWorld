@@ -11,6 +11,7 @@ using UnityEngine;
 using Fy.Definitions;
 using Fy.Visuals;
 using Fy.Helpers;
+using Fy.World;
 
 namespace Fy.Entities {
 	// Plant
@@ -32,8 +33,6 @@ namespace Fy.Entities {
 
 		/* Current plant state */
 		private int _currentState;
-
-		protected bool cutOrdered = false;
 
 		/* Plant current grow state */
 		public int state { get { return this._currentState; } }
@@ -114,6 +113,11 @@ namespace Fy.Entities {
 			}
 		}
 
+		public override void AddOrder(MenuOrderDef def) {
+			base.AddOrder(def);
+			WorldUtils.cutOrdered.Add((Tilable)this);
+		}
+
 		// Called each tick
 		public void Update() {
 			this.ticks++;
@@ -124,11 +128,6 @@ namespace Fy.Entities {
 			}
 		}
 
-		public void OrderToCut() {
-			this.cutOrdered = true;
-			// Add visual maker 
-		}
-
 		// Destroy our plant. R.I.P
 		public override void Destroy() {
 			Loki.tick.toDel.Enqueue(this.Update);
@@ -136,6 +135,19 @@ namespace Fy.Entities {
 		}
 
 		public void Cut() {
+			if (WorldUtils.cutOrdered.Contains(this)) {
+				WorldUtils.cutOrdered.Remove(this);
+			}
+
+			int qtyLoot = (int)(Defs.stackables["logs"].maxStack/((this.def.plantDef.states+1)-this._currentState));
+
+			if (this.def.type == TilableType.Tree) {
+				Loki.map.Spawn(this.position, new Stackable(
+					this.position,
+					Defs.stackables["logs"],
+					qtyLoot
+				));
+			}
 			this.Destroy();
 		}
 	}

@@ -30,43 +30,62 @@ namespace Fy.Definitions {
 					name = "Cut Wood",
 					shortDesc = "Cut all trees in a designated area.",
 					selector = SelectorType.AreaTile,
+					layer = Layer.Orders,
 					sprite = Res.sprites["order_to_cut"],
-					action = (Vector2Int position) => {
-						Plant plant = (Plant)Loki.map.grids[Layer.Plant].GetTilableAt(position);
-						if (plant != null && plant.def.cuttable && plant.def.type == TilableType.Tree) {
-							plant.OrderToCut();
+					actionArea = (RectI rect) => {
+						foreach (Vector2Int position in rect) {
+							Plant plant = (Plant)Loki.map.grids[Layer.Plant].GetTilableAt(position);
+							if (plant != null && plant.def.cuttable && plant.def.type == TilableType.Tree) {
+								//plant.OrderToCut();
+								plant.AddOrder(Defs.orders["cut_wood"]);
+							}
 						}
-					}
+					},
+					graphics = new GraphicDef{
+						textureName = "order_to_cut"
+					},
 				}
 			);
 			Defs.AddMenuOrder(
 				new MenuOrderDef {
 					uid = "cut_plants",
 					name = "Cut Plants",
+					layer = Layer.Orders,
 					shortDesc = "Cut all plants in a designated area.",
 					selector = SelectorType.AreaTile,
 					sprite = Res.sprites["order_to_cut_plant"],
-					action = (Vector2Int position) => {
-						Plant plant = (Plant)Loki.map.grids[Layer.Plant].GetTilableAt(position);
-						if (plant != null && plant.def.cuttable) {
-							plant.OrderToCut();
+					actionArea = (RectI rect) => {
+						foreach (Vector2Int position in rect) {
+							Plant plant = (Plant)Loki.map.grids[Layer.Plant].GetTilableAt(position);
+							if (plant != null && plant.def.cuttable) {
+								plant.AddOrder(Defs.orders["cut_plants"]);
+							}
 						}
-					}
+					},
+					graphics = new GraphicDef{
+						textureName = "order_to_cut_plant"
+					},
 				}
 			);
 			Defs.AddMenuOrder(
 				new MenuOrderDef {
 					uid = "harvest_plants",
 					name = "Haverst Plants",
+					layer = Layer.Orders,
 					shortDesc = "Harvest all plants in a designated area.",
 					selector = SelectorType.AreaTile,
 					sprite = Res.sprites["order_harvest"],
-					action = (Vector2Int position) => {
-						Plant plant = (Plant)Loki.map.grids[Layer.Plant].GetTilableAt(position);
-						if (plant != null && plant.def.cuttable && plant.def.type == TilableType.Plant) {
-							plant.OrderToCut();
+					actionArea = (RectI rect) => {
+						foreach (Vector2Int position in rect) {
+							Plant plant = (Plant)Loki.map.grids[Layer.Plant].GetTilableAt(position);
+							if (plant != null && plant.def.cuttable && plant.def.type == TilableType.Plant) {
+								plant.AddOrder(Defs.orders["harvest_plants"]);
+							}
 						}
-					}
+					},
+					graphics = new GraphicDef{
+						textureName = "order_harvest"
+					},
 				}
 			);
 		}
