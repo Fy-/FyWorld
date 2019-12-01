@@ -31,12 +31,15 @@ namespace Fy.Entities {
 		/* Tilable using this utility class */
 		public Tilable tilable { get; protected set; }
 
+		public Color defColor { get; protected set; }
+
 		public ConnectedTilable(Tilable tilable) {
 			this.tilable = tilable;
 			this.connections = new bool[8];
 			this.connectionsInt = -1;
 			this.allCorners = false;
 			this.corners = new bool[4];
+			this.defColor = tilable.mainGraphic.color;
 		}
 
 		/// Check neighbours and fill this.connections.
@@ -96,7 +99,7 @@ namespace Fy.Entities {
 				if (this.allCorners) {
 					this.tilable.mainGraphic = GraphicInstance.GetNew(
 						this.tilable.def.graphics,
-						default(Color),
+						this.defColor,
 						Res.textures[this.tilable.def.graphics.textureName+"_cover"],
 						1
 					);
@@ -105,7 +108,7 @@ namespace Fy.Entities {
 				} else {
 					this.tilable.mainGraphic = GraphicInstance.GetNew(
 						this.tilable.def.graphics,
-						default(Color),
+						this.defColor,
 						Res.textures[this.tilable.def.graphics.textureName+"_"+this.connectionsInt.ToString()],
 						1
 					);
@@ -114,7 +117,7 @@ namespace Fy.Entities {
 						this.tilable.addGraphics.Add("cover",  
 							GraphicInstance.GetNew(
 								this.tilable.def.graphics,
-								default(Color),
+								this.defColor,
 								Res.textures[this.tilable.def.graphics.textureName+"_cover"],
 								2,
 								MeshPool.GetCornersPlane(this.corners)

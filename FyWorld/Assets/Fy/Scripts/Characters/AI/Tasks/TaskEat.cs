@@ -9,11 +9,11 @@
 using Fy.Entities;
 
 namespace Fy.Characters.AI {
-	public class TaskEat : Task {
-		public TaskEat(TaskData taskData, TaskRunner taskRunner) : base(taskData, taskRunner) {}
+	public class TaskEat : TaskClass {
+		public TaskEat(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
-			Tilable tilable = (Tilable)this.targets.current.entity;
+			Tilable tilable = (Tilable)this.task.targets.current.entity;
 			this.character.stats.vitals[Vitals.Hunger].currentValue += tilable.def.nutriments * 100f;
 			tilable.Destroy();
 			return true;

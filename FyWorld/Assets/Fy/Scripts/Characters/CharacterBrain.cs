@@ -18,20 +18,16 @@ namespace Fy.Characters {
 		/* Root node */
 		public BrainNode brainNode { get; protected set; }
 
-		/* Task runner */
-		public TaskRunner taskRunner { get; protected set; }
-
-		/* Data about the current task */
-		public TaskData currentTaskData { get; protected set; }
+		/* Current Task */
+		public Task currentTask;
 
 		public CharacterBrain(BaseCharacter character, BrainNode brainNode) {
 			this.character = character;
 			this.brainNode = brainNode;
 			this.brainNode.SetCharacter(character);
-			this.taskRunner = new TaskRunner();
-			this.currentTaskData = null;
+			this.currentTask = null;
 
-			this.taskRunner.onEndTask = delegate {
+/*			this.taskRunner.onEndTask = delegate {
 				if (this.taskRunner.task.taskStatus == TaskStatus.Success) {
 					///Debug.Log("Clearing task (success)");
 					this.currentTaskData = null;
@@ -40,30 +36,48 @@ namespace Fy.Characters {
 					this.currentTaskData = null;
 				}
 			};
+			*/
 		}
 
 		/// Check if we have a current task (the data at least), if not get the next task in tree.
 		public void Update() {
-			if (this.currentTaskData == null) {
-				this.GetNextTaskData();
+			if (this.currentTask == null) {
+				this.GetNextTask();
 			} else {
-				if (this.taskRunner.running == false) {
-					//Debug.Log("Starting new task: "+this.currentTaskData.def.uid);
-					this.taskRunner.StartTask(this.currentTaskData);
-				} else {
-					if (this.taskRunner.task.taskStatus == TaskStatus.Running) {
-						this.taskRunner.task.Update();
+				if (this.currentTask.taskClass == null) {
+					this.currentTask.GetClass(this.character);
+				} {
+					if (this.currentTask.state == TaskState.Success) {
+						this.currentTask = null;
+						// clear inv ?
+					} else if (this.currentTask.state == TaskState.Failed) {
+						// clear inv ?
+						this.currentTask = null;
+					} else {
+						this.currentTask.taskClass.Tick();
 					}
 				}
 			}
 		} 
 
 		/// Get the next task data in tree.
-		public void GetNextTaskData() {
-			TaskData nextTaskData = this.brainNode.GetTaskData();
-			if (nextTaskData != null) {
-				this.currentTaskData = nextTaskData;
+		public void GetNextTask() {
+			Task nextTask = this.brainNode.GetTask();
+			if (nextTask != null) {
+				this.StartNextTask(nextTask);
 			}
+		}
+
+		public void StartNextTask(Task nextTask) {
+			this.currentTask = nextTask;
+			// CallBacks for character end task ?
+			/*
+			if (this.character.onTaskEnd != null) {
+				this.currentTask.endAction += this.character.onTaskEnd;
+			}
+			if (this.character.onTaskStart != null) {
+				this.currentTask.startAction += this.character.onTaskStart;
+			}*/
 		}
 	}
 }

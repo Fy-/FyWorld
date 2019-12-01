@@ -14,6 +14,7 @@ namespace Fy.Definitions {
 		Ground, // Ground layer.
 		Helpers,
 		Mountain,
+		Building,
 		Stackable,
 		Plant,
 		Orders,

@@ -21,7 +21,7 @@ namespace Fy.Characters.AI {
 			}
 		}
 
-		public virtual TaskData GetTaskData() {
+		public virtual Task GetTask() {
 			return null;
 		}
 
@@ -32,9 +32,9 @@ namespace Fy.Characters.AI {
 	}
 
 	public class BrainNodePriority : BrainNode {
-		public override TaskData GetTaskData() {
+		public override Task GetTask() {
 			foreach (BrainNode node in this.subNodes) {
-				TaskData taskData = node.GetTaskData();
+				Task taskData = node.GetTask();
 				if (taskData != null) {
 					return taskData;
 				}
@@ -50,9 +50,9 @@ namespace Fy.Characters.AI {
 			this.condition = condition;
 		}
 
-		public override TaskData GetTaskData() {
+		public override Task GetTask() {
 			if (this.condition()) {
-				return base.GetTaskData();
+				return base.GetTask();
 			}
 
 			return null;

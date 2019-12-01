@@ -47,6 +47,7 @@ namespace Fy.World {
 			this.grids.Add(Layer.Ground, new GroundGrid(this.size));
 			this.grids.Add(Layer.Plant, new TilableGrid(this.size));
 			this.grids.Add(Layer.Mountain, new TilableGrid(this.size));
+			this.grids.Add(Layer.Building, new TilableGrid(this.size));
 			this.grids.Add(Layer.Stackable, new TilableGrid(this.size));
 			this.grids.Add(Layer.Orders, new TilableGrid(this.size));
 			this.grids.Add(Layer.FX, new TilableGrid(this.size));
@@ -134,9 +135,40 @@ namespace Fy.World {
 			}
 		}
 
+		public void UpdateConnectedMountains() {
+			foreach (LayerGridBucket bucket in this.grids[Layer.Mountain].buckets) {
+				bool changed = false;
+				foreach (Tilable tilable in bucket.tilables) {
+					if (tilable != null) {
+						tilable.UpdateGraphics();
+						changed = true;
+					}
+				}
+				if (changed) {
+					bucket.rebuildMatrices = true;
+				}
+			}
+		}
+
+		public void UpdateConnectedBuildings() {
+			foreach (LayerGridBucket bucket in this.grids[Layer.Building].buckets) {
+				bool changed = false;
+				foreach (Tilable tilable in bucket.tilables) {
+					if (tilable != null && tilable.def.type == TilableType.BuildingConnected) {
+						tilable.UpdateGraphics();
+						changed = true;
+					}
+				}
+				if (changed) {
+					bucket.rebuildMatrices = true;
+				}
+			}
+		}
+
 		/// Temporary method @TODO: Clean this shit.
 		public void TempMapGen() {
 			this.groundNoiseMap = NoiseMap.GenerateNoiseMap(this.size, 11, NoiseMap.GroundWave(42));
+
 			foreach (Vector2Int position in this.rect) {
 				this.Spawn(
 					position,
@@ -169,18 +201,7 @@ namespace Fy.World {
 				}
 			}
 
-			foreach (LayerGridBucket bucket in this.grids[Layer.Mountain].buckets) {
-				bool changed = false;
-				foreach (Tilable tilable in bucket.tilables) {
-					if (tilable != null) {
-						tilable.UpdateGraphics();
-						changed = true;
-					}
-				}
-				if (changed) {
-					bucket.rebuildMatrices = true;
-				}
-			}
+			this.UpdateConnectedMountains();
 		}
 
 		public override string ToString() {

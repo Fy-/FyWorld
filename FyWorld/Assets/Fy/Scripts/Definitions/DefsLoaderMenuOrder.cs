@@ -8,6 +8,7 @@
 */
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Fy.Entities;
 using Fy.Helpers;
 
@@ -23,6 +24,25 @@ namespace Fy.Definitions {
 		/// Load all plant definitions
 		public static void LoadMenuOrdersFromCode() {
 			Defs.orders = new Dictionary<string, MenuOrderDef>();
+
+			Defs.AddMenuOrder(
+				new MenuOrderDef {
+					uid = "cancel",
+					name = "Cancel orders",
+					shortDesc = "Cancel all orders is a designated area",
+					selector = SelectorType.AreaTile,
+					layer = Layer.Orders,
+					sprite = Res.sprites["order_to_cancel"],
+					actionArea = (RectI rect) => {
+						foreach (Vector2Int position in rect) {
+							foreach (Tilable tilable in Loki.map.GetAllTilablesAt(position)) {
+								tilable.ClearOrder();
+							}
+						}
+					},
+					keyCode = KeyCode.C,
+				}
+			);
 
 			Defs.AddMenuOrder(
 				new MenuOrderDef {
@@ -44,6 +64,7 @@ namespace Fy.Definitions {
 					graphics = new GraphicDef{
 						textureName = "order_to_cut"
 					},
+					keyCode = KeyCode.W,
 				}
 			);
 			Defs.AddMenuOrder(
@@ -65,6 +86,7 @@ namespace Fy.Definitions {
 					graphics = new GraphicDef{
 						textureName = "order_to_cut_plant"
 					},
+					keyCode = KeyCode.D,
 				}
 			);
 			Defs.AddMenuOrder(
@@ -86,6 +108,7 @@ namespace Fy.Definitions {
 					graphics = new GraphicDef{
 						textureName = "order_harvest"
 					},
+					keyCode = KeyCode.H,
 				}
 			);
 		}

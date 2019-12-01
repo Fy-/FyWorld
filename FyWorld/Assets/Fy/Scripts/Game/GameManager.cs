@@ -34,6 +34,7 @@ namespace Fy {
 		public bool DrawPaths = false;
 		public bool DrawReserved = false;
 		public bool ready { get { return this._ready; } }
+		public Vector2Int mapSize;
 
 		/* Are we ready ? */
 		private bool _ready;
@@ -47,15 +48,8 @@ namespace Fy {
 			Loki.NewGame(this);
 		}
 
-		/// Generating the map, spawning things.
-		void Start() {
-			this.tick = new Tick();
-			this.map = new Map(275, 275);
-			this.map.TempMapGen();
-			this.map.BuildAllMeshes();
+		void TestStuff() {
 			Debug.Log(this.map);
-
-
 			/// TEST STUFF
 
 			/*
@@ -68,10 +62,21 @@ namespace Fy {
 					));
 				}
 			}*/
-			
-			for (int i = 0; i < 5; i++) {
-				this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+
+			///// TEST WALLS
+			int y = 22;
+			for (int x = 20; x < 28; x++) {
+				Loki.map.Spawn(new Vector2Int(x, y), new Building(
+					new Vector2Int(x, y),
+					Defs.buildings["wood_wall"]
+				));
 			}
+			Loki.map.UpdateConnectedBuildings();
+			///// TEST WALLS	
+
+			/*for (int i = 0; i < 5; i++) {
+				this.map.SpawnCharacter(new Animal(new Vector2Int(15,15), Defs.animals["chicken"]));
+			}*/
 			GrowArea area = new GrowArea(Defs.plants["carrot"]);
 			area.Add(new RectI(new Vector2Int(15,15), 6, 6));
 
@@ -81,8 +86,20 @@ namespace Fy {
 			for (int i = 0; i < 5; i++) {
 				this.map.SpawnCharacter(new Human(new Vector2Int(10,10), Defs.animals["human"]));
 			}
-//			Fy.Characters.AI.TargetList.GetRandomTargetInRange(new Vector2Int(10, 10));
+			//Fy.Characters.AI.TargetList.GetRandomTargetInRange(new Vector2Int(10, 10));
 			//new WindowBuildMenu();
+		}
+
+
+		/// Generating the map, spawning things.
+		void Start() {
+			this.tick = new Tick();
+			this.map = new Map(this.mapSize.x, this.mapSize.y);
+			this.map.TempMapGen();
+			this.map.BuildAllMeshes();
+
+			this.TestStuff();
+	
 			this.StartCoroutine(this.TickLoop());
 			this._ready = true;
 		}

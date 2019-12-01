@@ -12,6 +12,7 @@ using Fy.Characters.AI;
 using Fy.Visuals;
 using Fy.World;
 using Fy.Helpers;
+using Fy.Entities;
 
 namespace Fy.Characters {
 	// Human representation in our game
@@ -29,10 +30,10 @@ namespace Fy.Characters {
 		public override BrainNodePriority GetBrainNode() {
 			BrainNodePriority brainNode = new BrainNodePriority();
 
-			brainNode.AddSubnode(new SleepNode(() => (this.stats.vitals[Vitals.Energy].ValueInfToPercent(.15f))));
-			brainNode.AddSubnode(new CutNode(WorldUtils.HasPlantsToCut));
-			brainNode.AddSubnode(new GrowNode(WorldUtils.FieldHasWork));
-			brainNode.AddSubnode(new IdleNodeTaskData());
+			brainNode.AddSubnode(new N_Sleep(() => (this.stats.vitals[Vitals.Energy].ValueInfToPercent(.15f))));
+			brainNode.AddSubnode(new N_Cut(WorldUtils.HasPlantsToCut));
+			brainNode.AddSubnode(new N_Grow(WorldUtils.FieldHasWork));
+			brainNode.AddSubnode(new N_Idle());
 
 			//rainNode.AddSubnode(new EatVegiesNode(() => (this.stats.vitals[Vitals.Hunger].ValueInfToPercent(.25f))));
 

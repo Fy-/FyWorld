@@ -13,6 +13,12 @@ namespace Fy.Definitions {
 	/// Definition for a tilable
 	[System.Serializable]
 	public class TilableDef : Def {
+		public string name;
+		public string shortDesc;
+
+		/* Weight */
+		public float weight = 0;
+
 		/* Layer */
 		public Layer layer;
 
@@ -27,6 +33,12 @@ namespace Fy.Definitions {
 
 		/* Plant def */
 		public PlantDef plantDef;
+
+		/* Building def */
+		public BuildingDef buildingDef;
+
+		/* Recipe def */
+		public RecipeDef recipeDef;
 
 		/* Fertility of our tilable */
 		public float fertility = 1f;

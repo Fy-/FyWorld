@@ -13,6 +13,9 @@ namespace Fy.Definitions {
 		Undefined,
 		Grass,
 		Tree,
-		Plant // Harvestable
+		Plant, // Harvestable
+		Building,
+		BuildingConnected,
+		Recipe
 	}
 }

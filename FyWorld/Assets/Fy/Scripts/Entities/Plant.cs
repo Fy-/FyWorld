@@ -118,6 +118,13 @@ namespace Fy.Entities {
 			WorldUtils.cutOrdered.Add((Tilable)this);
 		}
 
+		public override void ClearOrder() {
+			if (WorldUtils.cutOrdered.Contains(this)) {
+				WorldUtils.cutOrdered.Remove(this);
+			}
+			base.ClearOrder();
+		}
+
 		// Called each tick
 		public void Update() {
 			this.ticks++;

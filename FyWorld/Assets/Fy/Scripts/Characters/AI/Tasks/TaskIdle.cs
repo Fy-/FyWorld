@@ -8,7 +8,7 @@
 */
 
 namespace Fy.Characters.AI {
-	public class TaskIdle : Task {
-		public TaskIdle(TaskData taskData, TaskRunner taskRunner) : base(taskData, taskRunner) {}
+	public class TaskIdle : TaskClass {
+		public TaskIdle(BaseCharacter character, Task task) : base(character, task) {}
 	}
 }	

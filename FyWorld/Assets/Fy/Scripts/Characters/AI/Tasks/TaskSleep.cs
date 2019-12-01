@@ -8,8 +8,8 @@
 */
 
 namespace Fy.Characters.AI {
-	public class TaskSleep : Task {
-		public TaskSleep(TaskData taskData, TaskRunner taskRunner) : base(taskData, taskRunner) {}
+	public class TaskSleep : TaskClass {
+		public TaskSleep(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
 			if (this.character.stats.sleep == false) {

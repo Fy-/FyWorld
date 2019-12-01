@@ -24,13 +24,14 @@ namespace Fy {
 		/// Load all statics definitions
 		public static void LoadStatics() {
 			Res.Load(); // Load all our resources;
-			DirectionUtils.LoadStatics(); // Set neighbours;0
-			Defs.LoadDefaultsDefs();
+			DirectionUtils.LoadStatics(); // Set neighbours;
+			Defs.LoadDefaultsDefs(); // Empty def
 			Defs.LoadGroundsFromCode(); // Loading our ground definitions;
 			Defs.LoadPlantsFromCode(); // Loading our plants definitions;
 			Defs.LoadMountainsFromCode(); // Loading our mountains definitions;
 			Defs.LoadStackablesFromCode(); // Loading our stackables definitions;
 			Defs.LoadColorPalletsFromCode(); // Loading our pallets;
+			Defs.LoadBuildingsFromCode();
 			Defs.LoadAnimalsFromCode(); // Loading animals;
 			Defs.LoadTasksFromCode(); // Loading tasks;
 			Defs.LoadMenuOrdersFromCode(); // Loading orders;

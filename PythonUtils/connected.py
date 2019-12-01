@@ -195,12 +195,12 @@ class Connected(object):
 	def get_pixel_from_base(self, x, y):
 		return np.array(self.pixels[x,y], dtype=np.uint8)
 
-	def save(self):
+	def save(self, name):
 		for i in range(0, 16):
-			self.result[i].to_image().save("gen/mountain_%s.png" % i, format="png")
+			self.result[i].to_image().save("gen/%s_%s.png" % (name, i), format="png")
 
 if __name__ == '__main__':
-	cn = Connected("Test.png")
+	cn = Connected("Wall.png")
 	cn.get_base()
 	cn.gen()
-	cn.save()
+	cn.save("wall")

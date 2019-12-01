@@ -24,7 +24,7 @@ namespace Fy.Controllers {
 
 		private void Update() {
 			if (Loki.manager.ready) {
-								int i = 0;
+				int i = 0;
 				if (Input.GetMouseButton(0)) { /// Check if we're in building mode;
 					foreach (BaseCharacter character in Loki.map[Loki.cameraController.tileMapMousePosition].characters) {
 						if (i == this.currentIndex) {

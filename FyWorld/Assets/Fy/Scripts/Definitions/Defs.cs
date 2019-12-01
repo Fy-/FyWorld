@@ -35,7 +35,10 @@ namespace Fy.Definitions {
 		/* List of color pallets definitions */
 		public static Dictionary<string, ColorPaletteDef> colorPallets;
 
-		/* List of named color pallets defininitions */
+		/* List of buildings definitions */
+		public static Dictionary<string, TilableDef> buildings;
+
+				/* List of named color pallets defininitions */
 		public static Dictionary<string, NamedColorPaletteDef> namedColorPallets;
 
 		/* List of plant definitions */

@@ -8,6 +8,7 @@
 */
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Fy.Helpers;
 
 namespace Fy.Definitions {
@@ -31,5 +32,6 @@ namespace Fy.Definitions {
 		public SelectorType selector;
 		public GraphicDef graphics;
 		public Layer layer;
+		public KeyCode keyCode = KeyCode.Escape;
 	}
 }

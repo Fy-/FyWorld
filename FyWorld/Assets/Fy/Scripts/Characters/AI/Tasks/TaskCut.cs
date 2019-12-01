@@ -9,32 +9,32 @@
 using Fy.Entities;
 
 namespace Fy.Characters.AI {
-	public class TaskCut : Task {
-		public TaskCut(TaskData taskData, TaskRunner taskRunner) : base(taskData, taskRunner) {}
+	public class TaskCut : TaskClass {
+		public TaskCut(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
-			Plant plant = (Plant)this.targets.current.entity;
+			Plant plant = (Plant)this.task.targets.current.entity;
 			plant.Cut();
 			return true;
 		}
 	}
 
-	public class TaskDirt : Task {
-		public TaskDirt(TaskData taskData, TaskRunner taskRunner) : base(taskData, taskRunner) {}
+	public class TaskDirt : TaskClass {
+		public TaskDirt(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
-			Field field = (Field)this.targets.current.entity;
+			Field field = (Field)this.task.targets.current.entity;
 			field.WorkDirt();
 			return true;
 		}
 	}
 
-	public class TaskSow : Task {
-		public TaskSow(TaskData taskData, TaskRunner taskRunner) : base(taskData, taskRunner) {}
+	public class TaskSow : TaskClass {
+		public TaskSow(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
-			Field field = (Field)this.targets.current.entity;
-			Loki.map.Spawn(this.targets.current.position, new Plant(
+			Field field = (Field)this.task.targets.current.entity;
+			Loki.map.Spawn(this.task.targets.current.position, new Plant(
 				field.position, 
 				field.area.plantDef, 
 				false)

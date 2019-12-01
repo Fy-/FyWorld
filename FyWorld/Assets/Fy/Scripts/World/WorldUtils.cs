@@ -22,6 +22,7 @@ namespace Fy.World {
 
 	public static class WorldUtils {
 		public static List<Tilable> cutOrdered = new List<Tilable>();
+		public static List<Recipe> recipes = new List<Recipe>();
 
 		public static Tilable FieldNextToCut(Vector2Int playerPosition) {
 			List<Tilable> toCut = new List<Tilable>();

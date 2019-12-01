@@ -92,7 +92,7 @@ namespace Fy.Characters {
 				PathResult pathResult = AI.PathFinder.GetPath(this.position, task.targets.currentPosition);
 
 				if (pathResult.success == false) {
-					task.taskStatus = TaskStatus.Failed; // Maybe a special failed condition;
+					task.state = TaskState.Failed; // Maybe a special failed condition;
 					this.ResetMovement();
 					return;
 				}

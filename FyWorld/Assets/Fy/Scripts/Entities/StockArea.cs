@@ -34,7 +34,6 @@ namespace Fy.Entities {
 			return Vector2Int.zero;
 		}
 
-
 		protected override void AddTilable(Vector2Int position) {
 			// Add the field tialble, here we should check if we already have a field on this position.
 /*			Field field = new Field(position, Defs.empty, this);

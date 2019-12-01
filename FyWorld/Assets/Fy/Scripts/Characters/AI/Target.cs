@@ -12,7 +12,13 @@ using Fy.Entities;
 using Fy.Helpers;
 using Fy.World;
 
+
 namespace Fy.Characters.AI {
+	public enum TargetType {
+		None,
+		Tile,
+		Adjacent,
+	}
 	// List of targets in our Game
 	public class TargetList {
 		public Queue<Target> targets = new Queue<Target>();
@@ -65,10 +71,14 @@ namespace Fy.Characters.AI {
 			this.targets.Enqueue(new Target(position));
 		}
 
-		public void Next() {
+		public void Free() {
 			if (this.current != null) {
 				Loki.map[this.current.position].reserved = false;
 			}
+		}
+
+		public void Next() {
+			this.Free();
 			this.current = this.targets.Dequeue();
 			
 		}

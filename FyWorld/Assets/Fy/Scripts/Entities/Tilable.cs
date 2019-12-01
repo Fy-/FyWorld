@@ -73,12 +73,15 @@ namespace Fy.Entities {
 			if (this.addGraphics == null) {
 				this.addGraphics = new Dictionary<string, GraphicInstance>();
 			}
+			this.resetMatrices = true;
 			this.UpdateOrderGraphics();
 		}
 
 		public virtual void ClearOrder() {
-			this.addGraphics.Remove(this.currentOrder.name);
-			this.currentOrder = null;
+			if (this.currentOrder != null) {
+				this.addGraphics.Remove(this.currentOrder.name);
+				this.currentOrder = null;
+			}
 		}
 
 		public virtual void UpdateOrderGraphics() {
