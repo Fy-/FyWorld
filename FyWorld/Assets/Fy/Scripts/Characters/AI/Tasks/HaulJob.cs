@@ -9,6 +9,7 @@
 using System.Collections.Generic;
 using Fy.Entities;
 using Fy.Definitions;
+using UnityEngine;
 
 namespace Fy.Characters.AI {
 	public struct HaulResult {
@@ -30,17 +31,18 @@ namespace Fy.Characters.AI {
 		public static HaulResult Get(BaseCharacter character, Task task, int qty =1) {
 			Job get = new Job(
 				delegate {
-					// check inv?
-					return false;
+					return (
+						character.inventory.def == null ||
+						(character.inventory.free > 0 && character.inventory.def == task.targets.current.tilable.def)
+					);
 				}
 			);
-			get.OnEnd += delegate {
+			get.OnEnd = delegate {
 				Stackable stack = (Stackable)Loki.map.grids[Layer.Stackable].GetTilableAt(task.targets.current.position);
 				if (stack == null || stack.inventory.count == 0) {
 					task.state = TaskState.Failed;
 					return;
 				}
-
 				stack.inventory.TransfertTo(character.inventory, qty);
 			};
 

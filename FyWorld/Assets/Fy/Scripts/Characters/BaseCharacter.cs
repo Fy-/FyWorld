@@ -18,7 +18,7 @@ namespace Fy.Characters {
 	public abstract class BaseCharacter : Entity {
 		/* Definition */
 		public LivingDef def { get; protected set; }
-		public InventoryTilable inventory { get; protected set; }
+		public Inventory inventory { get; protected set; }
 
 		/* All statistics */
 		public CharacterStats stats { get; protected set; }
@@ -44,7 +44,7 @@ namespace Fy.Characters {
 		public BaseCharacter(Vector2Int position, LivingDef def) {
 			this.stats = new CharacterStats();
 			this.def = def;
-			this.inventory = new InventoryTilable();
+			this.inventory = new Inventory(90);
 			this.movement = new CharacterMovement(position, this);
 			this.brain = new CharacterBrain(this, this.GetBrainNode());
 			this.name = this.SetName();

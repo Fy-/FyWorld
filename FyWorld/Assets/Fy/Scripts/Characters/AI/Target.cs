@@ -34,8 +34,12 @@ namespace Fy.Characters.AI {
 			}
 		}
 
-		public TargetList(Entity entity) {
-			this.Enqueue(entity);
+		public List<Target> ToList() {
+			return new List<Target>(this.targets);
+		}
+
+		public TargetList(Tilable tilable) {
+			this.Enqueue(tilable);
 			this.Next();
 		}
 
@@ -49,9 +53,9 @@ namespace Fy.Characters.AI {
 			this.Next();
 		}
 
-		public TargetList(List<Entity> entities) {
-			foreach (Entity entity in entities) {
-				this.Enqueue(entity);
+		public TargetList(List<Tilable> entities) {
+			foreach (Tilable tilable in entities) {
+				this.Enqueue(tilable);
 			}
 			this.Next();
 		}
@@ -61,9 +65,9 @@ namespace Fy.Characters.AI {
 			this.targets.Enqueue(target);
 		}
 
-		public void Enqueue(Entity entity) {
-			Loki.map[entity.position].reserved = true;
-			this.targets.Enqueue(new Target(entity));
+		public void Enqueue(Tilable tilable) {
+			Loki.map[tilable.position].reserved = true;
+			this.targets.Enqueue(new Target(tilable));
 		}
 
 		public void Enqueue(Vector2Int position) {
@@ -86,12 +90,12 @@ namespace Fy.Characters.AI {
 
 	// A target in our game.
 	public class Target {
-		public Entity entity { get; protected set; }
+		public Tilable tilable { get; protected set; }
 		public Vector2Int position { get; protected set; }
 		public Vector2Int closestAdj { get; protected set; }
 
-		public Target(Entity entity) : this(entity.position) {
-			this.entity = entity;
+		public Target(Tilable tilable) : this(tilable.position) {
+			this.tilable = tilable;
 		}
 
 		public Target (Vector2Int position) {

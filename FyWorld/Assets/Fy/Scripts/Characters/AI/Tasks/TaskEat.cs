@@ -13,7 +13,7 @@ namespace Fy.Characters.AI {
 		public TaskEat(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
-			Tilable tilable = (Tilable)this.task.targets.current.entity;
+			Tilable tilable = (Tilable)this.task.targets.current.tilable;
 			this.character.stats.vitals[Vitals.Hunger].currentValue += tilable.def.nutriments * 100f;
 			tilable.Destroy();
 			return true;

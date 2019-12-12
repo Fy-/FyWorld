@@ -41,6 +41,12 @@ namespace Fy.Controllers {
 
 		private void Update() {
 			if (this._stackable != null) {
+				if (this._stackable.inventory.count <= 0) {
+					this._tm.text = "";
+					return;
+				}
+
+
 				this._tm.text = this._stackable.inventory.count.ToString();
 			}
 		}

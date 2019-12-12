@@ -25,6 +25,8 @@ namespace Fy.Entities {
 		/* Scale */
 		public Vector3 scale = Vector3.one;
 
+		public Vector2Int[] neighbours = new Vector2Int[8];
+
 		/*  Definition */
 		public TilableDef def { get; protected set; }
 
@@ -49,14 +51,18 @@ namespace Fy.Entities {
 		/* Parent bucket */
 		public LayerGridBucket bucket { get; protected set; }
 
+		// Current Order on the tilable
+		public MenuOrderDef currentOrder { get; protected set; }
+		public bool hasOrder { get { return !(this.currentOrder == null); } }
+
+		public override string ToString() {
+			return "Titable ("+this.def.name+" at "+this.position+" on layer "+this.def.layer;
+		}
+
 		/// Register the bucket of the tilable
 		public void SetBucket(LayerGridBucket bucket) {
 			this.bucket = bucket;
 		}
-
-		// Current Order on the tilable
-		public MenuOrderDef currentOrder { get; protected set; }
-		public bool hasOrder { get { return !(this.currentOrder == null); } }
 
 		/// Destroy this tilable
 		public virtual void Destroy() {
@@ -84,6 +90,20 @@ namespace Fy.Entities {
 			}
 		}
 
+		public static void InRadius(Layer layer, int r, Tilable o, Tilable c, ref HashSet<Tilable> s) {
+			if (c != null) {
+				s.Add(c);
+			}
+			foreach (Vector2Int neighbour in c.neighbours) {
+				if (
+					Loki.map.grids[layer].GetTilableAt(neighbour) != null && 
+					!s.Contains(Loki.map.grids[layer].GetTilableAt(neighbour)) && 
+					Utils.Distance(neighbour, o.position) <= r) {
+					Tilable.InRadius(layer, r, o, Loki.map.grids[layer].GetTilableAt(neighbour), ref s);
+				}
+			}
+		}
+
 		public virtual void UpdateOrderGraphics() {
 			if (!this.addGraphics.ContainsKey(this.currentOrder.name)) {
 				this.addGraphics.Add(this.currentOrder.name, 
@@ -95,6 +115,17 @@ namespace Fy.Entities {
 					)
 				);
 			}
+		}
+
+		public void SetNeigbours() {
+			this.neighbours [(int)Direction.N] = new Vector2Int(this.position.x, this.position.y+1);
+			this.neighbours [(int)Direction.NE] = new Vector2Int(this.position.x+1, this.position.y+1);
+			this.neighbours [(int)Direction.E] = new Vector2Int(this.position.x+1, this.position.y);
+			this.neighbours [(int)Direction.SE] = new Vector2Int(this.position.x+1, this.position.y-1);
+			this.neighbours [(int)Direction.S] = new Vector2Int(this.position.x, this.position.y-1);
+			this.neighbours [(int)Direction.SW] = new Vector2Int(this.position.x-1, this.position.y-1);
+			this.neighbours [(int)Direction.W] = new Vector2Int(this.position.x-1, this.position.y);
+			this.neighbours [(int)Direction.NW] = new Vector2Int(this.position.x-1, this.position.y+1);
 		}
 
 		/// Get the matrice of our tilable

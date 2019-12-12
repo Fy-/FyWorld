@@ -30,9 +30,10 @@ namespace Fy.Characters {
 		public override BrainNodePriority GetBrainNode() {
 			BrainNodePriority brainNode = new BrainNodePriority();
 
-			brainNode.AddSubnode(new N_Sleep(() => (this.stats.vitals[Vitals.Energy].ValueInfToPercent(.15f))));
+			//brainNode.AddSubnode(new N_Sleep(() => (this.stats.vitals[Vitals.Energy].ValueInfToPercent(.15f))));
 			brainNode.AddSubnode(new N_Cut(WorldUtils.HasPlantsToCut));
-			brainNode.AddSubnode(new N_Grow(WorldUtils.FieldHasWork));
+			//brainNode.AddSubnode(new N_Grow(WorldUtils.FieldHasWork));
+			brainNode.AddSubnode(new N_HaulRecipe(WorldUtils.HaulRecipeNeeded));
 			brainNode.AddSubnode(new N_Idle());
 
 			//rainNode.AddSubnode(new EatVegiesNode(() => (this.stats.vitals[Vitals.Hunger].ValueInfToPercent(.25f))));

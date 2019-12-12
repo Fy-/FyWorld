@@ -23,89 +23,8 @@ namespace Fy.Characters.AI {
 		Cut,
 		Harvest,
 		Sow, 
+		HaulRecipe,
 		Dirt
-	}
-
-
-	public abstract class TaskClass {
-		public BaseCharacter character;
-
-		// FX here ?
-		public Task task;
-		public int ticks = 0;
-		public Action OnEnd = null;
-		public Action OnStart = null;
-		public Action OnTick = null;
-		private bool _inRange =  false;
-
-		public TaskClass(BaseCharacter character, Task task) {
-			this.character = character;
-			this.task = task;
-			this.task.state = TaskState.Running;
-
-			if (this.task.def.targetType == TargetType.Adjacent) {
-				bool path = this.task.targets.current.GetClosestAdj(this.character.position);
-				if (!path) {
-					this.task.state = TaskState.Failed;
-				}
-			} else if (this.task.def.targetType == TargetType.None) {
-				this._inRange = true;
-			}
-		}
-
-		public virtual void Tick() {
-			if (this.task.state != TaskState.Running) {
-				return;
-			}
-
-			if (this._inRange) {
-				if (this.ticks == 0 && this.OnStart != null) {
-					this.OnStart();
-				}
-				if (this.Perform()) {
-					this.End();
-				}
-			} else {
-				if (this.task.def.targetType != TargetType.None) {
-					this.MoveInRange();
-				}
-			}
-		}
-
-		public virtual void End() {
-			this.task.state = TaskState.Success;
-			this.task.targets.Free();
-			if (this.OnEnd != null) {
-				this.OnEnd();
-			}
-		}
-
-		public virtual bool Perform() {
-			this.ticks++;
-			if (this.OnTick != null) {
-				this.OnTick();
-			}
-			if (this.ticks >= this.task.ticksToPerform) {
-				return true;
-			}
-
-			return false;
-		}
-
-		private void MoveInRange() {
-			if (this.task.targets.current == null) {
-				this.task.state = TaskState.Failed; // Specific failure condition?
-				return;
-			} else {
-				if (
-					this.character.position == this.task.targets.currentPosition
-				) {
-					this._inRange = true;
-					return;
-				}
-				this.character.movement.Move(this.task);
-			}
-		}
 	}
 
 	public class Task {
@@ -147,6 +66,9 @@ namespace Fy.Characters.AI {
 				case TaskType.Idle:
 					this.taskClass = new TaskIdle(character, this);
 					break;
+				case TaskType.HaulRecipe:
+					this.taskClass = new HaulRecipeJob(character, this);
+					break;
 				default: 
 					break;
 			}
@@ -170,6 +92,86 @@ namespace Fy.Characters.AI {
 		}
 	}
 
+	public abstract class TaskClass {
+		public BaseCharacter character;
+
+		// FX here ?
+		public Task task;
+		public int ticks = 0;
+		public Action OnEnd = null;
+		public Action OnStart = null;
+		public Action OnTick = null;
+		protected bool _inRange =  false;
+
+		public TaskClass(BaseCharacter character, Task task) {
+			this.character = character;
+			this.task = task;
+			this.task.state = TaskState.Running;
+
+			if (this.task.def.targetType == TargetType.Adjacent) {
+				bool path = this.task.targets.current.GetClosestAdj(this.character.position);
+				if (!path) {
+					this.task.state = TaskState.Failed;
+				}
+			} else if (this.task.def.targetType == TargetType.None) {
+				this._inRange = true;
+			}
+		}
+
+		public virtual void Tick() {
+			if (this.task.state != TaskState.Running) {
+				return;
+			}
+
+			if (this._inRange) {
+				if (this.ticks == 0 && this.OnStart != null) {
+					this.OnStart();
+				}
+				if (this.Perform()) {
+					this.End();
+				}
+			} else {
+				if (this.task.def.targetType != TargetType.None) {
+					this.MoveInRange();
+				}
+			}
+		}
+
+		public virtual void End() {
+			this.task.state = TaskState.Success;
+			this.task.targets.Free();
+			/*if (this.OnEnd != null) {
+				this.OnEnd();
+			}*/
+		}
+
+		public virtual bool Perform() {
+			this.ticks++;
+			if (this.OnTick != null) {
+				this.OnTick();
+			}
+			if (this.ticks >= this.task.ticksToPerform) {
+				return true;
+			}
+
+			return false;
+		}
+
+		private void MoveInRange() {
+			if (this.task.targets.current == null) {
+				this.task.state = TaskState.Failed; // Specific failure condition?
+				return;
+			} else {
+				if (
+					this.character.position == this.task.targets.currentPosition
+				) {
+					this._inRange = true;
+					return;
+				}
+				this.character.movement.Move(this.task);
+			}
+		}
+	}
 	/*
 		A JobClass is basicaly a set of dynamic tasks.
 	*/
@@ -192,16 +194,19 @@ namespace Fy.Characters.AI {
 			if (this.job.preCondition == null || this.job.preCondition()) {
 				this.ticks = 0;
 				this.task.state = TaskState.Running;
-				this.OnEnd += this.OnEnd;
-				this.OnStart += this.OnStart;
-				this.OnTick += this.OnTick;
+				this.OnEnd = this.job.OnEnd;
+				this.OnStart = this.job.OnStart;
+				this.OnTick = this.job.OnTick;
+				this._inRange = false;
 
 				if (this.task.def.targetType == TargetType.Adjacent) {
 					bool path = this.task.targets.current.GetClosestAdj(this.character.position);
 					if (!path) {
 						this.task.state = TaskState.Failed;
 					}
-				} 
+				} else if (this.task.def.targetType == TargetType.None) {
+					this._inRange = true;
+				}
 			} else {
 				if (this.job.interuptable) {
 					this.task.state = TaskState.Failed;
@@ -221,15 +226,30 @@ namespace Fy.Characters.AI {
 		}
 
 		public override bool Perform() {
-			this.ticks++;
-			if (this.OnTick != null) {
-				this.OnTick();
-			}
-			if (this.ticks >= this.task.ticksToPerform) {
+			if (this.task.ticksToPerform == 0) {
+				if (this.OnEnd != null) {
+					this.OnEnd();
+				}
 				if (this.jobs.Count == 0) {
 					return true;
 				} else {
 					this.Next(true);
+				}
+			} else {
+				this.ticks++;
+				if (this.OnTick != null) {
+					this.OnTick();
+				}
+
+				if (this.ticks >= this.task.ticksToPerform) {
+					if (this.OnEnd != null) {
+						this.OnEnd();
+					}
+					if (this.jobs.Count == 0) {
+						return true;
+					} else {
+						this.Next(true);
+					}
 				}
 			}
 			return false;

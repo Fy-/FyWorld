@@ -53,6 +53,12 @@ namespace Fy.Definitions {
 			});
 
 			Defs.AddTask(new TaskDef{
+				uid = "haul_recipe",
+				taskType = TaskType.HaulRecipe,
+				targetType = TargetType.Adjacent,
+			});
+
+			Defs.AddTask(new TaskDef{
 				uid = "task_idle",
 				taskType = TaskType.Idle
 			});

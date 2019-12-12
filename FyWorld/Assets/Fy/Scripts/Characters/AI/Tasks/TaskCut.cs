@@ -13,7 +13,7 @@ namespace Fy.Characters.AI {
 		public TaskCut(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
-			Plant plant = (Plant)this.task.targets.current.entity;
+			Plant plant = (Plant)this.task.targets.current.tilable;
 			plant.Cut();
 			return true;
 		}
@@ -23,7 +23,7 @@ namespace Fy.Characters.AI {
 		public TaskDirt(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
-			Field field = (Field)this.task.targets.current.entity;
+			Field field = (Field)this.task.targets.current.tilable;
 			field.WorkDirt();
 			return true;
 		}
@@ -33,7 +33,7 @@ namespace Fy.Characters.AI {
 		public TaskSow(BaseCharacter character, Task task) : base(character, task) {}
 
 		public override bool Perform() {
-			Field field = (Field)this.task.targets.current.entity;
+			Field field = (Field)this.task.targets.current.tilable;
 			Loki.map.Spawn(this.task.targets.current.position, new Plant(
 				field.position, 
 				field.area.plantDef, 

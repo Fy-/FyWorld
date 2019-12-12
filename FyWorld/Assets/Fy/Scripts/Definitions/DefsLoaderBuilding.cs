@@ -24,7 +24,7 @@ namespace Fy.Definitions {
 			RecipeDef recipe = new RecipeDef();
 			recipe.reqs.Add(
 				Defs.stackables["logs"],
-				10
+				2
 			);
 
 			Defs.AddBuilding(new TilableDef{

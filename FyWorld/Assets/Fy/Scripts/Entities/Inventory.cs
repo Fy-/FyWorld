@@ -7,12 +7,13 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Fy.Definitions;
 
 namespace Fy.Entities {
 	// Inventory of tilables
-	public class InventoryTilable {
+	public class Inventory {
 		/* List of tilable or a queue */
 		public Queue<Item> list = new Queue<Item>();
 
@@ -20,7 +21,7 @@ namespace Fy.Entities {
 		public int max {
 			get {
 				if (this._max != -1) {
-					return this.max;
+					return this._max;
 				}
 				if (this._parent == null || this._parent.def == null) {
 					return 0;
@@ -38,6 +39,8 @@ namespace Fy.Entities {
 		/* Full (Is this inventory full ?) */
 		public bool full { get { return this.free <= 0; } }
 
+		public int lastDiff { get; protected set; }
+
 		/* Force max */
 		private int _max = 0;
 
@@ -46,8 +49,12 @@ namespace Fy.Entities {
 
 		private TilableDef _def;
 
+		public Action OnClear;
+		public Action OnAdd;
+		public Action<int> OnChangeCount;
+
 		/* Definition */
-		private TilableDef def { 
+		public TilableDef def { 
 			get { 
 				if (this._parent != null) {
 					return this._parent.def;
@@ -56,21 +63,19 @@ namespace Fy.Entities {
 			}
 		}
 
-		public InventoryTilable(TilableDef def = null, int max = -1) {
+		public Inventory(TilableDef def = null, int max = -1) {
 			this._max = max;
 			this._def = def;
 		}
 
-		public InventoryTilable(Stackable parent, int count = 1, int max = -1) {
+		public Inventory(Stackable parent, int count = 1, int max = -1) {
 			this._max = max;
 			this._parent = parent;
 			this.Create(count);
-			/*
-				We should think about this and maybe add steps, like for plants
-				for example if it's less than half .7 scale, else 1f
-				float scale = (float)count / (float)this.def.maxStack;
-				this._parent.scale = new Vector3(scale, scale, 1f);
-			*/
+		}
+
+		public Inventory(int max = -1) {
+			this._max = max;
 		}
 
 		/// Create x items.
@@ -83,6 +88,9 @@ namespace Fy.Entities {
 					new Item(this._parent.def)
 				);
 			}
+			if (this.OnAdd != null) {
+				this.OnAdd();
+			}
 		}
 
 		public void InitInventory(TilableDef def) {
@@ -91,22 +99,35 @@ namespace Fy.Entities {
 		}
 
 		/// Transfert items from this to an other
-		public void TransfertTo(InventoryTilable to, int qty) {
+		public void TransfertTo(Inventory to, int qty) {
 			if ((to.def == null || to.def == this.def) && !to.full) {
 				if (to.def == null) {
 					to.InitInventory(this.def);
 				}
 				int added = 0;
-				while (this.list.Count != 0 && added < qty && !this.full) {
+				while (this.list.Count > 0 && added < qty && !to.full) {
 					to.list.Enqueue(this.list.Dequeue());
 					added++;
 				}
 
 				if (this.list.Count == 0) {
+					if (this.OnClear != null) {
+						this.OnClear();
+					}
+
 					if (this._parent == null) {
 						this._def = null;
 					} else {
 						this._parent.Destroy();
+					}
+				}
+
+				if (added != 0) {
+					if (this.OnChangeCount != null) {
+						this.OnChangeCount(added*-1);
+					}
+					if (to.OnChangeCount != null) {
+						to.OnChangeCount(added);
 					}
 				}
 			}

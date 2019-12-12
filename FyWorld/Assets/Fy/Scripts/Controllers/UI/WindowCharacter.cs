@@ -23,6 +23,7 @@ namespace Fy.UI {
 			this.AddTab("Character");
 			//this.AddTab("Skills");
 			this.AddTab("Infos");
+			this.AddTab("Inventory");
 		}
 
 		public override void Content() {
@@ -51,6 +52,13 @@ namespace Fy.UI {
 				this.vGrid.H2("Detailled Stats");
 				foreach (Stat attr in this._character.stats.attributes.Values) {
 					WindowComponents.SimpleStat(this.vGrid.GetNewRect(20f), attr.name, attr.value, attr.baseValue);
+				}
+			} else if (this.activeTab == 2) {
+				this.vGrid.H2("Inventory");
+				if (this._character.inventory.def != null) {
+					this.vGrid.Paragraph(this._character.inventory.def.name +  " : " + this._character.inventory.count + "/" + this._character.inventory.max);
+				} else {
+					this.vGrid.Paragraph("Empty");
 				}
 			}
 		}
