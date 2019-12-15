@@ -140,9 +140,9 @@ namespace Fy.Characters.AI {
 		public virtual void End() {
 			this.task.state = TaskState.Success;
 			this.task.targets.Free();
-			/*if (this.OnEnd != null) {
+			if (this.OnEnd != null) {
 				this.OnEnd();
-			}*/
+			}
 		}
 
 		public virtual bool Perform() {
@@ -157,7 +157,7 @@ namespace Fy.Characters.AI {
 			return false;
 		}
 
-		private void MoveInRange() {
+		protected void MoveInRange() {
 			if (this.task.targets.current == null) {
 				this.task.state = TaskState.Failed; // Specific failure condition?
 				return;
@@ -175,11 +175,15 @@ namespace Fy.Characters.AI {
 	/*
 		A JobClass is basicaly a set of dynamic tasks.
 	*/
-	public class JobClass : TaskClass {
+	public abstract class JobClass : TaskClass {
 		public Queue<Job> jobs = new Queue<Job>();
 		public Job job { get; protected set; }
 
-		public JobClass(BaseCharacter character, Task task) : base(character, task) {}
+		public JobClass(BaseCharacter character, Task task) : base(character, task) {
+			if (this.OnStart != null) {
+				this.OnStart();
+			}
+		}
 
 		public void Next(bool next = true) {
 			if (this.jobs.Count == 0) {
@@ -194,9 +198,6 @@ namespace Fy.Characters.AI {
 			if (this.job.preCondition == null || this.job.preCondition()) {
 				this.ticks = 0;
 				this.task.state = TaskState.Running;
-				this.OnEnd = this.job.OnEnd;
-				this.OnStart = this.job.OnStart;
-				this.OnTick = this.job.OnTick;
 				this._inRange = false;
 
 				if (this.task.def.targetType == TargetType.Adjacent) {
@@ -210,9 +211,11 @@ namespace Fy.Characters.AI {
 			} else {
 				if (this.job.interuptable) {
 					this.task.state = TaskState.Failed;
+					this.task.targets.FreeAll();
 				} else {
 					if (this.jobs.Count == 0) {
 						this.task.state = TaskState.Failed; // ?
+						this.task.targets.FreeAll();
 					} else {
 						this.Next(true);
 					}
@@ -220,15 +223,37 @@ namespace Fy.Characters.AI {
 			}
 		}
 
+		public  override  void Tick() {
+			if (this.task.state != TaskState.Running) {
+				return;
+			}
+
+			if (this._inRange) {
+				if (this.ticks == 0 && this.job.OnStart != null) {
+					this.job.OnStart();
+				}
+				if (this.Perform()) {
+					this.End();
+				}
+			} else {
+				if (this.task.def.targetType != TargetType.None) {
+					this.MoveInRange();
+				}
+			}
+		}
+
 		public override void End() {
 			this.task.state = TaskState.Success;
 			this.task.targets.Free();
+			if (this.OnEnd != null) {
+				this.OnEnd();
+			}
 		}
 
 		public override bool Perform() {
 			if (this.task.ticksToPerform == 0) {
-				if (this.OnEnd != null) {
-					this.OnEnd();
+				if (this.job.OnEnd != null) {
+					this.job.OnEnd();
 				}
 				if (this.jobs.Count == 0) {
 					return true;
@@ -240,10 +265,12 @@ namespace Fy.Characters.AI {
 				if (this.OnTick != null) {
 					this.OnTick();
 				}
-
+				if (this.job.OnTick != null) {
+					this.job.OnTick();
+				}
 				if (this.ticks >= this.task.ticksToPerform) {
-					if (this.OnEnd != null) {
-						this.OnEnd();
+					if (this.job.OnEnd != null) {
+						this.job.OnEnd();
 					}
 					if (this.jobs.Count == 0) {
 						return true;

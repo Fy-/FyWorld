@@ -60,6 +60,17 @@ namespace Fy.World {
 			return null;
 		}
 
+		public List<Tilable> GetTilables() {
+			List<Tilable> r = new List<Tilable>();
+			foreach (LayerGridBucket bucket in this.buckets) {
+				foreach (Tilable t in bucket.tilables) {
+					if (t != null) 
+						r.Add(t);
+				}
+			}
+			return r;
+		}
+
 		public Tilable GetTilableAt(Vector2Int position) {
 			LayerGridBucket bucket = this.GetBucketAt(position);
 

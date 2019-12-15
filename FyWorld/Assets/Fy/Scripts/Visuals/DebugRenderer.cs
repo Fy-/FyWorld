@@ -10,6 +10,8 @@ using UnityEngine;
 using Fy.World;
 using Fy.Definitions;
 using Fy.Characters;
+using Fy.World;
+using Fy.Entities;
 
 namespace Fy.Helpers {
 	public static class DebugRenderer {
@@ -95,7 +97,21 @@ namespace Fy.Helpers {
 				}
 			}
 		}
-
+		public static void DrawRecipes() {
+			foreach (Vector2Int v in Loki.cameraController.viewRect) {
+				foreach (Recipe r in WorldUtils.recipes) {
+					if (r.finished) {
+						Gizmos.color = Color.green;
+					} else {
+						Gizmos.color = Color.blue;
+					}
+					Gizmos.DrawWireCube(
+						new Vector3(r.position.x+.5f, r.position.y+.5f), 
+						Vector3.one
+					);
+				}
+			}
+		}
 		public static void DrawNoiseMap() {
 			foreach (Vector2Int v in Loki.cameraController.viewRect) {
 				try {

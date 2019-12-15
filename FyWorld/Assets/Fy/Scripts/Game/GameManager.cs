@@ -28,6 +28,7 @@ namespace Fy {
 		public Map map;
 		public bool DrawGizmosTiles = false;
 		public bool DrawNoiseMap = false;
+		public bool DrawRecipes = false;
 		public bool DrawBuckets = false;
 		public bool DrawAStar = false;
 		public bool DrawFertility = false;
@@ -52,7 +53,6 @@ namespace Fy {
 			Debug.Log(this.map);
 			/// TEST STUFF
 
-			/*
 			foreach (Vector2Int position in new RectI(new Vector2Int(10, 10), 5, 5)) {
 				if (this.map[position].blockStackable == false) {
 					this.map.Spawn(position, new Stackable(
@@ -61,11 +61,18 @@ namespace Fy {
 						Random.Range(1, Defs.stackables["logs"].maxStack)
 					));
 				}
-			}*/
+			}
 
 			///// TEST WALLS
 			int y = 22;
-			for (int x = 20; x < 28; x++) {
+			for (int x = 10; x < 28; x++) {
+				Loki.map.Spawn(new Vector2Int(x, y), new Building(
+					new Vector2Int(x, y),
+					Defs.buildings["wood_wall"]
+				));
+			}
+			y = 30;
+			for (int x = 10; x < 28; x++) {
 				Loki.map.Spawn(new Vector2Int(x, y), new Building(
 					new Vector2Int(x, y),
 					Defs.buildings["wood_wall"]
@@ -135,6 +142,9 @@ namespace Fy {
 					foreach (BaseCharacter character in this.map.characters) {
 						DebugRenderer.DrawCurrentPath(character.movement);
 					}
+				}
+				if (this.DrawRecipes) {
+					DebugRenderer.DrawRecipes();
 				}
 				if (this.DrawAStar) {
 					DebugRenderer.DrawAStar();

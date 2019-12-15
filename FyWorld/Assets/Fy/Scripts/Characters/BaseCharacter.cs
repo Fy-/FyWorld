@@ -89,5 +89,39 @@ namespace Fy.Characters {
 				0
 			);
 		}
+
+		public void DropOnTheFloor() {
+			if (this.inventory.count > 0 && this.inventory.def != null) {
+				HashSet<Vector2Int> tilablesInRadius = new HashSet<Vector2Int>();
+				Stackable stack = (Stackable)Loki.map.GetTilableAt(this.position, Layer.Stackable);
+				if (stack == null) {
+					Loki.map.Spawn(position, new Stackable(
+						this.position,
+						this.inventory.def,
+						0
+					));
+				}
+				stack = (Stackable)Loki.map.GetTilableAt(this.position, Layer.Stackable);
+				Tilable.InRadius(20, stack.position, stack.position, ref tilablesInRadius);
+				foreach (Vector2Int position in tilablesInRadius) {
+					if (this.inventory.count == 0) {
+						break;
+					}
+
+					stack = (Stackable)Loki.map.GetTilableAt(position, Layer.Stackable);
+					if (stack != null && stack.def == this.inventory.def) {
+						this.inventory.TransfertTo(stack.inventory, stack.inventory.free);
+					} else if (stack == null) {
+						Loki.map.Spawn(position, new Stackable(
+							position,
+							this.inventory.def,
+							0
+						));
+						stack = (Stackable)Loki.map.GetTilableAt(position, Layer.Stackable);
+						this.inventory.TransfertTo(stack.inventory, stack.inventory.free);
+					}
+				}
+			}
+		}
 	}
 }

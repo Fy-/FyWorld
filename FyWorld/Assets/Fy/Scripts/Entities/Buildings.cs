@@ -53,6 +53,15 @@ namespace Fy.Entities {
 			WorldUtils.recipes.Add(this);
 		}
 
+		public TilableDef FirstNeed() {
+			foreach (Inventory inv in this.needs.Values) {
+				if (inv.free > 0) {
+					return inv.def;
+				}
+			}
+			return null;
+		}
+
 		public bool IsComplete() {
 			if (!this.finished) {
 				foreach (Inventory inv in this.needs.Values) {
@@ -61,7 +70,6 @@ namespace Fy.Entities {
 					}
 				}
 				this.finished = true;
-				Debug.Log("FINISHED");
 				this.building.Construct();
 				WorldUtils.recipes.Remove(this);
 				return true;

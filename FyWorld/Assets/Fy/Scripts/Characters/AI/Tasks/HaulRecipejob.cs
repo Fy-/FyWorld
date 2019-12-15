@@ -15,6 +15,7 @@ namespace Fy.Characters.AI {
 	public class HaulRecipeJob : JobClass {
 		public HaulRecipeJob(BaseCharacter character, Task task) : base(character, task) {
 			this.jobs = HaulRecipeJob.Haul(character, task);
+			this.OnEnd += this.character.DropOnTheFloor;
 			this.Next(false);
 		}
 

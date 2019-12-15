@@ -90,18 +90,32 @@ namespace Fy.Entities {
 			}
 		}
 
-		public static void InRadius(Layer layer, int r, Tilable o, Tilable c, ref HashSet<Tilable> s) {
+
+		public static void InRadius(int r, Vector2Int o, Vector2Int c, ref HashSet<Vector2Int> s) {
 			if (c != null) {
 				s.Add(c);
 			}
-			foreach (Vector2Int neighbour in c.neighbours) {
+			foreach (Vector2Int neighbour in Tilable.GetNeighboursPosition(c)) {
 				if (
-					Loki.map.grids[layer].GetTilableAt(neighbour) != null && 
-					!s.Contains(Loki.map.grids[layer].GetTilableAt(neighbour)) && 
-					Utils.Distance(neighbour, o.position) <= r) {
-					Tilable.InRadius(layer, r, o, Loki.map.grids[layer].GetTilableAt(neighbour), ref s);
+					neighbour.x >= 0 && neighbour.y >= 0 && neighbour.x <= Loki.map.size.x && neighbour.y <= Loki.map.size.y &&
+					!s.Contains(neighbour) && 
+					Utils.Distance(neighbour, o) <= r) {
+					Tilable.InRadius(r, o, neighbour, ref s);
 				}
 			}
+		}
+
+		public static Vector2Int[] GetNeighboursPosition(Vector2Int position) {
+			Vector2Int[] neighbours = new Vector2Int[8];
+			neighbours [(int)Direction.N] = new Vector2Int(position.x, position.y+1);
+			neighbours [(int)Direction.NE] = new Vector2Int(position.x+1, position.y+1);
+			neighbours [(int)Direction.E] = new Vector2Int(position.x+1, position.y);
+			neighbours [(int)Direction.SE] = new Vector2Int(position.x+1, position.y-1);
+			neighbours [(int)Direction.S] = new Vector2Int(position.x, position.y-1);
+			neighbours [(int)Direction.SW] = new Vector2Int(position.x-1, position.y-1);
+			neighbours [(int)Direction.W] = new Vector2Int(position.x-1, position.y);
+			neighbours [(int)Direction.NW] = new Vector2Int(position.x-1, position.y+1);
+			return neighbours;	
 		}
 
 		public virtual void UpdateOrderGraphics() {

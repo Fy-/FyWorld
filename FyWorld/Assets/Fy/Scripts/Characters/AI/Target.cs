@@ -19,6 +19,7 @@ namespace Fy.Characters.AI {
 		Tile,
 		Adjacent,
 	}
+
 	// List of targets in our Game
 	public class TargetList {
 		public Queue<Target> targets = new Queue<Target>();
@@ -81,10 +82,16 @@ namespace Fy.Characters.AI {
 			}
 		}
 
+		public void FreeAll() {
+			while (this.targets.Count != 0) {
+				Target target = this.targets.Dequeue();
+				Loki.map[target.position].reserved = false;
+			}
+		}
+
 		public void Next() {
 			this.Free();
 			this.current = this.targets.Dequeue();
-			
 		}
 	}
 

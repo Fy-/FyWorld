@@ -13,7 +13,7 @@ using Fy.Entities;
 using Fy.Helpers;
 using Fy.Definitions;
 using Fy.Characters.AI;
-
+using Fy.Characters;
 
 namespace Fy.World {
 	public static partial class WorldUtils {
@@ -23,6 +23,70 @@ namespace Fy.World {
 			return (WorldUtils.recipes.Count > 0);
 		}
 
+		public static TargetList RecipesToComplete(int radius, BaseCharacter character) {
+			int capacity = character.inventory.max;
+			int currentNeeds = 0;
+			Recipe first = null;
+			TilableDef need = null;
+			List<Recipe> toHaul = new List<Recipe>();
+			TargetList targets = null;
+
+			foreach (Recipe _recipe in WorldUtils.recipes) {
+				if (!Loki.map[_recipe.position].reserved && !_recipe.finished && _recipe.canBeComplete) {
+					if (currentNeeds >= capacity) {
+						currentNeeds = capacity;
+						break;
+					}
+
+					if (first == null) {
+						first = _recipe;
+						need = first.FirstNeed();
+						currentNeeds += first.needs[need].free;
+						capacity = (capacity > WorldUtils.stackablesCount[need]) ? WorldUtils.stackablesCount[need] : capacity; 
+					} else {
+						if (Utils.Distance(first.position, _recipe.position) <= radius) {
+							toHaul.Add(_recipe);
+							currentNeeds +=  _recipe.needs[need].free;
+						}
+					}
+				}
+			}
+
+			if (first == null || need == null || toHaul.Count == 0) {
+				return null;
+			}
+
+			int stackFound = 0;
+			if (WorldUtils.stackables.ContainsKey(need)) { // WorldUtils.stackables.ContainsKey(need)
+				foreach (Stackable stack in WorldUtils.stackables[need]) {
+				//foreach (Stackable stack in Loki.map.grids[Layer.Stackable].GetTilables()) {
+					if (stackFound >= currentNeeds) {
+						break;
+					}
+					if (!Loki.map[stack.position].reserved && stack.inventory.count != 0 && stack.inventory.def == need) {
+						stackFound += stack.inventory.count;
+						if (targets == null) {
+							targets = new TargetList((Tilable)stack);
+						} else {
+							targets.Enqueue((Tilable)stack);
+						}
+					}
+				}
+			} else {
+				return null;
+			}
+
+			if (targets != null) {
+				foreach (Recipe _recipe in toHaul) {
+					targets.Enqueue((Tilable)_recipe.building);
+				}
+			}
+
+			return targets;
+		}
+	}
+}
+/*
 		public static TargetList RecipeInRadius(int max = 25) {
 			Recipe recipe = null;
 			foreach (Recipe _recipe in WorldUtils.recipes) {
@@ -105,4 +169,4 @@ namespace Fy.World {
 			return null;
 		}
 	}
-}
+	*/

@@ -16,7 +16,7 @@ namespace Fy.Characters.AI {
 	public class N_HaulRecipe : BrainNodeConditional {
 		private class _HaulRecipe: BrainNode {
 			public override Task GetTask() {
-				TargetList targets = WorldUtils.RecipeInRadius(20);
+				TargetList targets = WorldUtils.RecipesToComplete(10, this.character);
 				if (targets != null && targets.targets.Count != 0) {
 					return new Task(
 						Defs.tasks["haul_recipe"],

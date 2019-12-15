@@ -7,6 +7,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 using UnityEngine;
+using System.Collections.Generic;
 using Fy.Definitions;
 using Fy.Characters.AI;
 using Fy.Visuals;
@@ -45,5 +46,7 @@ namespace Fy.Characters {
 		public override void UpdateDraw() {
 			this.humanSkin.UpdateDraw();
 		}
+
+
 	}
 }
