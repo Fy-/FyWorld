@@ -26,8 +26,7 @@ All program code (i.e. C#) is licensed under GPL v3.0 unless otherwise specified
 All non-code assets (e.g. art, sound, txt, story, XML, JSON) is licensed under CC BY-NC-SA 3.0 (Attribution-NonCommercial-ShareAlike 3.0 Unported) unless otherwise specified.
 
 ## Links & Playlist
- * Youtube Playlist: https://www.youtube.com/watch?v=ckDSPMe1Yf4&list=PL3zJehMxBSE_MWK954EZy0Ygy1p6sWg3i
- * This is also a real game soon available at https://fyworld.net 
+ * Youtube Playlist: https://www.youtube.com/watch?v=ckDSPMe1Yf4&list=PL3zJehMxBSE_MWK954EZy0Ygy1p6sWg3i 
 
 ## Inspiration
 This game is inspired by Rimworld, Dwarf Fortress, Prison Architect and my favorite game The 4th coming but also by Quill18 ProjectPorcupine (https://github.com/OrderOfThePorcupine/ProjectPorcupine).
