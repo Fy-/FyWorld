@@ -27,7 +27,6 @@ All non-code assets (e.g. art, sound, txt, story, XML, JSON) is licensed under C
 
 ## Links & Playlist
  * Youtube Playlist: https://www.youtube.com/watch?v=ckDSPMe1Yf4&list=PL3zJehMxBSE_MWK954EZy0Ygy1p6sWg3i
- * This is also a real game soon available at https://fyworld.net 
 
 ## Inspiration
 This game is inspired by Rimworld, Dwarf Fortress, Prison Architect and my favorite game The 4th coming but also by Quill18 ProjectPorcupine (https://github.com/OrderOfThePorcupine/ProjectPorcupine).
