@@ -38,11 +38,5 @@ All non-code assets (e.g. art, sound, txt, story, XML, JSON) is licensed under C
 ## Inspiration
 This game is inspired by Rimworld, Dwarf Fortress, Prison Architect and my favorite game The 4th coming but also by Quill18 ProjectPorcupine (https://github.com/OrderOfThePorcupine/ProjectPorcupine).
 
-## Contact & Donations
-If you want to support the project to allow me to spend more time on the project you can donate here:
-- BTC: 1KxMCNFeunWPcP3B4mMesVLoKhzvJFgJys
-- RVN : RVUJ6ipC4QkeCMnnyH52sts5MFfxtAwBws
-- ETH/ETC: 0x765D36873F6Aa8397194538E542AF661F8B32015
-- LTC: LfQmwbfSiDHAtqF7pN9vQUHygwk3J3nw8X
-
+## Contact 
 You can contact Fy- by Twitter (@un_geek) or email: m@fy.to
