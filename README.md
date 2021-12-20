@@ -1,6 +1,5 @@
 # FyWorld : Base-Building / Simulation Game Tutorial made with Unity
 ![Preview Thumbnail](https://raw.githubusercontent.com/Fy-/FyWorld/master/preview.png)
-[Status Update](https://www.patreon.com/posts/fyworld-future-52202909) Sorry :(
 
 [About](#about)  
 [Story](#story)  
@@ -8,6 +7,13 @@
 [Links & Playlist](#links--playlist)  
 [Inspiration](#inspiration)  
 [Contact](#contact)
+
+## FyWorld Future / End :(
+I love FyWorld and would love nothing more than doing it full time but unfortunately, I don't have the income to support a project like this - so to be honest and straightforward unless I can achieve my goal on Patreon or find another source of revenue, I will not continue this project.
+I know a lot of people have contacted me for help and that is great, and I am really grateful to all of you, but unfortunately, I cannot live with gratitude. Some people may see this post as a scam/money grab. It's not It's just facts: I work 7h / day - 5/6 days a week and when I'm on leave I just want to disconnect from the programming world.
+If I could continue, the next video would probably be a "light" mobile version of FyWorld: a mini simulation game.
+After that in the main game, I'd like to switch behavior trees to ECS / GOAP and maybe migrate from 2D to low poly 3D.
+Anyway, thanks for all the support and sorry I couldn't continue. The only way I could if is someone wanted to finance the project, no luck atm ^^
 
 ## About
 FyWorld is a top down simulation game in a fantasy medieval world.  
